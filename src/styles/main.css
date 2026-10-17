@@ -599,11 +599,51 @@ button {
 }
 
 @media (max-width: 640px), (pointer: coarse) {
+  /* The number pad becomes a thumb-friendly bar pinned to the bottom of the
+     screen: every digit is reachable at once without scrolling and without
+     covering the board. */
+  .keypad-card.is-open {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border-radius: var(--radius) var(--radius) 0 0;
+    border-bottom: 0;
+    padding: var(--space-2) var(--space-2) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
+    background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -6px 22px rgba(15, 23, 42, 0.18);
+  }
+
+  /* Two centred rows (5 + 4) make each key large enough to hit reliably. */
   .keypad {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-2);
-    max-width: 340px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    /* 5 keys of up to 64px plus their gaps, so a row never holds more than 5. */
+    max-width: 344px;
     margin: 0 auto;
+  }
+
+  .keypad__key {
+    flex: 0 0 calc((100% - 24px) / 5);
+    max-width: 64px;
+    min-height: 54px;
+  }
+
+  .keypad__key:active:not(:disabled) {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  /* Keep the page clear of the fixed bar so nothing hides underneath it. */
+  body:has(#game.keypad-open) .site-main {
+    padding-bottom: 148px;
   }
 
   /* Keyboard shortcuts are a desktop aid; phones and touch devices skip them. */
