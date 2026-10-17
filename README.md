@@ -185,8 +185,8 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
   Vorgaben fest geschrieben (kein Überschreiben/Löschen mehr möglich).
 * **Tastenfeld:** Auf dem Handy ist der Zahlenblock automatisch sichtbar; am
   Computer ist er standardmäßig ausgeblendet und lässt sich über die Schaltfläche
-  „Zahlen" ein- und ausklappen (dann schrumpft das Brett leicht, damit beides
-  sichtbar bleibt).
+  „Zahlen einblenden" (bzw. „Zahlen ausblenden") ein- und ausklappen (dann
+  schrumpft das Brett leicht, damit beides sichtbar bleibt).
 * **Tastenkürzel:** `N` Notizmodus, `Entf`/`0`/Rücktaste löschen,
   `Strg+Z`/`Strg+Y` rückgängig/wiederholen. „Feld lösen" deckt ein einzelnes
   Feld auf.

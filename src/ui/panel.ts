@@ -187,7 +187,7 @@ export class Controls {
       {
         id: 'keypad',
         icon: 'grid',
-        labelKey: 'action.keypad',
+        labelKey: 'action.keypadShow',
         action: () => app.toggleKeypad(),
       },
       { id: 'restart', icon: 'refresh', labelKey: 'action.restart', action: () => app.restartGame() },
@@ -243,6 +243,7 @@ export class Controls {
     const keypadEntry = this.buttons.get('keypad');
     if (keypadEntry) {
       const open = this.app.ui.keypadOpen;
+      setText(keypadEntry.label, this.app.t(open ? 'action.keypadHide' : 'action.keypadShow'));
       setAttr(keypadEntry.button, 'aria-pressed', open ? 'true' : 'false');
       toggleClass(keypadEntry.button, 'is-active', open);
     }
@@ -257,6 +258,13 @@ export class Controls {
       setText(
         notesEntry.label,
         this.app.t(this.app.game?.notesMode ? 'action.notesOn' : 'action.notes'),
+      );
+    }
+    const keypadEntry = this.buttons.get('keypad');
+    if (keypadEntry) {
+      setText(
+        keypadEntry.label,
+        this.app.t(this.app.ui.keypadOpen ? 'action.keypadHide' : 'action.keypadShow'),
       );
     }
   }

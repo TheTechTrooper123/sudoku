@@ -44,7 +44,8 @@ export const en = {
   'action.notesOn': 'Notes on',
   'action.notesOff': 'Notes off',
   'action.hint': 'Solve cell',
-  'action.keypad': 'Numbers',
+  'action.keypadShow': 'Show numbers',
+  'action.keypadHide': 'Hide numbers',
   'action.close': 'Close',
   'action.cancel': 'Cancel',
   'action.playAgain': 'Play again',
@@ -96,7 +97,6 @@ export const en = {
   'footer.credit': 'Puzzles by YouDoSudoku',
   'footer.privacy': 'Privacy',
   'footer.imprint': 'Legal notice',
-  'footer.note': 'No tracking, no cookies, no account.',
 } as const;
 
 export type TranslationKey = keyof typeof en;

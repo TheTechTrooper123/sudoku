@@ -45,7 +45,8 @@ export const de: Record<TranslationKey, string> = {
   'action.notesOn': 'Notizen an',
   'action.notesOff': 'Notizen aus',
   'action.hint': 'Feld lösen',
-  'action.keypad': 'Zahlen',
+  'action.keypadShow': 'Zahlen einblenden',
+  'action.keypadHide': 'Zahlen ausblenden',
   'action.close': 'Schließen',
   'action.cancel': 'Abbrechen',
   'action.playAgain': 'Nochmal spielen',
@@ -97,5 +98,4 @@ export const de: Record<TranslationKey, string> = {
   'footer.credit': 'Rätsel von YouDoSudoku',
   'footer.privacy': 'Datenschutz',
   'footer.imprint': 'Impressum',
-  'footer.note': 'Kein Tracking, keine Cookies, kein Konto.',
 };
