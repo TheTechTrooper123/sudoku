@@ -2,8 +2,8 @@
  * The control panel: status readout, difficulty selector, number pad,
  * action buttons and a compact statistics summary.
  */
-import { averageWinMs, winRate } from '../core/stats.ts';
-import { formatDuration, formatDurationLong, formatPercent } from '../core/format.ts';
+import { winRate } from '../core/stats.ts';
+import { formatPercent } from '../core/format.ts';
 import { DIFFICULTIES } from '../core/types.ts';
 import type { Difficulty } from '../core/types.ts';
 import { localeOf } from '../i18n/index.ts';
@@ -20,7 +20,6 @@ function difficultyKey(difficulty: Difficulty): TranslationKey {
 
 export class StatusBar {
   readonly root: HTMLDivElement;
-  private readonly timeValue: HTMLElement;
   private readonly mistakesValue: HTMLElement;
   private readonly hintsValue: HTMLElement;
   private readonly progressBar: HTMLElement;
@@ -31,7 +30,6 @@ export class StatusBar {
     private readonly app: App,
     container: HTMLElement,
   ) {
-    this.timeValue = el('strong', { class: 'status__value', text: '00:00' });
     this.mistakesValue = el('strong', { class: 'status__value', text: '0' });
     this.hintsValue = el('strong', { class: 'status__value', text: '0' });
     this.progressFill = el('span', { class: 'progress__fill' });
@@ -50,7 +48,7 @@ export class StatusBar {
     );
     this.meta = el('p', { class: 'puzzle-meta' });
 
-    const item = (iconName: 'clock' | 'info' | 'bulb', key: TranslationKey, valueNode: HTMLElement) =>
+    const item = (iconName: 'info' | 'bulb', key: TranslationKey, valueNode: HTMLElement) =>
       el('div', { class: 'status__item' }, [
         icon(iconName, 16),
         el('span', { class: 'status__label', dataset: { i18n: key } }),
@@ -58,7 +56,6 @@ export class StatusBar {
       ]);
 
     this.root = el('div', { class: 'status' }, [
-      item('clock', 'status.time', this.timeValue),
       item('bulb', 'status.mistakes', this.mistakesValue),
       item('info', 'status.hints', this.hintsValue),
       this.progressBar,
@@ -67,17 +64,15 @@ export class StatusBar {
     container.appendChild(this.root);
   }
 
-  render(now: number): void {
+  render(): void {
     const game = this.app.game;
     if (!game) {
-      setText(this.timeValue, '00:00');
       setText(this.mistakesValue, '0');
       setText(this.hintsValue, '0');
       this.progressFill.style.width = '0%';
       setText(this.meta, '');
       return;
     }
-    setText(this.timeValue, formatDuration(game.elapsedMs(now)));
     setText(this.mistakesValue, String(game.mistakes));
     setText(this.hintsValue, String(game.hints));
     const filled = 81 - game.remaining()[0];
@@ -94,11 +89,10 @@ export class StatusBar {
       this.meta,
       `${this.app.t(difficultyKey(game.difficulty))} · ${this.app.t(sourceKey)}`,
     );
-    toggleClass(this.root, 'is-paused', game.paused);
   }
 
   translate(): void {
-    this.render(Date.now());
+    this.render();
   }
 }
 
@@ -242,7 +236,6 @@ export class Controls {
         action: () => app.fillNotes(),
       },
       { id: 'check', icon: 'info', labelKey: 'action.check', action: () => app.checkBoard() },
-      { id: 'pause', icon: 'pause', labelKey: 'action.pause', action: () => app.togglePause() },
       { id: 'restart', icon: 'refresh', labelKey: 'action.restart', action: () => app.restartGame() },
       {
         id: 'new-game',
@@ -294,23 +287,11 @@ export class Controls {
       setAttr(notesEntry.button, 'aria-pressed', game?.notesMode ? 'true' : 'false');
       toggleClass(notesEntry.button, 'is-active', game?.notesMode === true);
     }
-
-    const pauseEntry = this.buttons.get('pause');
-    if (pauseEntry) {
-      pauseEntry.button.disabled = busy || !playing;
-      setText(pauseEntry.label, this.app.t(game?.paused ? 'action.resume' : 'action.pause'));
-      const glyph = pauseEntry.button.querySelector('svg');
-      if (glyph) glyph.replaceWith(icon(game?.paused ? 'play' : 'pause', 20));
-    }
   }
 
   translate(): void {
     for (const entry of this.buttons.values()) {
       setText(entry.label, this.app.t(entry.labelKey));
-    }
-    const pauseEntry = this.buttons.get('pause');
-    if (pauseEntry) {
-      setText(pauseEntry.label, this.app.t(this.app.game?.paused ? 'action.resume' : 'action.pause'));
     }
     const notesEntry = this.buttons.get('notes');
     if (notesEntry) {
@@ -326,7 +307,7 @@ export class Controls {
 
 export class StatsSummary {
   readonly root: HTMLDivElement;
-  private readonly best: HTMLElement;
+  private readonly solved: HTMLElement;
   private readonly rate: HTMLElement;
   private readonly streak: HTMLElement;
 
@@ -340,12 +321,12 @@ export class StatsSummary {
         value,
       ]);
 
-    this.best = el('strong', { class: 'stat__value', text: '–' });
+    this.solved = el('strong', { class: 'stat__value', text: '0' });
     this.rate = el('strong', { class: 'stat__value', text: '–' });
     this.streak = el('strong', { class: 'stat__value', text: '0' });
 
     this.root = el('div', { class: 'stats-summary' }, [
-      tile('stats.best', this.best),
+      tile('stats.won', this.solved),
       tile('stats.winRate', this.rate),
       tile('stats.streak', this.streak),
     ]);
@@ -356,20 +337,9 @@ export class StatsSummary {
     const difficulty = this.app.game?.difficulty ?? this.app.ui.selectedDifficulty;
     const stats = this.app.stats.byDifficulty[difficulty];
     const locale = localeOf(this.app.language);
-    const average = averageWinMs(this.app.stats, difficulty);
     const rate = winRate(this.app.stats, difficulty);
 
-    setText(
-      this.best,
-      stats.bestMs === null ? '–' : formatDurationLong(stats.bestMs, locale),
-    );
-    setAttr(
-      this.best,
-      'title',
-      average === null
-        ? ''
-        : `${this.app.t('stats.average')}: ${formatDurationLong(average, locale)}`,
-    );
+    setText(this.solved, String(stats.won));
     setText(this.rate, rate === null ? '–' : formatPercent(rate, locale));
     setText(this.streak, String(stats.streak));
     toggleClass(this.root, 'is-empty', stats.played === 0);

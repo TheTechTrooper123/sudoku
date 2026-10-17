@@ -4,7 +4,7 @@
 <https://github.com/TheTechTrooper123/sudoku> · **Vercel-Projekt:** `sudoku`
 
 Ein schlankes, werbefreies Sudoku für das Web: vier Schwierigkeitsstufen,
-Notizen, Hinweise, Undo/Redo, Timer, Statistik, Hell/Dunkel-Design und
+Notizen, Hinweise, Undo/Redo, Statistik, Hell/Dunkel-Design und
 zweisprachige Oberfläche (Deutsch/Englisch).
 
 * **Stack:** Vite + TypeScript (Vanilla, kein Framework) – ca. 23 kB gzip JS/CSS
@@ -12,7 +12,7 @@ zweisprachige Oberfläche (Deutsch/Englisch).
   Serverless-Funktion; fällt bei Ausfall auf einen Generator im Browser zurück
 * **Hosting:** Vercel (statisches Frontend + eine Serverless Function),
   erreichbar unter der Dynu-Subdomain `sudoku-game.ddnsfree.com`
-* **Tests:** 94 Unit-Tests (Vitest) – Solver, Generator, Bewertung, Spielregeln,
+* **Tests:** 87 Unit-Tests (Vitest) – Solver, Generator, Bewertung, Spielregeln,
   i18n, Formatierung, API-Validierung, Fallback-Kette
 
 ---
@@ -101,9 +101,9 @@ Build-Schritt.
 ## 4. Architektur
 
 ```
-index.html            Statisches Grundgerüst + SEO-Inhalte (H1, Anleitung,
-                      Tipps, FAQ, JSON-LD); Text wird zur Laufzeit per
-                      data-i18n ausgetauscht
+index.html            Statisches Grundgerüst + SEO-Basis (Titel, Meta,
+                      H1, JSON-LD); Texte werden zur Laufzeit per data-i18n
+                      ausgetauscht
 src/
   main.ts             Einstiegspunkt, verdrahtet DOM-IDs mit dem Controller
   core/               Reine Logik ohne DOM: board, solver, generator,
@@ -184,15 +184,15 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 * **Spielen:** Zelle wählen (Maus/Touch), Ziffer per Tastatur `1`–`9`, Nummernblock
   oder Tastenfeld eintragen. Pfeiltasten/WASD bewegen die Auswahl.
 * **Tastenkürzel:** `N` Notizmodus, `Shift+N` neues Spiel, `H` Hinweis,
-  `C` Kandidaten automatisch setzen, `Leertaste` Pause, `Entf`/`0`/Rücktaste
-  löschen, `Strg+Z`/`Strg+Y` rückgängig/wiederholen.
+  `C` Kandidaten automatisch setzen, `Entf`/`0`/Rücktaste löschen,
+  `Strg+Z`/`Strg+Y` rückgängig/wiederholen.
 * **Hilfen:** Konflikthervorhebung, gleiche Ziffern, Peers – alle einzeln
   abschaltbar. „Falsche Eingaben prüfen" markiert Fehler sofort.
-* **Automatik:** Das Spiel pausiert, wenn der Tab in den Hintergrund geht, und
-  läuft nach Rückkehr automatisch weiter. Spielstand, Statistik und
-  Einstellungen liegen im `localStorage` (Schlüsselpräfix `sudoku.v1.`).
-* **Sprache/Thema:** In der Kopfzeile umschaltbar; `?lang=de`/`?lang=en`
-  erzwingt eine Sprache, `?theme=dark`/`?theme=light` ein Design.
+* **Automatik:** Spielstand, Statistik und Einstellungen liegen im
+  `localStorage` (Schlüsselpräfix `sudoku.v1.`).
+* **Sprache/Thema:** In der Kopfzeile umschaltbar; die Wahl wird gespeichert
+  und beim nächsten Aufruf ohne Aufblitzen angewendet. Die statischen
+  Rechtsseiten lesen zusätzlich `?lang=de`/`?lang=en`.
 
 ## 7. Assets neu erzeugen
 
@@ -221,10 +221,10 @@ Erzeugt `public/og-image.png` (1200×630) und `public/apple-touch-icon.png`
   eingecheckt. Lokal (Vite-Middleware) und in den Tests wird weiterhin direkt
   `server/puzzle.ts` verwendet.
 * Layout prüfen: `npm run dev`, dann Fenster schmal ziehen (≤ 640 px: Kopfzeile
-  bricht um und scrollt weg, Bedienfeld wandert unter das Brett) und
-  `?theme=light`/`?theme=dark` sowie `?lang=de`/`?lang=en` durchspielen. Die
-  Brettgröße folgt mit `--board-max` der Viewporthöhe, damit Tastenfeld und
-  Statuszeile erreichbar bleiben.
+  bricht um, Bedienfeld wandert unter das Brett) und Hell/Dunkel sowie
+  Deutsch/Englisch in der Kopfzeile durchspielen. Das Brett füllt den
+  verfügbaren Platz und wird über `--board-max` an Breite und Viewporthöhe
+  gekoppelt.
 
 ## 9. Lizenz
 

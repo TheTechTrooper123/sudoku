@@ -3,10 +3,8 @@ import { CELL_COUNT, PEERS } from '../src/core/board.ts';
 import { Game } from '../src/core/game.ts';
 import { easyPuzzle, gridOf, nearlySolvedPuzzle, EASY_SOLUTION_STRING } from './helpers.ts';
 
-const NOW = 1_700_000_000_000;
-
 function newGame(): Game {
-  return new Game(easyPuzzle(), NOW);
+  return new Game(easyPuzzle());
 }
 
 /** Index of the first empty cell of the fixture. */
@@ -198,35 +196,24 @@ describe('hints', () => {
   });
 });
 
-describe('win detection and timing', () => {
-  it('detects a solved board and stops the clock', () => {
-    const game = new Game(nearlySolvedPuzzle([40]), NOW);
+describe('win detection', () => {
+  it('detects a solved board', () => {
+    const game = new Game(nearlySolvedPuzzle([40]));
     game.select(40);
-    game.placeDigit(game.solution[40], NOW + 1_000);
+    game.placeDigit(game.solution[40]);
     expect(game.status).toBe('won');
-    expect(game.elapsedMs(NOW + 5_000)).toBe(1_000);
   });
 
-  it('excludes paused time from the clock', () => {
-    const game = new Game(easyPuzzle(), NOW);
-    expect(game.elapsedMs(NOW + 2_000)).toBe(2_000);
-    game.pause(NOW + 2_000);
-    expect(game.paused).toBe(true);
-    expect(game.elapsedMs(NOW + 10_000)).toBe(2_000);
-    game.resume(NOW + 10_000);
-    expect(game.elapsedMs(NOW + 13_000)).toBe(5_000);
-  });
-
-  it('refuses input while paused', () => {
-    const game = newGame();
-    game.pause(NOW);
-    const index = firstEmpty(game);
-    game.select(index);
-    expect(game.placeDigit(1)).toBe(false);
+  it('goes back to playing when the winning move is undone', () => {
+    const game = new Game(nearlySolvedPuzzle([40]));
+    game.select(40);
+    game.placeDigit(game.solution[40]);
+    expect(game.undo()).toBe(true);
+    expect(game.status).toBe('playing');
   });
 
   it('notices when the last cell is filled via a hint', () => {
-    const game = new Game(nearlySolvedPuzzle([0, 40]), NOW);
+    const game = new Game(nearlySolvedPuzzle([0, 40]));
     game.select(40);
     game.placeDigit(game.solution[40]);
     game.hint();
@@ -265,7 +252,7 @@ describe('serialisation', () => {
 
   it('restores a solved game as won', () => {
     const solution = gridOf(EASY_SOLUTION_STRING);
-    const game = new Game({ difficulty: 'easy', puzzle: solution.slice(), solution, source: 'local' }, NOW);
+    const game = new Game({ difficulty: 'easy', puzzle: solution.slice(), solution, source: 'local' });
     expect(game.status).toBe('playing');
     const restored = Game.restore(game.serialize()) as Game;
     expect(restored.solution).toEqual(solution);

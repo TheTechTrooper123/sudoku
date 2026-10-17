@@ -20,8 +20,6 @@ export interface Settings {
   autoRemoveNotes: boolean;
   /** Mark wrong entries immediately. */
   autoCheck: boolean;
-  /** Show the timer. */
-  showTimer: boolean;
   /** Play a subtle animation when the puzzle is solved. */
   animations: boolean;
 }
@@ -34,7 +32,6 @@ export const DEFAULT_SETTINGS: Settings = {
   highlightPeers: true,
   autoRemoveNotes: true,
   autoCheck: false,
-  showTimer: true,
   animations: true,
 };
 
@@ -54,7 +51,6 @@ export function loadSettings(): Settings {
     'highlightPeers',
     'autoRemoveNotes',
     'autoCheck',
-    'showTimer',
     'animations',
   ] as const) {
     if (typeof raw[key] === 'boolean') settings[key] = raw[key] as boolean;

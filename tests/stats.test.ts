@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import {
-  averageWinMs,
   createStats,
   emptyDifficultyStats,
   normalizeStats,
@@ -17,7 +16,6 @@ describe('statistics', () => {
     for (const difficulty of DIFFICULTIES) {
       expect(stats.byDifficulty[difficulty]).toEqual(emptyDifficultyStats());
       expect(winRate(stats, difficulty)).toBeNull();
-      expect(averageWinMs(stats, difficulty)).toBeNull();
     }
   });
 
@@ -27,26 +25,24 @@ describe('statistics', () => {
     expect(stats.byDifficulty.medium.played).toBe(0);
   });
 
-  it('records wins, best time, average and streak', () => {
+  it('records wins, flawless solves and streaks', () => {
     let stats = createStats();
     stats = recordStart(stats, 'hard');
-    stats = recordWin(stats, 'hard', { timeMs: 300_000, mistakes: 2, hints: 1 });
-    stats = recordWin(stats, 'hard', { timeMs: 240_000, mistakes: 0, hints: 0 });
+    stats = recordWin(stats, 'hard', { mistakes: 2, hints: 1 });
+    stats = recordWin(stats, 'hard', { mistakes: 0, hints: 0 });
 
     const entry = stats.byDifficulty.hard;
     expect(entry.won).toBe(2);
-    expect(entry.bestMs).toBe(240_000);
     expect(entry.flawless).toBe(1);
     expect(entry.streak).toBe(2);
     expect(entry.bestStreak).toBe(2);
     expect(entry.mistakes).toBe(2);
     expect(entry.hints).toBe(1);
-    expect(averageWinMs(stats, 'hard')).toBe(270_000);
     expect(winRate(stats, 'hard')).toBe(2);
   });
 
   it('breaks the streak when a game is abandoned', () => {
-    let stats = recordWin(createStats(), 'medium', { timeMs: 100_000, mistakes: 0, hints: 0 });
+    let stats = recordWin(createStats(), 'medium', { mistakes: 0, hints: 0 });
     expect(stats.byDifficulty.medium.streak).toBe(1);
     stats = recordAbandon(stats, 'medium');
     expect(stats.byDifficulty.medium.streak).toBe(0);
@@ -63,12 +59,12 @@ describe('statistics', () => {
   it('normalises damaged storage data', () => {
     const stats = normalizeStats({
       byDifficulty: {
-        easy: { played: 3, won: 2, bestMs: -5, totalMs: 1_000, streak: 'x' },
+        easy: { played: 3, won: 2, streak: 'x', bestMs: -5, totalMs: 1_000 },
         unknown: { played: 99 },
       },
     });
     expect(stats.byDifficulty.easy.played).toBe(3);
-    expect(stats.byDifficulty.easy.bestMs).toBeNull();
+    expect(stats.byDifficulty.easy.won).toBe(2);
     expect(stats.byDifficulty.easy.streak).toBe(0);
     expect(stats.byDifficulty.medium.played).toBe(0);
     expect(Object.keys(stats.byDifficulty).sort()).toEqual([...DIFFICULTIES].sort());

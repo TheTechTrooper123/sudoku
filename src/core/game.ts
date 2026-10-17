@@ -1,8 +1,8 @@
 /**
  * Game state machine.
  *
- * Holds the playable board, the move history (undo/redo), the timer, mistake
- * and hint counters and knows when the puzzle is solved. It is completely
+ * Holds the playable board, the move history (undo/redo), the mistake and
+ * hint counters and knows when the puzzle is solved. It is completely
  * independent from the DOM - the UI subscribes to changes and re-renders.
  */
 import {
@@ -53,10 +53,6 @@ export interface SerializedGame {
   mistakes: number;
   hints: number;
   status: GameStatus;
-  paused: boolean;
-  startedAt: number;
-  elapsedBefore: number;
-  runningSince: number | null;
 }
 
 /** Collects before/after snapshots so a group of edits can be undone at once. */
@@ -107,16 +103,12 @@ export class Game {
   mistakes = 0;
   hints = 0;
   status: GameStatus = 'playing';
-  paused = false;
-  startedAt: number;
-  elapsedBefore = 0;
-  runningSince: number | null;
   /** Index of the cell that was revealed by the last hint (for animations). */
   lastRevealed: number | null = null;
 
   private conflictsCache: Uint8Array | null = null;
 
-  constructor(puzzle: Puzzle, now: number = Date.now()) {
+  constructor(puzzle: Puzzle) {
     this.puzzle = puzzle.puzzle.slice();
     this.solution = puzzle.solution.slice();
     this.difficulty = puzzle.difficulty;
@@ -126,8 +118,6 @@ export class Game {
       given: puzzle.puzzle[index] !== 0,
       notes: 0,
     }));
-    this.startedAt = now;
-    this.runningSince = now;
     this.selected = this.firstEditableCell();
   }
 
@@ -192,12 +182,6 @@ export class Game {
     return (CELL_COUNT - this.remaining()[0]) / CELL_COUNT;
   }
 
-  /** Elapsed play time in milliseconds, excluding pauses. */
-  elapsedMs(now: number = Date.now()): number {
-    const running = this.runningSince === null ? 0 : Math.max(0, now - this.runningSince);
-    return this.elapsedBefore + running;
-  }
-
   canUndo(): boolean {
     return this.history.length > 0;
   }
@@ -223,16 +207,16 @@ export class Game {
   }
 
   /** Handles a digit tap/keystroke for the selected cell. */
-  input(digit: number, now: number = Date.now()): boolean {
-    if (this.status !== 'playing' || this.paused) return false;
+  input(digit: number): boolean {
+    if (this.status !== 'playing') return false;
     if (this.notesMode) return this.toggleNote(digit);
-    return this.placeDigit(digit, now);
+    return this.placeDigit(digit);
   }
 
   /** Places a digit in the selected cell (or clears it when it is the same). */
-  placeDigit(digit: number, now: number = Date.now()): boolean {
+  placeDigit(digit: number): boolean {
     const index = this.selected;
-    if (this.status !== 'playing' || this.paused) return false;
+    if (this.status !== 'playing') return false;
     if (!this.isEditable(index)) return false;
 
     if (this.cells[index].value === digit) return this.erase();
@@ -253,27 +237,27 @@ export class Game {
     }
 
     this.commit({ kind: 'value', digit, mistake, changes: changes.toChanges() });
-    this.afterEdit(now);
+    this.checkWin();
     return true;
   }
 
   /** Toggles a pencil mark on the selected cell. */
-  toggleNote(digit: number, now: number = Date.now()): boolean {
+  toggleNote(digit: number): boolean {
     const index = this.selected;
-    if (this.status !== 'playing' || this.paused) return false;
+    if (this.status !== 'playing') return false;
     if (!this.isEditable(index) || this.cells[index].value !== 0) return false;
 
     const changes = new ChangeSet(this.cells);
     changes.setNotes(index, this.cells[index].notes ^ digitBit(digit));
     this.commit({ kind: 'notes', digit, mistake: false, changes: changes.toChanges() });
-    this.afterEdit(now);
+    this.checkWin();
     return true;
   }
 
   /** Clears the selected cell. */
-  erase(now: number = Date.now()): boolean {
+  erase(): boolean {
     const index = this.selected;
-    if (this.status !== 'playing' || this.paused) return false;
+    if (this.status !== 'playing') return false;
     if (!this.isEditable(index)) return false;
     const cell = this.cells[index];
     if (cell.value === 0 && cell.notes === 0) return false;
@@ -282,7 +266,7 @@ export class Game {
     changes.setValue(index, 0);
     changes.setNotes(index, 0);
     this.commit({ kind: 'erase', digit: 0, mistake: false, changes: changes.toChanges() });
-    this.afterEdit(now);
+    this.checkWin();
     return true;
   }
 
@@ -292,8 +276,8 @@ export class Game {
   }
 
   /** Fills every empty cell with its pencil marks. */
-  fillAutoNotes(now: number = Date.now()): number {
-    if (this.status !== 'playing' || this.paused) return 0;
+  fillAutoNotes(): number {
+    if (this.status !== 'playing') return 0;
     const values = this.values();
     const changes = new ChangeSet(this.cells);
     let filled = 0;
@@ -306,13 +290,13 @@ export class Game {
     }
     if (filled === 0) return 0;
     this.commit({ kind: 'auto-notes', digit: 0, mistake: false, changes: changes.toChanges() });
-    this.afterEdit(now);
+    this.checkWin();
     return filled;
   }
 
   /** Reveals a correct digit. Returns the affected index, or `null`. */
-  hint(now: number = Date.now()): number | null {
-    if (this.status !== 'playing' || this.paused) return null;
+  hint(): number | null {
+    if (this.status !== 'playing') return null;
     const target = this.hintTarget();
     if (target === null) return null;
 
@@ -334,13 +318,13 @@ export class Game {
     this.hints++;
     this.selected = target;
     this.lastRevealed = target;
-    this.afterEdit(now);
+    this.checkWin();
     return target;
   }
 
   // --------------------------------------------------------------- history
 
-  undo(now: number = Date.now()): boolean {
+  undo(): boolean {
     const move = this.history.pop();
     if (!move) return false;
     for (const change of move.changes) {
@@ -353,11 +337,10 @@ export class Game {
     this.future.push(move);
     if (this.status === 'won') this.status = 'playing';
     this.conflictsCache = null;
-    if (now >= 0) this.afterEdit(now);
     return true;
   }
 
-  redo(now: number = Date.now()): boolean {
+  redo(): boolean {
     const move = this.future.pop();
     if (!move) return false;
     for (const change of move.changes) {
@@ -370,29 +353,8 @@ export class Game {
     this.history.push(move);
     this.selected = move.changes[move.changes.length - 1]?.index ?? this.selected;
     this.conflictsCache = null;
-    this.checkWin(now);
+    this.checkWin();
     return true;
-  }
-
-  // ----------------------------------------------------------------- timer
-
-  pause(now: number = Date.now()): void {
-    if (this.paused || this.status === 'won') return;
-    this.elapsedBefore = this.elapsedMs(now);
-    this.runningSince = null;
-    this.paused = true;
-  }
-
-  resume(now: number = Date.now()): void {
-    if (!this.paused || this.status === 'won') return;
-    this.paused = false;
-    this.runningSince = now;
-  }
-
-  togglePause(now: number = Date.now()): boolean {
-    if (this.paused) this.resume(now);
-    else this.pause(now);
-    return this.paused;
   }
 
   // ------------------------------------------------------------ persistence
@@ -412,10 +374,6 @@ export class Game {
       mistakes: this.mistakes,
       hints: this.hints,
       status: this.status,
-      paused: this.paused,
-      startedAt: this.startedAt,
-      elapsedBefore: this.elapsedBefore,
-      runningSince: this.runningSince,
     };
   }
 
@@ -457,15 +415,6 @@ export class Game {
     game.mistakes = typeof raw.mistakes === 'number' ? raw.mistakes : 0;
     game.hints = typeof raw.hints === 'number' ? raw.hints : 0;
     game.status = raw.status === 'won' ? 'won' : 'playing';
-    game.startedAt = typeof raw.startedAt === 'number' ? raw.startedAt : Date.now();
-    game.elapsedBefore = typeof raw.elapsedBefore === 'number' ? raw.elapsedBefore : 0;
-    game.paused = raw.paused === true;
-    game.runningSince =
-      game.status === 'won' || game.paused
-        ? null
-        : typeof raw.runningSince === 'number'
-          ? raw.runningSince
-          : Date.now();
     return game;
   }
 
@@ -485,11 +434,7 @@ export class Game {
     if (move.mistake) this.mistakes++;
   }
 
-  private afterEdit(now: number): void {
-    this.checkWin(now);
-  }
-
-  private checkWin(now: number): void {
+  private checkWin(): void {
     const counts = valueCounts(this.values());
     if ((counts[0] ?? 0) !== 0) return;
     const conflicts = this.conflicts();
@@ -497,8 +442,6 @@ export class Game {
       if (conflicts[index] === 1) return;
     }
     this.status = 'won';
-    this.elapsedBefore = this.elapsedMs(now);
-    this.runningSince = null;
   }
 
   private hintTarget(): number | null {

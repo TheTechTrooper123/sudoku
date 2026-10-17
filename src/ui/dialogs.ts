@@ -3,8 +3,8 @@
  * overlay. One shared `Modal` base class handles focus management, the
  * backdrop and the `Escape` key.
  */
-import { formatDuration, formatDurationLong, formatPercent } from '../core/format.ts';
-import { averageWinMs, winRate } from '../core/stats.ts';
+import { formatPercent } from '../core/format.ts';
+import { winRate } from '../core/stats.ts';
 import { DIFFICULTIES } from '../core/types.ts';
 import type { Difficulty } from '../core/types.ts';
 import { localeOf } from '../i18n/index.ts';
@@ -279,9 +279,6 @@ export class SettingsDialog extends Modal {
         toggleRow(app, 'autoCheck', 'settings.autoCheck', 'settings.autoCheckHint', (value) =>
           app.updateSetting('autoCheck', value),
         ),
-        toggleRow(app, 'showTimer', 'settings.showTimer', 'settings.showTimerHint', (value) =>
-          app.updateSetting('showTimer', value),
-        ),
         toggleRow(app, 'animations', 'settings.animations', 'settings.animationsHint', (value) =>
           app.updateSetting('animations', value),
         ),
@@ -332,15 +329,11 @@ export class StatsDialog extends Modal {
       el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('stats.played') }),
       el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('stats.won') }),
       el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('stats.winRate') }),
-      el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('stats.best') }),
-      el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('stats.average') }),
       el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('stats.streakBest') }),
     ]);
 
     const rows = DIFFICULTIES.map((difficulty) => {
       const entry = app.stats.byDifficulty[difficulty];
-      const best = entry.bestMs;
-      const average = averageWinMs(app.stats, difficulty);
       const rate = winRate(app.stats, difficulty);
       const row = el(
         'tr',
@@ -350,14 +343,6 @@ export class StatsDialog extends Modal {
           el('td', { class: 'stats-table__td', text: String(entry.played) }),
           el('td', { class: 'stats-table__td', text: String(entry.won) }),
           el('td', { class: 'stats-table__td', text: rate === null ? '–' : formatPercent(rate, locale) }),
-          el('td', {
-            class: 'stats-table__td',
-            text: best === null ? '–' : formatDurationLong(best, locale),
-          }),
-          el('td', {
-            class: 'stats-table__td',
-            text: average === null ? '–' : formatDurationLong(average, locale),
-          }),
           el('td', { class: 'stats-table__td', text: String(entry.bestStreak) }),
         ],
       );
@@ -419,13 +404,9 @@ export class WinDialog extends Modal {
     this.setContent([
       el('p', { class: 'modal__lead', text: app.t('win.subtitle') }),
       el('div', { class: 'metric-row' }, [
-        metric('win.time', formatDuration(summary.timeMs)),
         metric('win.mistakes', String(summary.mistakes)),
         metric('win.hints', String(summary.hints)),
       ]),
-      summary.newRecord
-        ? el('p', { class: 'badge badge--record' }, [icon('trophy', 18), el('span', { text: app.t('win.newRecord') })])
-        : null,
       summary.flawless
         ? el('p', { class: 'badge badge--perfect' }, [icon('check', 18), el('span', { text: app.t('win.flawless') })])
         : null,
@@ -487,55 +468,6 @@ export class ConfirmDialog extends Modal {
         },
       }),
     ]);
-  }
-}
-
-// -------------------------------------------------------------------- pause
-
-export class PauseOverlay {
-  readonly root: HTMLDivElement;
-  private readonly title: HTMLElement;
-  private readonly message: HTMLElement;
-  private readonly resumeLabel: HTMLElement;
-
-  constructor(
-    private readonly app: App,
-    container: HTMLElement,
-  ) {
-    this.title = el('h2', { class: 'pause__title', text: app.t('pause.title') });
-    this.message = el('p', { class: 'pause__message', text: app.t('pause.message') });
-    this.resumeLabel = el('span', { text: app.t('pause.resume') });
-    this.root = el(
-      'div',
-      { class: 'pause', attrs: { hidden: true } },
-      [
-        el('div', { class: 'pause__card' }, [
-          icon('pause', 28),
-          this.title,
-          this.message,
-          el(
-            'button',
-            {
-              class: 'button button--primary',
-              attrs: { type: 'button' },
-              on: { click: () => this.app.setPaused(false) },
-            },
-            [icon('play', 18), this.resumeLabel],
-          ),
-        ]),
-      ],
-    );
-    container.appendChild(this.root);
-  }
-
-  render(visible: boolean): void {
-    this.root.hidden = !visible;
-  }
-
-  translate(): void {
-    setText(this.title, this.app.t('pause.title'));
-    setText(this.message, this.app.t('pause.message'));
-    setText(this.resumeLabel, this.app.t('pause.resume'));
   }
 }
 

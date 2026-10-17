@@ -3,12 +3,12 @@
  *
  * Wires the controller (`App`) to the DOM: builds the dynamic regions, keeps
  * them in sync with the app events and owns the global input handling
- * (keyboard, visibility changes, theme).
+ * (keyboard, theme).
  */
 import type { App, DialogKind } from '../state/app.ts';
 import { append, clear, qs, setText, toggleClass } from './dom.ts';
 import { BoardView } from './board.ts';
-import { ConfirmDialog, PauseOverlay, SettingsDialog, StatsDialog, Toast, WinDialog } from './dialogs.ts';
+import { ConfirmDialog, SettingsDialog, StatsDialog, Toast, WinDialog } from './dialogs.ts';
 import { applyDocumentMeta, applyTranslations } from './i18n-dom.ts';
 import { icon } from './icons.ts';
 import { Controls, DifficultySelector, Keypad, StatsSummary, StatusBar } from './panel.ts';
@@ -23,7 +23,6 @@ export class AppView {
   private readonly keypad: Keypad;
   private readonly controls: Controls;
   private readonly summary: StatsSummary;
-  private readonly pauseOverlay: PauseOverlay;
   private readonly settingsDialog: SettingsDialog;
   private readonly statsDialog: StatsDialog;
   private readonly winDialog: WinDialog;
@@ -43,7 +42,6 @@ export class AppView {
     this.keypad = new Keypad(app, qs('#keypad-container'));
     this.controls = new Controls(app, qs('#controls-container'));
     this.summary = new StatsSummary(app, qs('#stats-container'));
-    this.pauseOverlay = new PauseOverlay(app, qs('#board-frame'));
     this.settingsDialog = new SettingsDialog(app);
     this.statsDialog = new StatsDialog(app);
     this.winDialog = new WinDialog(app);
@@ -73,7 +71,6 @@ export class AppView {
     if (!this.app.game) {
       await this.app.startNewGame(this.app.ui.selectedDifficulty);
     }
-    this.app.start();
   }
 
   // ------------------------------------------------------------- rendering
@@ -98,7 +95,7 @@ export class AppView {
   private renderAll(): void {
     this.renderHeader();
     this.board.render();
-    this.status.render(Date.now());
+    this.status.render();
     this.difficulty.render();
     this.keypad.render();
     this.controls.render();
@@ -115,12 +112,11 @@ export class AppView {
 
   private renderPanel(): void {
     this.board.render();
-    this.status.render(Date.now());
+    this.status.render();
     this.difficulty.render();
     this.keypad.render();
     this.controls.render();
     this.summary.render();
-    toggleClass(document.body, 'show-timer', this.app.settings.showTimer);
   }
 
   private renderLoading(): void {
@@ -183,8 +179,6 @@ export class AppView {
     } else {
       this.confirmDialog.close();
     }
-
-    this.pauseOverlay.render(kind === 'paused');
   }
 
   private applyLanguage(): void {
@@ -198,7 +192,6 @@ export class AppView {
     this.controls.translate();
     this.keypad.render();
     this.summary.render();
-    this.pauseOverlay.translate();
     this.renderLoading();
     if (this.settingsDialog.isOpen) this.settingsDialog.render();
     if (this.statsDialog.isOpen) this.statsDialog.render();
@@ -222,7 +215,6 @@ export class AppView {
 
     events.on('board', () => this.renderBoard());
     events.on('panel', () => this.renderPanel());
-    events.on('tick', () => this.status.render(Date.now()));
     events.on('loading', () => this.renderLoading());
     events.on('dialog', () => this.renderDialogs());
     events.on('toast', () => this.toast.render());
@@ -241,11 +233,7 @@ export class AppView {
   private bindInput(): void {
     document.addEventListener('keydown', (event) => this.handleKeydown(event));
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        const game = this.app.game;
-        if (game && game.status === 'playing' && !game.paused) this.app.setPaused(true);
-        this.app.saveNow();
-      }
+      if (document.hidden) this.app.saveNow();
     });
     window.addEventListener('pagehide', () => this.app.saveNow());
   }
@@ -288,12 +276,6 @@ export class AppView {
     if (modified || event.altKey) return;
 
     if (key === 'Shift' || key === 'Control' || key === 'Alt' || key === 'Meta') return;
-
-    if (key === ' ') {
-      event.preventDefault();
-      app.togglePause();
-      return;
-    }
 
     if (key === 'N' && event.shiftKey) {
       event.preventDefault();

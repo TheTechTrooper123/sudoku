@@ -55,12 +55,15 @@
   --space-5: 24px;
   --space-6: 32px;
   --transition: 140ms ease;
-  /* The board stays square; on short viewports it shrinks so the keypad
-     below it stays reachable without scrolling. */
-  --board-max: clamp(320px, 54vh, 620px);
+  /* The board stays square and grows to fill the viewport: the smaller of the
+     available width, the viewport height and an upper bound so very large
+     monitors do not produce an absurdly big grid. */
+  --board-max: clamp(280px, min(92vw, 80dvh), 820px);
+  color-scheme: light;
 }
 
 [data-theme='dark'] {
+  color-scheme: dark;
   --bg: #0e1016;
   --bg-elevated: #171a23;
   --bg-subtle: #1d212c;
@@ -109,8 +112,10 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   margin: 0;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
@@ -285,48 +290,41 @@ button {
   font-size: 0.85rem;
 }
 
-/* --------------------------------------------------------------- 4. hero */
+/* --------------------------------------------------------------- 4. intro */
 
 .site-main {
-  max-width: 1180px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
   margin: 0 auto;
-  padding: var(--space-5) var(--space-4) var(--space-6);
+  padding: var(--space-3) var(--space-4) var(--space-5);
 }
 
-.hero {
-  max-width: 860px;
-  margin-bottom: var(--space-5);
-}
-
-.hero__title {
-  margin-bottom: var(--space-2);
-  text-wrap: balance;
-}
-
-.hero__lead {
+.page-title {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 600;
   color: var(--text-muted);
-  margin-bottom: var(--space-2);
-  max-width: 78ch;
-}
-
-.hero__lead--muted {
-  font-size: 0.95rem;
-  color: var(--text-soft);
+  text-align: center;
+  text-wrap: balance;
 }
 
 /* ---------------------------------------------------------- 5. game layout */
 
 .game {
   display: grid;
-  gap: var(--space-5);
+  flex: 1;
+  gap: var(--space-4);
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  margin-bottom: var(--space-6);
+  width: 100%;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 900px) {
   .game {
-    grid-template-columns: minmax(340px, var(--board-max)) minmax(260px, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 300px);
+    align-items: center;
   }
 }
 
@@ -334,8 +332,20 @@ button {
 .game__panel {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
   min-width: 0;
+}
+
+.game__board {
+  align-items: center;
+}
+
+.game__board > * {
+  width: min(100%, var(--board-max));
+}
+
+.game__panel {
+  gap: var(--space-4);
 }
 
 .board-frame {
@@ -653,8 +663,8 @@ button {
     min-width: 0;
   }
 
-  .hero__title {
-    font-size: 1.45rem;
+  .page-title {
+    font-size: 1.05rem;
   }
 }
 
@@ -715,7 +725,7 @@ button {
 
 .status {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   background: var(--bg-elevated);
@@ -747,14 +757,6 @@ button {
   color: var(--text);
 }
 
-body:not(.show-timer) .status__item:first-child {
-  display: none;
-}
-
-body:not(.show-timer) .status {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 .progress {
   grid-column: 1 / -1;
   height: 6px;
@@ -770,10 +772,6 @@ body:not(.show-timer) .status {
   border-radius: 999px;
   background: linear-gradient(90deg, var(--accent), var(--accent-strong));
   transition: width 220ms ease;
-}
-
-.status.is-paused .status__value {
-  color: var(--text-soft);
 }
 
 .puzzle-meta {
@@ -1277,114 +1275,6 @@ kbd {
     transform: translate(-50%, 12px);
     opacity: 0;
   }
-}
-
-.pause {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  display: grid;
-  place-items: center;
-  padding: var(--space-4);
-  border-radius: var(--radius);
-  background: color-mix(in srgb, var(--bg-elevated) 78%, transparent);
-  backdrop-filter: blur(10px);
-  text-align: center;
-}
-
-.pause[hidden] {
-  display: none;
-}
-
-.pause__card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  max-width: 320px;
-}
-
-.pause__card svg {
-  color: var(--text-soft);
-}
-
-.pause__title {
-  margin: 0;
-  font-size: 1.2rem;
-}
-
-.pause__message {
-  margin: 0 0 var(--space-2);
-  color: var(--text-muted);
-  font-size: 0.85rem;
-}
-
-/* ---------------------------------------------------------- 9. content */
-
-.content {
-  display: grid;
-  gap: var(--space-5);
-  max-width: 820px;
-}
-
-@media (min-width: 900px) {
-  .content {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-width: none;
-  }
-
-  .content__block--wide {
-    grid-column: 1 / -1;
-  }
-}
-
-.content__block {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: var(--space-5);
-  box-shadow: var(--shadow-sm);
-}
-
-.content__block p:last-child {
-  margin-bottom: 0;
-}
-
-.content__block p {
-  color: var(--text-muted);
-}
-
-.tips {
-  margin: 0;
-  padding-left: 1.1rem;
-  color: var(--text-muted);
-  display: grid;
-  gap: var(--space-2);
-}
-
-.faq {
-  border-top: 1px solid var(--border);
-  padding: var(--space-3) 0;
-}
-
-.faq:first-of-type {
-  border-top: 0;
-  padding-top: 0;
-}
-
-.faq summary {
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.faq summary::marker {
-  color: var(--accent);
-}
-
-.faq p {
-  margin: var(--space-2) 0 0;
-  color: var(--text-muted);
-  font-size: 0.92rem;
 }
 
 /* -------------------------------------------------------------- footer */

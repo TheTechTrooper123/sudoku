@@ -11,10 +11,6 @@ export interface DifficultyStats {
   played: number;
   /** Games finished. */
   won: number;
-  /** Fastest win in milliseconds, `null` when the level was never won. */
-  bestMs: number | null;
-  /** Sum of all winning times, used for the average. */
-  totalMs: number;
   /** Wins without a single wrong entry. */
   flawless: number;
   /** Current winning streak. */
@@ -33,7 +29,6 @@ export interface Stats {
 }
 
 export interface WinResult {
-  timeMs: number;
   mistakes: number;
   hints: number;
 }
@@ -42,8 +37,6 @@ export function emptyDifficultyStats(): DifficultyStats {
   return {
     played: 0,
     won: 0,
-    bestMs: null,
-    totalMs: 0,
     flawless: 0,
     streak: 0,
     bestStreak: 0,
@@ -71,8 +64,6 @@ export function normalizeStats(data: unknown): Stats {
     const base = emptyDifficultyStats();
     base.played = numberOr(entry.played, 0);
     base.won = numberOr(entry.won, 0);
-    base.bestMs = typeof entry.bestMs === 'number' && entry.bestMs > 0 ? entry.bestMs : null;
-    base.totalMs = numberOr(entry.totalMs, 0);
     base.flawless = numberOr(entry.flawless, 0);
     base.streak = numberOr(entry.streak, 0);
     base.bestStreak = numberOr(entry.bestStreak, 0);
@@ -90,13 +81,11 @@ export function recordStart(stats: Stats, difficulty: Difficulty): Stats {
   return next;
 }
 
-/** Registers a finished game and updates best time and streaks. */
+/** Registers a finished game and updates the streaks. */
 export function recordWin(stats: Stats, difficulty: Difficulty, result: WinResult): Stats {
   const next = cloneStats(stats);
   const entry = next.byDifficulty[difficulty];
   entry.won++;
-  entry.totalMs += result.timeMs;
-  entry.bestMs = entry.bestMs === null ? result.timeMs : Math.min(entry.bestMs, result.timeMs);
   entry.mistakes += result.mistakes;
   entry.hints += result.hints;
   if (result.mistakes === 0) entry.flawless++;
@@ -110,13 +99,6 @@ export function recordAbandon(stats: Stats, difficulty: Difficulty): Stats {
   const next = cloneStats(stats);
   next.byDifficulty[difficulty].streak = 0;
   return next;
-}
-
-/** Average winning time in milliseconds, or `null`. */
-export function averageWinMs(stats: Stats, difficulty: Difficulty): number | null {
-  const entry = stats.byDifficulty[difficulty];
-  if (entry.won === 0) return null;
-  return entry.totalMs / entry.won;
 }
 
 export function winRate(stats: Stats, difficulty: Difficulty): number | null {
