@@ -10,7 +10,6 @@ export const de: Record<TranslationKey, string> = {
     'Sudoku kostenlos online spielen: vier Schwierigkeitsgrade, Notizen, Hinweise und Undo. Ohne Anmeldung, auf Handy und Desktop.',
 
   'brand.name': 'Sudoku',
-  'brand.tagline': 'Denken, spielen, entspannen',
 
   'nav.skip': 'Direkt zum Spielfeld',
   'nav.settings': 'Einstellungen',
@@ -31,9 +30,7 @@ export const de: Record<TranslationKey, string> = {
   'board.cellSelected': 'ausgewählt',
 
   'status.mistakes': 'Fehler',
-  'status.hints': 'Hinweise',
-  'status.source.api': 'Rätsel von YouDoSudoku',
-  'status.source.local': 'Rätsel lokal erzeugt',
+  'status.hints': 'Gelöste Felder',
 
   'loading.puzzle': 'Rätsel wird geladen …',
   'loading.generating': 'Rätsel wird erzeugt …',
@@ -47,8 +44,8 @@ export const de: Record<TranslationKey, string> = {
   'action.notes': 'Notizen',
   'action.notesOn': 'Notizen an',
   'action.notesOff': 'Notizen aus',
-  'action.hint': 'Hinweis',
-  'action.autoNotes': 'Notizen füllen',
+  'action.hint': 'Feld lösen',
+  'action.keypad': 'Zahlen',
   'action.close': 'Schließen',
   'action.cancel': 'Abbrechen',
   'action.playAgain': 'Nochmal spielen',
@@ -56,8 +53,8 @@ export const de: Record<TranslationKey, string> = {
   'win.title': 'Gelöst!',
   'win.subtitle': 'Sehr gut – alle Zellen sind korrekt.',
   'win.mistakes': 'Fehler',
-  'win.hints': 'Hinweise',
-  'win.flawless': 'Perfekt: ohne Fehler und ohne Hinweise gelöst.',
+  'win.hints': 'Gelöste Felder',
+  'win.flawless': 'Perfekt: ohne Fehler und ohne Hilfe gelöst.',
   'win.share': 'Ergebnis teilen',
   'win.copied': 'Ergebnis in die Zwischenablage kopiert.',
 
@@ -65,16 +62,13 @@ export const de: Record<TranslationKey, string> = {
   'dialog.newGameMessage': 'Das aktuelle Rätsel geht dabei verloren.',
   'dialog.startNew': 'Neu starten',
 
-  'toast.notesFilled': 'Notizen eingetragen.',
-  'toast.notesNothing': 'Es gibt nichts mehr einzutragen.',
-  'toast.hintUsed': 'Ein Feld wurde aufgedeckt.',
+  'toast.hintUsed': 'Ein Feld wurde gelöst.',
   'toast.puzzleFromLocal': 'API nicht erreichbar – das Rätsel wurde im Browser erzeugt.',
   'toast.copied': 'In die Zwischenablage kopiert.',
 
   'settings.title': 'Einstellungen',
   'settings.appearance': 'Darstellung',
   'settings.theme': 'Farbschema',
-  'settings.themeSystem': 'System',
   'settings.themeLight': 'Hell',
   'settings.themeDark': 'Dunkel',
   'settings.language': 'Sprache',
@@ -91,16 +85,14 @@ export const de: Record<TranslationKey, string> = {
   'settings.animations': 'Animationen',
   'settings.animationsHint': 'Sanfte Übergänge und ein kleines Highlight beim Lösen.',
 
-  'shortcuts.title': 'Tastaturkürzel',
-  'shortcuts.move': 'Auswahl bewegen',
+  'shortcuts.title': 'Steuerung',
+  'shortcuts.move': 'Feld auswählen',
   'shortcuts.digit': 'Zahl eintragen',
-  'shortcuts.notes': 'Notizmodus umschalten',
+  'shortcuts.notes': 'Notizen an/aus',
   'shortcuts.undoRedo': 'Rückgängig / Wiederholen',
-  'shortcuts.erase': 'Feld löschen',
-  'shortcuts.hint': 'Feld aufdecken',
-  'shortcuts.newGame': 'Neues Spiel',
+  'shortcuts.erase': 'Feld leeren',
 
-  'content.intro.title': 'Sudoku online – kostenlos, schnell und ohne Anmeldung',
+  'content.intro.title': 'Sudoku',
 
   'footer.credit': 'Rätsel von YouDoSudoku',
   'footer.privacy': 'Datenschutz',

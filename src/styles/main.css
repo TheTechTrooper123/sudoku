@@ -211,49 +211,8 @@ button {
   padding: var(--space-3) var(--space-4);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: var(--space-3);
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  color: inherit;
-  text-decoration: none;
-}
-
-.brand:hover {
-  text-decoration: none;
-}
-
-.brand__mark {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(140deg, var(--accent), var(--accent-strong));
-  color: #fff;
-  font-size: 1.15rem;
-  font-weight: 700;
-  box-shadow: var(--shadow-sm);
-}
-
-.brand__text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.15;
-}
-
-.brand__text strong {
-  font-size: 1.05rem;
-  letter-spacing: -0.01em;
-}
-
-.brand__text small {
-  color: var(--text-muted);
-  font-size: 0.75rem;
 }
 
 .site-nav {
@@ -302,12 +261,13 @@ button {
 }
 
 .page-title {
-  margin: 0 0 var(--space-3);
-  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  margin: 0 0 var(--space-2);
+  font-size: 0.78rem;
   font-weight: 600;
-  color: var(--text-muted);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-soft);
   text-align: center;
-  text-wrap: balance;
 }
 
 /* ---------------------------------------------------------- 5. game layout */
@@ -326,6 +286,12 @@ button {
     grid-template-columns: minmax(0, 1fr) minmax(230px, 300px);
     align-items: center;
   }
+}
+
+/* With the number pad expanded, give the board a little less room so both fit
+   on screen. */
+#game.keypad-open {
+  --board-max: clamp(260px, min(92vw, 56dvh), 820px);
 }
 
 .game__board,
@@ -556,7 +522,6 @@ button {
 
 /* -------------------------------------------------------------- 7. panel */
 
-.difficulty-card,
 .keypad-card,
 .panel-card,
 .shortcuts-card {
@@ -567,13 +532,16 @@ button {
   box-shadow: var(--shadow-sm);
 }
 
-.difficulty-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+/* The number pad is hidden by default on pointer devices and expanded with the
+   "Numbers" button; touch devices start with it open. */
+.keypad-card {
+  display: none;
 }
 
-.difficulty-card__label,
+.keypad-card.is-open {
+  display: block;
+}
+
 .card__title {
   font-size: 0.72rem;
   font-weight: 700;
@@ -586,12 +554,16 @@ button {
   margin: 0 0 var(--space-3);
 }
 
+/* A quiet row: the difficulty is a setting, not a headline. */
 .difficulty {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-1);
-  padding: 4px;
-  background: var(--bg-subtle);
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 3px;
+  background: color-mix(in srgb, var(--bg-subtle) 60%, transparent);
+  border: 1px solid var(--border);
   border-radius: 999px;
 }
 
@@ -600,9 +572,9 @@ button {
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  font-weight: 600;
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  font-weight: 500;
   cursor: pointer;
   transition: background var(--transition), color var(--transition);
 }
@@ -613,26 +585,30 @@ button {
 
 .difficulty__option.is-active {
   background: var(--bg-elevated);
-  color: var(--accent-strong);
+  color: var(--text);
+  font-weight: 600;
   box-shadow: var(--shadow-sm);
 }
 
-/* keypad */
-
+/* keypad: a compact single row on pointer devices, a thumb-friendly 3x3 grid
+   on touch/narrow screens. */
 .keypad {
   display: grid;
   grid-template-columns: repeat(9, minmax(0, 1fr));
   gap: var(--space-2);
 }
 
-@media (max-width: 620px) {
+@media (max-width: 640px), (pointer: coarse) {
   .keypad {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+    max-width: 340px;
+    margin: 0 auto;
   }
 }
 
-/* Narrow screens: the header wraps into two rows and stops being sticky, so
-   the board stays visible instead of being pushed down the page. */
+/* Narrow screens: the header drops the sticky behaviour so the board stays
+   visible instead of being pushed down the page. */
 @media (max-width: 640px) {
   .site-header {
     position: static;
@@ -642,16 +618,6 @@ button {
     flex-wrap: wrap;
     row-gap: var(--space-2);
     padding: var(--space-3) var(--space-3);
-  }
-
-  .brand__mark {
-    width: 34px;
-    height: 34px;
-    font-size: 1rem;
-  }
-
-  .brand__text small {
-    display: none;
   }
 
   .site-nav {
@@ -668,10 +634,6 @@ button {
   .nav-button--icon {
     min-width: 0;
   }
-
-  .page-title {
-    font-size: 1.05rem;
-  }
 }
 
 .keypad__key {
@@ -682,10 +644,9 @@ button {
   justify-content: center;
   gap: 2px;
   aspect-ratio: 1 / 1;
-  max-height: 64px;
   padding: 0;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   background: var(--bg-elevated);
   color: var(--accent-strong);
   cursor: pointer;
@@ -702,13 +663,13 @@ button {
 }
 
 .keypad__digit {
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   font-weight: 600;
   line-height: 1;
 }
 
 .keypad__count {
-  font-size: 0.62rem;
+  font-size: 0.66rem;
   color: var(--text-soft);
   line-height: 1;
 }
@@ -724,67 +685,29 @@ button {
 
 .keypad.is-notes .keypad__digit {
   color: var(--text-muted);
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 
-/* status */
+/* status: a single quiet line, out of the way of the board */
 
-.status {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-}
-
-.status__item {
+.status-line {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2) var(--space-4);
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.status-line__item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.status-line__value {
   color: var(--text-muted);
-}
-
-.status__item svg {
-  color: var(--text-soft);
-}
-
-.status__label {
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.status__value {
-  font-size: 1.05rem;
   font-variant-numeric: tabular-nums;
-  color: var(--text);
-}
-
-.progress {
-  grid-column: 1 / -1;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--bg-sunken);
-  overflow: hidden;
-}
-
-.progress__fill {
-  display: block;
-  height: 100%;
-  width: 0;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
-  transition: width 220ms ease;
-}
-
-.puzzle-meta {
-  grid-column: 1 / -1;
-  margin: 0;
-  font-size: 0.75rem;
-  color: var(--text-soft);
 }
 
 /* controls */
@@ -1250,9 +1173,10 @@ kbd {
   .site-header,
   .site-nav,
   .controls,
-  .keypad,
-  .difficulty-card,
+  .keypad-card,
+  .difficulty,
   .shortcuts-card,
+  .status-line,
   .modal,
   .toast,
   .site-footer {

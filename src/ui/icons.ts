@@ -7,6 +7,7 @@ const ICONS = {
   redo: '<path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/>',
   plus: '<path d="M12 5v14"/><path d="M5 12h14"/>',
   list: '<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3.5 6h.01"/><path d="M3.5 12h.01"/><path d="M3.5 18h.01"/>',
+  grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
   erase:
     '<path d="M9 4h11v16H9L3 12z"/><path d="m12 9.5 4 5"/><path d="m16 9.5-4 5"/>',
   pencil:

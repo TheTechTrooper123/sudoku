@@ -4,9 +4,9 @@
 <https://github.com/TheTechTrooper123/sudoku> · **Vercel-Projekt:** `sudoku`
 
 Ein schlankes, werbefreies Sudoku für das Web: vier Schwierigkeitsstufen,
-Notizen, Hinweise, Undo/Redo, Hell/Dunkel-Design und zweisprachige Oberfläche
-(Deutsch/Englisch). Ohne Konten, ohne Tracking – und ohne Speicherung: ein
-Reload startet immer ein frisches Spiel.
+Notizen, Felder lösen, Undo/Redo, Hell/Dunkel-Design und zweisprachige
+Oberfläche (Deutsch/Englisch). Ohne Konten, ohne Tracking – und ohne Speicherung:
+ein Reload startet immer ein frisches Spiel.
 
 * **Stack:** Vite + TypeScript (Vanilla, kein Framework) – ca. 23 kB gzip JS/CSS
 * **Rätsel:** [YouDoSudoku-API](https://www.youdosudoku.com) über eine eigene
@@ -179,20 +179,28 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 
 ## 6. Bedienung
 
-* **Spielen:** Zelle wählen (Maus/Touch), Ziffer per Tastatur `1`–`9`, Nummernblock
-  oder Tastenfeld eintragen. Pfeiltasten/WASD bewegen die Auswahl. Falsche Zahlen
+* **Spielen:** Zelle wählen (Maus/Touch), Ziffer per Tastatur `1`–`9` oder über
+  das Tastenfeld eintragen. Pfeiltasten/WASD bewegen die Auswahl. Falsche Zahlen
   werden sofort rot markiert; richtig gelöste Felder werden gesperrt und wie die
   Vorgaben fest geschrieben (kein Überschreiben/Löschen mehr möglich).
-* **Tastenkürzel:** `N` Notizmodus, `Shift+N` neues Spiel, `H` Hinweis,
-  `Entf`/`0`/Rücktaste löschen, `Strg+Z`/`Strg+Y` rückgängig/wiederholen.
+* **Tastenfeld:** Auf dem Handy ist der Zahlenblock automatisch sichtbar; am
+  Computer ist er standardmäßig ausgeblendet und lässt sich über die Schaltfläche
+  „Zahlen" ein- und ausklappen (dann schrumpft das Brett leicht, damit beides
+  sichtbar bleibt).
+* **Tastenkürzel:** `N` Notizmodus, `Entf`/`0`/Rücktaste löschen,
+  `Strg+Z`/`Strg+Y` rückgängig/wiederholen. „Feld lösen" deckt ein einzelnes
+  Feld auf.
 * **Hilfen:** Konflikthervorhebung, gleiche Ziffern, Peers – alle einzeln
-  abschaltbar. „Notizen füllen" trägt alle Kandidaten ein.
+  abschaltbar.
+* **Status:** Unter dem Brett steht eine dezente Zeile mit Fehlern und gelösten
+  Feldern; die Schwierigkeitsauswahl ist bewusst zurückhaltend gestaltet.
 * **Keine Speicherung:** Es wird nichts in `localStorage` oder an einen Server
   geschrieben. Ein Reload startet ein frisches Spiel und setzt alle
   Einstellungen auf die Standardwerte zurück.
 * **Sprache/Thema:** In der Kopfzeile umschaltbar (gilt für die laufende
-  Sitzung); das Thema folgt standardmäßig dem System. Die statischen
-  Rechtsseiten verstehen `?lang=de`/`?lang=en`.
+  Sitzung); das Thema folgt anfangs dem System und lässt sich nur zwischen
+  Hell und Dunkel wählen. Die statischen Rechtsseiten verstehen
+  `?lang=de`/`?lang=en`.
 
 ## 7. Assets neu erzeugen
 

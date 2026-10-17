@@ -16,6 +16,7 @@ import type { PuzzleOrigin } from '../services/puzzleService.ts';
 import { createSettings } from './settings.ts';
 import type { Settings } from './settings.ts';
 import { Emitter } from './store.ts';
+import { resolveTheme } from '../ui/theme.ts';
 
 export type AppEvent =
   | 'loading'
@@ -42,6 +43,8 @@ export interface UiState {
   dialog: DialogKind;
   selectedDifficulty: Difficulty;
   lastWin: WinSummary | null;
+  /** Whether the on-screen number pad is expanded (mainly for touch devices). */
+  keypadOpen: boolean;
 }
 
 export interface ToastMessage {
@@ -71,6 +74,7 @@ export class App {
       dialog: 'none',
       selectedDifficulty: 'easy',
       lastWin: null,
+      keypadOpen: false,
     };
   }
 
@@ -209,14 +213,10 @@ export class App {
     this.events.emit('board');
   }
 
-  fillNotes(): void {
-    if (!this.game) return;
-    const filled = this.game.fillAutoNotes();
-    this.showToast(
-      filled > 0 ? this.t('toast.notesFilled') : this.t('toast.notesNothing'),
-      'info',
-    );
-    if (filled > 0) this.afterEdit();
+  /** Shows or hides the on-screen number pad. */
+  toggleKeypad(): void {
+    this.ui.keypadOpen = !this.ui.keypadOpen;
+    this.events.emit('panel');
   }
 
   useHint(): void {
@@ -266,10 +266,13 @@ export class App {
     this.events.emit('board');
   }
 
+  /** The theme actually shown: `system` resolves to the current OS preference. */
+  get resolvedTheme(): 'light' | 'dark' {
+    return resolveTheme(this.settings.theme);
+  }
+
   cycleTheme(): void {
-    const order: Settings['theme'][] = ['system', 'light', 'dark'];
-    const index = order.indexOf(this.settings.theme);
-    this.updateSetting('theme', order[(index + 1) % order.length]);
+    this.updateSetting('theme', this.resolvedTheme === 'dark' ? 'light' : 'dark');
   }
 
   toggleLanguage(): void {

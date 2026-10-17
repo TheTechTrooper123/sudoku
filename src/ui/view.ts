@@ -16,6 +16,12 @@ import { applyTheme, watchSystemTheme } from './theme.ts';
 
 const SLOW_LOADING_MS = 3_000;
 
+/** Touch-first devices start with the on-screen number pad visible. */
+function isTouchDevice(): boolean {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
+  return window.matchMedia('(pointer: coarse)').matches;
+}
+
 export class AppView {
   private readonly board: BoardView;
   private readonly status: StatusBar;
@@ -27,6 +33,7 @@ export class AppView {
   private readonly confirmDialog: ConfirmDialog;
   private readonly toast: Toast;
   private readonly gameSection: HTMLElement;
+  private readonly keypadCard: HTMLElement;
   private readonly loadingOverlay: HTMLElement;
   private readonly loadingLabel: HTMLElement;
   private readonly liveRegion: HTMLElement;
@@ -34,6 +41,7 @@ export class AppView {
 
   constructor(private readonly app: App) {
     this.gameSection = qs('#game');
+    this.keypadCard = qs('#keypad-card');
     this.board = new BoardView(app, qs('#board-container'));
     this.status = new StatusBar(app, qs('#status-container'));
     this.difficulty = new DifficultySelector(app, qs('#difficulty-container'));
@@ -61,6 +69,7 @@ export class AppView {
     });
 
     this.applyLanguage();
+    this.app.ui.keypadOpen = isTouchDevice();
     this.renderAll();
 
     document.body.classList.add('is-ready');
@@ -80,10 +89,8 @@ export class AppView {
   private renderHeader(): void {
     const themeButton = qs('#nav-theme');
     clear(themeButton);
-    const themeIcon =
-      this.app.settings.theme === 'dark' ? 'moon' : this.app.settings.theme === 'light' ? 'sun' : 'monitor';
-    append(themeButton, [icon(themeIcon, 18)]);
-    themeButton.setAttribute('aria-label', `${this.app.t('settings.theme')}: ${this.app.settings.theme}`);
+    append(themeButton, [icon(this.app.resolvedTheme === 'dark' ? 'moon' : 'sun', 18)]);
+    themeButton.setAttribute('aria-label', `${this.app.t('settings.theme')}: ${this.app.t(this.app.resolvedTheme === 'dark' ? 'settings.themeDark' : 'settings.themeLight')}`);
     setText(qs('#nav-language'), this.app.language === 'de' ? 'DE' : 'EN');
   }
 
@@ -93,6 +100,7 @@ export class AppView {
     this.status.render();
     this.difficulty.render();
     this.keypad.render();
+    this.renderKeypad();
     this.controls.render();
     this.renderLoading();
     this.renderDialogs();
@@ -109,7 +117,14 @@ export class AppView {
     this.status.render();
     this.difficulty.render();
     this.keypad.render();
+    this.renderKeypad();
     this.controls.render();
+  }
+
+  private renderKeypad(): void {
+    const open = this.app.ui.keypadOpen;
+    toggleClass(this.keypadCard, 'is-open', open);
+    toggleClass(this.gameSection, 'keypad-open', open);
   }
 
   private renderLoading(): void {
@@ -256,12 +271,6 @@ export class AppView {
 
     if (key === 'Shift' || key === 'Control' || key === 'Alt' || key === 'Meta') return;
 
-    if (key === 'N' && event.shiftKey) {
-      event.preventDefault();
-      app.requestNewGame();
-      return;
-    }
-
     const digit = Number(key);
     if (key.length === 1 && Number.isInteger(digit) && digit >= 1 && digit <= 9) {
       event.preventDefault();
@@ -302,10 +311,6 @@ export class AppView {
         return;
       case 'n':
         app.toggleNotesMode();
-        return;
-      case 'h':
-      case 'H':
-        app.useHint();
         return;
       default:
         return;

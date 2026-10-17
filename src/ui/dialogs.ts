@@ -8,6 +8,7 @@ import type { Settings } from '../state/settings.ts';
 import { append, clear, el, qsAll, setText, toggleClass } from './dom.ts';
 import type { Child } from './dom.ts';
 import { icon } from './icons.ts';
+import { resolveTheme } from './theme.ts';
 import type { TranslationKey } from '../i18n/index.ts';
 
 type BooleanSettingKey = {
@@ -223,11 +224,10 @@ export class SettingsDialog extends Modal {
           app,
           'settings.theme',
           [
-            { value: 'system', labelKey: 'settings.themeSystem', icon: 'monitor' },
             { value: 'light', labelKey: 'settings.themeLight', icon: 'sun' },
             { value: 'dark', labelKey: 'settings.themeDark', icon: 'moon' },
           ],
-          app.settings.theme,
+          resolveTheme(app.settings.theme),
           (value) => app.updateSetting('theme', value as Settings['theme']),
         ),
         segmented(

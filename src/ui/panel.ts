@@ -19,69 +19,31 @@ export class StatusBar {
   readonly root: HTMLDivElement;
   private readonly mistakesValue: HTMLElement;
   private readonly hintsValue: HTMLElement;
-  private readonly progressBar: HTMLElement;
-  private readonly progressFill: HTMLElement;
-  private readonly meta: HTMLElement;
 
   constructor(
     private readonly app: App,
     container: HTMLElement,
   ) {
-    this.mistakesValue = el('strong', { class: 'status__value', text: '0' });
-    this.hintsValue = el('strong', { class: 'status__value', text: '0' });
-    this.progressFill = el('span', { class: 'progress__fill' });
-    this.progressBar = el(
-      'div',
-      {
-        class: 'progress',
-        attrs: {
-          role: 'progressbar',
-          'aria-valuemin': 0,
-          'aria-valuemax': 81,
-          'aria-valuenow': 0,
-        },
-      },
-      [this.progressFill],
-    );
-    this.meta = el('p', { class: 'puzzle-meta' });
+    this.mistakesValue = el('strong', { class: 'status-line__value', text: '0' });
+    this.hintsValue = el('strong', { class: 'status-line__value', text: '0' });
 
-    const item = (iconName: 'info' | 'bulb', key: TranslationKey, valueNode: HTMLElement) =>
-      el('div', { class: 'status__item' }, [
-        icon(iconName, 16),
-        el('span', { class: 'status__label', dataset: { i18n: key } }),
+    const item = (key: TranslationKey, valueNode: HTMLElement) =>
+      el('span', { class: 'status-line__item' }, [
+        el('span', { class: 'status-line__label', dataset: { i18n: key } }),
         valueNode,
       ]);
 
-    this.root = el('div', { class: 'status' }, [
-      item('bulb', 'status.mistakes', this.mistakesValue),
-      item('info', 'status.hints', this.hintsValue),
-      this.progressBar,
-      this.meta,
+    this.root = el('div', { class: 'status-line' }, [
+      item('status.mistakes', this.mistakesValue),
+      item('status.hints', this.hintsValue),
     ]);
     container.appendChild(this.root);
   }
 
   render(): void {
     const game = this.app.game;
-    if (!game) {
-      setText(this.mistakesValue, '0');
-      setText(this.hintsValue, '0');
-      this.progressFill.style.width = '0%';
-      setText(this.meta, '');
-      return;
-    }
-    setText(this.mistakesValue, String(game.mistakes));
-    setText(this.hintsValue, String(game.hints));
-    const filled = 81 - game.remaining()[0];
-    this.progressFill.style.width = `${(filled / 81) * 100}%`;
-    setAttr(this.progressBar, 'aria-valuenow', String(filled));
-
-    const sourceKey: TranslationKey =
-      this.app.origin === 'api' ? 'status.source.api' : 'status.source.local';
-    setText(
-      this.meta,
-      `${this.app.t(difficultyKey(game.difficulty))} · ${this.app.t(sourceKey)}`,
-    );
+    setText(this.mistakesValue, game ? String(game.mistakes) : '0');
+    setText(this.hintsValue, game ? String(game.hints) : '0');
   }
 
   translate(): void {
@@ -223,10 +185,10 @@ export class Controls {
         primary: true,
       },
       {
-        id: 'fill-notes',
-        icon: 'list',
-        labelKey: 'action.autoNotes',
-        action: () => app.fillNotes(),
+        id: 'keypad',
+        icon: 'grid',
+        labelKey: 'action.keypad',
+        action: () => app.toggleKeypad(),
       },
       { id: 'restart', icon: 'refresh', labelKey: 'action.restart', action: () => app.restartGame() },
       {
@@ -269,7 +231,6 @@ export class Controls {
     setDisabled('redo', busy || !game?.canRedo());
     setDisabled('erase', busy || !playing);
     setDisabled('hint', busy || !playing);
-    setDisabled('fill-notes', busy || !playing);
     setDisabled('restart', busy || !game);
 
     const notesEntry = this.buttons.get('notes');
@@ -277,6 +238,13 @@ export class Controls {
       notesEntry.button.disabled = busy || !playing;
       setAttr(notesEntry.button, 'aria-pressed', game?.notesMode ? 'true' : 'false');
       toggleClass(notesEntry.button, 'is-active', game?.notesMode === true);
+    }
+
+    const keypadEntry = this.buttons.get('keypad');
+    if (keypadEntry) {
+      const open = this.app.ui.keypadOpen;
+      setAttr(keypadEntry.button, 'aria-pressed', open ? 'true' : 'false');
+      toggleClass(keypadEntry.button, 'is-active', open);
     }
   }
 

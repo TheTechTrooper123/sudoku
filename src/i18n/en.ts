@@ -9,7 +9,6 @@ export const en = {
     'Play Sudoku online for free: four difficulty levels, pencil marks, hints and undo. No sign-up required, works on mobile and desktop.',
 
   'brand.name': 'Sudoku',
-  'brand.tagline': 'Play, think, relax',
 
   'nav.skip': 'Skip to the board',
   'nav.settings': 'Settings',
@@ -30,9 +29,7 @@ export const en = {
   'board.cellSelected': 'selected',
 
   'status.mistakes': 'Mistakes',
-  'status.hints': 'Hints',
-  'status.source.api': 'Puzzle from YouDoSudoku',
-  'status.source.local': 'Puzzle generated locally',
+  'status.hints': 'Solved cells',
 
   'loading.puzzle': 'Loading puzzle…',
   'loading.generating': 'Generating puzzle…',
@@ -46,8 +43,8 @@ export const en = {
   'action.notes': 'Notes',
   'action.notesOn': 'Notes on',
   'action.notesOff': 'Notes off',
-  'action.hint': 'Hint',
-  'action.autoNotes': 'Fill notes',
+  'action.hint': 'Solve cell',
+  'action.keypad': 'Numbers',
   'action.close': 'Close',
   'action.cancel': 'Cancel',
   'action.playAgain': 'Play again',
@@ -55,8 +52,8 @@ export const en = {
   'win.title': 'Solved!',
   'win.subtitle': 'Nicely done - every cell is correct.',
   'win.mistakes': 'Mistakes',
-  'win.hints': 'Hints',
-  'win.flawless': 'Perfect: no mistakes and no hints used.',
+  'win.hints': 'Solved cells',
+  'win.flawless': 'Perfect: solved without mistakes or help.',
   'win.share': 'Share result',
   'win.copied': 'Result copied to the clipboard.',
 
@@ -64,16 +61,13 @@ export const en = {
   'dialog.newGameMessage': 'The current puzzle will be lost.',
   'dialog.startNew': 'Start new',
 
-  'toast.notesFilled': 'Pencil marks filled in.',
-  'toast.notesNothing': 'There is nothing left to fill in.',
-  'toast.hintUsed': 'A cell was revealed for you.',
+  'toast.hintUsed': 'A cell was solved for you.',
   'toast.puzzleFromLocal': 'API unavailable - this puzzle was generated in your browser.',
   'toast.copied': 'Copied to the clipboard.',
 
   'settings.title': 'Settings',
   'settings.appearance': 'Appearance',
   'settings.theme': 'Colour scheme',
-  'settings.themeSystem': 'System',
   'settings.themeLight': 'Light',
   'settings.themeDark': 'Dark',
   'settings.language': 'Language',
@@ -90,16 +84,14 @@ export const en = {
   'settings.animations': 'Animations',
   'settings.animationsHint': 'Subtle transitions and a small celebration when you win.',
 
-  'shortcuts.title': 'Keyboard shortcuts',
-  'shortcuts.move': 'Move the selection',
-  'shortcuts.digit': 'Enter a digit',
-  'shortcuts.notes': 'Toggle notes mode',
+  'shortcuts.title': 'Controls',
+  'shortcuts.move': 'Select a cell',
+  'shortcuts.digit': 'Enter a number',
+  'shortcuts.notes': 'Pencil marks on/off',
   'shortcuts.undoRedo': 'Undo / redo',
-  'shortcuts.erase': 'Erase a cell',
-  'shortcuts.hint': 'Reveal a cell',
-  'shortcuts.newGame': 'New game',
+  'shortcuts.erase': 'Clear a cell',
 
-  'content.intro.title': 'Sudoku online - free, fast and without sign-up',
+  'content.intro.title': 'Sudoku',
 
   'footer.credit': 'Puzzles by YouDoSudoku',
   'footer.privacy': 'Privacy',
