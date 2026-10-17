@@ -28,7 +28,7 @@
   },
   "include": [
     "src",
-    "api",
+    "server",
     "tests",
     "vite.config.ts",
     "eslint.config.js"

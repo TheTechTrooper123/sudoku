@@ -38,7 +38,7 @@ function cleanUrlsPlugin(): Plugin {
 }
 
 /**
- * Serves `api/puzzle.ts` during `vite dev` and `vite preview`, so the local
+ * Serves `server/puzzle.ts` during `vite dev` and `vite preview`, so the local
  * setup behaves exactly like the deployed Vercel function.
  */
 function apiPlugin(handler: ApiHandler): Plugin {
@@ -70,7 +70,7 @@ export default defineConfig(async ({ mode }) => {
     if (process.env[key] === undefined) process.env[key] = String(value);
   }
 
-  const { default: handler } = await import('./api/puzzle.ts');
+  const { default: handler } = await import('./server/puzzle.ts');
 
   return {
     plugins: [cleanUrlsPlugin(), apiPlugin(handler)],

@@ -21,7 +21,7 @@ cp .env.example .env      # optional: eigenen API-Key eintragen
 npm run dev               # http://localhost:5173
 ```
 
-`npm run dev` startet Vite **und** die API-Funktion `api/puzzle.ts` als
+`npm run dev` startet Vite **und** die API-Funktion (`server/puzzle.ts`) als
 Middleware – lokal verhält sich alles wie auf Vercel.
 
 | Befehl | Zweck |
@@ -39,7 +39,7 @@ Middleware – lokal verhält sich alles wie auf Vercel.
 
 | Variable | Pflicht | Bedeutung |
 |---|---|---|
-| `YOUDOSUDOKU_API_KEY` | nein | API-Key für youdosudoku.com. Ist er nicht gesetzt, greift der eingebaute Fallback-Key in `api/_lib/config.ts`. |
+| `YOUDOSUDOKU_API_KEY` | nein | API-Key für youdosudoku.com. Ist er nicht gesetzt, greift der eingebaute Fallback-Key in `server/lib/config.ts`. |
 | `ALLOWED_ORIGINS` | nein | Kommagetrennte Liste erlaubter Origins (z. B. `https://sudoku.ddnsfree.com`). Gesetzt → Der Endpunkt sendet CORS-Header nur für diese Origins. Leer → kein CORS (empfohlen, da Frontend und API auf derselben Domain liegen). |
 | `SITE_URL` | nein | Öffentliche Domain, für Dokumentation/Kanonisierung. |
 
@@ -54,8 +54,8 @@ Serverless-Funktion verwendet.
    `vercel.json` erkannt (`framework: vite`, Build `npm run build`, Output `dist`).
 3. Unter **Settings → Environment Variables** `YOUDOSUDOKU_API_KEY` setzen
    (Production + Preview). Optional `ALLOWED_ORIGINS`.
-4. Deployen. `api/puzzle.ts` wird automatisch als Serverless Function unter
-   `/api/puzzle` ausgeliefert, alles andere ist statisch.
+4. Deployen. `npm run build` bündelt die Function zu `api/puzzle.js`; Vercel
+   liefert sie automatisch unter `/api/puzzle` aus, alles andere ist statisch.
 
 Vor dem ersten Deploy ohne Vercel CLI:
 
@@ -101,10 +101,13 @@ src/
                       wird von Tests erzwungen)
   workers/            generator.worker.ts – generiert im Browser ohne die
                       Oberfläche zu blockieren
-api/
-  puzzle.ts           Serverless Function (Vercel): liefert Rätsel
-  _lib/               config (Key, Grenzen), upstream (HTTP + Validierung),
+server/
+  puzzle.ts           API-Handler (Quelle)
+  lib/                config (Key, Grenzen), upstream (HTTP + Validierung),
                       pool (Vorrat), rateLimit (Token-Bucket)
+api/
+  puzzle.js           Gebündelte Function (Build-Artefakt aus server/, nicht
+                      eingecheckt: `npm run build:api` bzw. `npm run build`)
 public/               favicon, Manifest, OG-Bild, robots.txt, sitemap.xml,
                       privacy.html, imprint.html (+ static-page.js)
 tools/make-assets.py  Erzeugt OG-Bild und Touch-Icon (benötigt Pillow)
@@ -146,19 +149,20 @@ normalisiert die Antwort und hält den Key aus dem Client heraus.
 ## 5. Hinweis zum API-Key
 
 Der Key ist auf Wunsch des Betreibers im Code hinterlegt
-(`FALLBACK_API_KEY` in `api/_lib/config.ts`) und liegt damit im Repository.
+(`FALLBACK_API_KEY` in `server/lib/config.ts`) und liegt damit im Repository.
 Das ist vertretbar, solange der Key nicht weiterverwendet wird – er ist über
 den Server-Proxy aber faktisch öffentlich: Wer die Seite aufruft, kann sie über
 `/api/puzzle` benutzen, auch wenn er selbst keinen Key besitzt. Deshalb:
 
-* `rateLimit.ts` begrenzt Anfragen pro IP (Standard: 60 pro Minute, konfigurierbar),
-* `api/_lib/pool.ts` puffert Rätsel serverseitig, damit nicht jede Anfrage
+* `server/lib/rateLimit.ts` begrenzt Anfragen pro IP (Standard: 60 pro Minute,
+  konfigurierbar),
+* `server/lib/pool.ts` puffert Rätsel serverseitig, damit nicht jede Anfrage
   einen Upstream-Aufruf kostet,
 * der Key kann über die Umgebungsvariable jederzeit ausgetauscht werden, ohne
   Code zu ändern.
 
 Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
-`api/_lib/config.ts` leeren und `YOUDOSUDOKU_API_KEY` setzen.
+`server/lib/config.ts` leeren und `YOUDOSUDOKU_API_KEY` setzen.
 
 ## 6. Bedienung
 
@@ -193,6 +197,14 @@ Erzeugt `public/og-image.png` (1200×630) und `public/apple-touch-icon.png`
 * Neue UI-Texte in `index.html` erben ihren Inhalt über `data-i18n="…"` aus den
   Wörterbüchern – englischer Text steht als Fallback im HTML.
 * `npm run verify` muss vor jedem Commit fehlerfrei durchlaufen.
+* Die API-Funktion liegt als TypeScript unter `server/` und wird von
+  `npm run build` mit esbuild zu **einer** Datei `api/puzzle.js` gebündelt.
+  Vercel transpiliert bei Functions nur Dateien innerhalb von `api/` und
+  bündelt nicht – Quellcode außerhalb würde dort zur Laufzeit scheitern
+  (`ERR_MODULE_NOT_FOUND`). Deshalb: Funktion immer über `npm run build:api`
+  bzw. `npm run build` erzeugen, `api/` ist Build-Artefakt und nicht
+  eingecheckt. Lokal (Vite-Middleware) und in den Tests wird weiterhin direkt
+  `server/puzzle.ts` verwendet.
 * Layout prüfen: `npm run dev`, dann Fenster schmal ziehen (≤ 640 px: Kopfzeile
   bricht um und scrollt weg, Bedienfeld wandert unter das Brett) und
   `?theme=light`/`?theme=dark` sowie `?lang=de`/`?lang=en` durchspielen. Die

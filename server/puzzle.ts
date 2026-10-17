@@ -14,11 +14,11 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import { generatePuzzle } from '../src/core/generator.ts';
 import { isDifficulty } from '../src/core/types.ts';
 import type { Difficulty } from '../src/core/types.ts';
-import { allowedOrigins } from './_lib/config.ts';
-import { takePuzzle, scheduleRefill } from './_lib/pool.ts';
-import { allowRequest } from './_lib/rateLimit.ts';
-import { UpstreamError } from './_lib/upstream.ts';
-import type { PuzzleEntry, PuzzleSource } from './_lib/upstream.ts';
+import { allowedOrigins } from './lib/config.ts';
+import { takePuzzle, scheduleRefill } from './lib/pool.ts';
+import { allowRequest } from './lib/rateLimit.ts';
+import { UpstreamError } from './lib/upstream.ts';
+import type { PuzzleEntry, PuzzleSource } from './lib/upstream.ts';
 
 export interface PuzzlePayload {
   difficulty: Difficulty;

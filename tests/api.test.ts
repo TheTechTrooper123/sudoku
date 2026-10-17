@@ -1,9 +1,9 @@
 import { Readable } from 'node:stream';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import handler from '../api/puzzle.ts';
-import { resetPool } from '../api/_lib/pool.ts';
-import { resetRateLimits } from '../api/_lib/rateLimit.ts';
+import handler from '../server/puzzle.ts';
+import { resetPool } from '../server/lib/pool.ts';
+import { resetRateLimits } from '../server/lib/rateLimit.ts';
 import { hasUniqueSolution } from '../src/core/solver.ts';
 import { EASY_PUZZLE_STRING, EASY_SOLUTION_STRING, gridOf } from './helpers.ts';
 

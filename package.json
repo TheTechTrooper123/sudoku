@@ -9,7 +9,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm run typecheck && vite build",
+    "build": "npm run typecheck && vite build && npm run build:api",
+    "build:api": "esbuild server/puzzle.ts --bundle --platform=node --format=esm --target=node20 --outfile=api/puzzle.js",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.5",
+    "esbuild": "^0.28.2",
     "eslint": "^10.13.0",
     "globals": "^17.13.0",
     "typescript": "^6.0.3",
