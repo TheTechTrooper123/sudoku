@@ -56,6 +56,10 @@ export class AppView {
     this.loadingLabel = qs('#loading-label');
     this.liveRegion = qs('#live-region');
 
+    // The header shows a label on desktop and a single quiet icon on phones;
+    // the icon is injected once here (translations only touch the label span).
+    append(qs('#nav-settings .nav-button__icon'), [icon('sliders', 18)]);
+
     this.bindHeader();
     this.subscribe();
     this.bindInput();

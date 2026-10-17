@@ -282,6 +282,14 @@ button {
   font-size: 0.85rem;
 }
 
+/* The header button carries both an icon and a text label; on pointer devices
+   the label is shown, on phones the icon takes over (see the media query). */
+.nav-button__icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
 /* --------------------------------------------------------------- 4. intro */
 
 .site-main {
@@ -632,6 +640,49 @@ button {
 }
 
 @media (max-width: 640px), (pointer: coarse) {
+  /* The header collapses to a single quiet icon in the corner: no bar, no
+     theme switcher. Settings (and the theme inside it) are one tap away. */
+  .site-header {
+    position: static;
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: 0;
+  }
+
+  .site-header__inner {
+    padding: var(--space-1) var(--space-2);
+  }
+
+  #nav-theme {
+    display: none;
+  }
+
+  #nav-settings {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    min-width: 0;
+    padding: 0;
+    justify-content: center;
+    border-color: transparent;
+    background: transparent;
+    color: var(--text-soft);
+  }
+
+  #nav-settings:hover,
+  #nav-settings:active {
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+  }
+
+  .nav-button__icon {
+    display: inline-flex;
+  }
+
+  .nav-button__label {
+    display: none;
+  }
+
   /* The number pad becomes a thumb-friendly bar pinned to the bottom of the
      screen: every digit is reachable at once without scrolling and without
      covering the board. */
@@ -688,29 +739,8 @@ button {
 /* Narrow screens: the header drops the sticky behaviour so the board stays
    visible instead of being pushed down the page. */
 @media (max-width: 640px) {
-  .site-header {
-    position: static;
-  }
-
-  .site-header__inner {
-    flex-wrap: wrap;
-    row-gap: var(--space-2);
-    padding: var(--space-3) var(--space-3);
-  }
-
-  .site-nav {
-    width: 100%;
-  }
-
-  .nav-button {
-    flex: 1 1 auto;
-    justify-content: center;
-    padding: var(--space-2) var(--space-2);
-    font-size: 0.9rem;
-  }
-
-  .nav-button--icon {
-    min-width: 0;
+  .page-title {
+    margin-top: var(--space-2);
   }
 }
 
