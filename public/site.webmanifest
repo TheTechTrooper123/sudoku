@@ -1,0 +1,20 @@
+{
+  "name": "Sudoku",
+  "short_name": "Sudoku",
+  "description": "Free online Sudoku with four difficulty levels, pencil marks, hints and statistics.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f5f6fa",
+  "theme_color": "#3b64f6",
+  "categories": ["games", "puzzle"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

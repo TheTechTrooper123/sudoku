@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Impressum / Legal notice – Sudoku</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f4f6fb;
+        --card: #ffffff;
+        --text: #161a24;
+        --muted: #5a6377;
+        --border: #e0e5f0;
+        --accent: #3b64f6;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0e1016;
+          --card: #171a23;
+          --text: #eef1f8;
+          --muted: #a2abc0;
+          --border: #262b38;
+          --accent: #7d9bff;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans',
+          sans-serif;
+        line-height: 1.65;
+      }
+      .wrap {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 32px 20px 72px;
+      }
+      header.page-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 20px;
+        color: inherit;
+        text-decoration: none;
+      }
+      .brand span.mark {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #000));
+        color: #fff;
+        font-size: 20px;
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+      }
+      .toolbar button {
+        font: inherit;
+        font-size: 14px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--text);
+        cursor: pointer;
+      }
+      .toolbar button[aria-pressed='true'] {
+        border-color: var(--accent);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      main {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 8px 28px 32px;
+      }
+      h1 {
+        font-size: 30px;
+        line-height: 1.25;
+        margin: 28px 0 4px;
+      }
+      h2 {
+        font-size: 19px;
+        margin: 32px 0 8px;
+      }
+      .lead {
+        color: var(--muted);
+        margin-top: 0;
+      }
+      a {
+        color: var(--accent);
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .card-block {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 2px 18px 14px;
+        margin: 18px 0;
+      }
+      .updated {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 36px;
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+      }
+      footer.page-foot {
+        margin-top: 24px;
+        text-align: center;
+        font-size: 14px;
+      }
+      footer.page-foot a {
+        color: var(--muted);
+        text-decoration: none;
+        margin: 0 10px;
+      }
+      footer.page-foot a:hover {
+        color: var(--accent);
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="page-head">
+        <a class="brand" href="/"><span class="mark">数</span> Sudoku</a>
+        <div class="toolbar" role="group" aria-label="Sprache / Language">
+          <button type="button" id="lang-en" aria-pressed="false" data-title="Legal notice – Sudoku">
+            English
+          </button>
+          <button type="button" id="lang-de" aria-pressed="true" data-title="Impressum – Sudoku">
+            Deutsch
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <!-- ------------------------------------------------------------ German -->
+        <section lang="de" data-lang="de">
+          <h1>Impressum</h1>
+          <p class="lead">Angaben gemäß § 5 DDG (vormals § 5 TMG).</p>
+
+          <h2>Anbieter</h2>
+          <div class="card-block">
+            <p>
+              Till<br />
+              Deutschland
+            </p>
+            <p class="muted">
+              Private, nicht kommerzielle Website. Aus Gründen des Privatschutzes wird keine
+              vollständige Anschrift veröffentlicht; die Kontaktaufnahme ist per E-Mail möglich.
+            </p>
+          </div>
+
+          <h2>Kontakt</h2>
+          <p>E-Mail: <a href="mailto:till@siskos.org">till@siskos.org</a></p>
+
+          <h2>Verantwortlich für den Inhalt</h2>
+          <p>Till, Kontakt wie oben.</p>
+
+          <h2>Haftung für Inhalte</h2>
+          <p>
+            Die Inhalte dieser Seiten wurden mit Sorgfalt erstellt. Für die Richtigkeit,
+            Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden.
+            Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten
+            nach den allgemeinen Gesetzen verantwortlich, jedoch nicht verpflichtet, übermittelte
+            oder gespeicherte fremde Informationen zu überwachen.
+          </p>
+
+          <h2>Haftung für Links</h2>
+          <p>
+            Diese Website kann Links zu externen Websites Dritter enthalten, auf deren Inhalte kein
+            Einfluss besteht. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter
+            verantwortlich. Zum Zeitpunkt der Verlinkung wurden keine Rechtsverstöße festgestellt.
+          </p>
+
+          <h2>Urheberrecht</h2>
+          <p>
+            Die auf dieser Website erstellten Inhalte und Werke (Code, Design, Texte) unterliegen
+            dem Urheberrecht. Die Rätsel werden über die YouDoSudoku-API bezogen und stammen nicht
+            von uns.
+          </p>
+
+          <h2>Streitschlichtung</h2>
+          <p>
+            Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer
+            Verbraucherschlichtungsstelle teilzunehmen.
+          </p>
+
+          <p class="updated">Stand: Oktober 2026</p>
+        </section>
+
+        <!-- ------------------------------------------------------------ English -->
+        <section lang="en" data-lang="en" hidden>
+          <h1>Legal notice</h1>
+          <p class="lead">
+            Information pursuant to § 5 DDG (German Digital Services Act, formerly § 5 TMG). This
+            English version is a convenience translation; the German version is the legally binding
+            one.
+          </p>
+
+          <h2>Provider</h2>
+          <div class="card-block">
+            <p>
+              Till<br />
+              Germany
+            </p>
+            <p class="muted">
+              Private, non-commercial website. For privacy reasons the full postal address is not
+              published; you can get in touch by e-mail.
+            </p>
+          </div>
+
+          <h2>Contact</h2>
+          <p>E-mail: <a href="mailto:till@siskos.org">till@siskos.org</a></p>
+
+          <h2>Responsible for the content</h2>
+          <p>Till, contact as above.</p>
+
+          <h2>Liability for content</h2>
+          <p>
+            The contents of these pages were created with care. However, no guarantee can be given
+            for their accuracy, completeness or topicality. As a service provider we are responsible
+            for our own content on these pages under general law (§ 7(1) DDG), but we are not
+            obliged to monitor transmitted or stored third-party information.
+          </p>
+
+          <h2>Liability for links</h2>
+          <p>
+            This website may contain links to external third-party websites whose content we cannot
+            influence. The respective provider is always responsible for the content of linked
+            pages. No legal violations were apparent at the time of linking.
+          </p>
+
+          <h2>Copyright</h2>
+          <p>
+            The content and works created for this website (code, design, texts) are subject to
+            copyright. Puzzles are obtained through the YouDoSudoku API and do not originate from
+            us.
+          </p>
+
+          <h2>Dispute resolution</h2>
+          <p>
+            We are neither willing nor obliged to participate in dispute resolution proceedings
+            before a consumer arbitration board.
+          </p>
+
+          <p class="updated">Last updated: October 2026</p>
+        </section>
+      </main>
+
+      <footer class="page-foot">
+        <a href="/" data-lang="de">← Zurück zum Spiel</a>
+        <a href="/" data-lang="en" hidden>← Back to the game</a>
+        <a href="/privacy" data-lang="de">Datenschutz</a>
+        <a href="/privacy" data-lang="en" hidden>Privacy</a>
+      </footer>
+    </div>
+
+    <script src="/static-page.js" defer></script>
+  </body>
+</html>

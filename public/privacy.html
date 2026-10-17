@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Datenschutz / Privacy – Sudoku</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f4f6fb;
+        --card: #ffffff;
+        --text: #161a24;
+        --muted: #5a6377;
+        --border: #e0e5f0;
+        --accent: #3b64f6;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0e1016;
+          --card: #171a23;
+          --text: #eef1f8;
+          --muted: #a2abc0;
+          --border: #262b38;
+          --accent: #7d9bff;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans',
+          sans-serif;
+        line-height: 1.65;
+      }
+      .wrap {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 32px 20px 72px;
+      }
+      header.page-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 20px;
+        color: inherit;
+        text-decoration: none;
+      }
+      .brand span.mark {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #000));
+        color: #fff;
+        font-size: 20px;
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+      }
+      .toolbar button {
+        font: inherit;
+        font-size: 14px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--text);
+        cursor: pointer;
+      }
+      .toolbar button[aria-pressed='true'] {
+        border-color: var(--accent);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      main {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 8px 28px 32px;
+      }
+      h1 {
+        font-size: 30px;
+        line-height: 1.25;
+        margin: 28px 0 4px;
+      }
+      h2 {
+        font-size: 19px;
+        margin: 32px 0 8px;
+      }
+      p,
+      li {
+        color: var(--text);
+      }
+      .lead {
+        color: var(--muted);
+        margin-top: 0;
+      }
+      ul {
+        padding-left: 22px;
+      }
+      a {
+        color: var(--accent);
+      }
+      .updated {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 36px;
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+      }
+      footer.page-foot {
+        margin-top: 24px;
+        text-align: center;
+        font-size: 14px;
+      }
+      footer.page-foot a {
+        color: var(--muted);
+        text-decoration: none;
+        margin: 0 10px;
+      }
+      footer.page-foot a:hover {
+        color: var(--accent);
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="page-head">
+        <a class="brand" href="/"><span class="mark">数</span> Sudoku</a>
+        <div class="toolbar" role="group" aria-label="Sprache / Language">
+          <button type="button" id="lang-en" aria-pressed="false" data-title="Privacy – Sudoku">
+            English
+          </button>
+          <button type="button" id="lang-de" aria-pressed="true" data-title="Datenschutz – Sudoku">
+            Deutsch
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <!-- ------------------------------------------------------------ German -->
+        <section lang="de" data-lang="de">
+          <h1>Datenschutzerklärung</h1>
+          <p class="lead">
+            Diese Website ist ein Sudoku-Spiel. Sie können es vollständig nutzen, ohne ein Konto
+            anzulegen, ohne Cookies und ohne Werbung.
+          </p>
+
+          <h2>1. Verantwortlicher</h2>
+          <p>
+            Till<br />
+            Deutschland<br />
+            E-Mail: <a href="mailto:till@siskos.org">till@siskos.org</a>
+          </p>
+
+          <h2>2. Welche Daten verarbeitet werden</h2>
+          <ul>
+            <li>
+              <strong>Spielstand im Browser:</strong> Aktuelles Rätsel, Spielzeit, Notizen,
+              Statistik und Ihre Einstellungen (Thema, Sprache) werden ausschließlich lokal im
+              <code>localStorage</code> Ihres Browsers gespeichert. Diese Daten verlassen Ihr Gerät
+              nicht, werden nicht an uns übertragen und beim Löschen der Websitedaten entfernt.
+            </li>
+            <li>
+              <strong>Rätsel-Abruf:</strong> Beim Start eines neuen Spiels ruft Ihr Browser unsere
+              Serverfunktion <code>/api/puzzle</code> auf. Dabei überträgt der Server technisch
+              notwendige Verbindungsdaten (IP-Adresse, Zeitpunkt, User-Agent), wie es bei jedem
+              Seitenaufruf im Internet der Fall ist. Die IP-Adresse wird nur zur Auslieferung der
+              Antwort und zur Begrenzung übermäßiger Anfragen (Rate Limit, kurzzeitig im
+              Arbeitsspeicher) verwendet und nicht mit anderen Daten zusammengeführt.
+            </li>
+            <li>
+              <strong>Keine Cookies, kein Tracking:</strong> Es gibt keine Analyse-, Werbe- oder
+              Tracking-Dienste, keine Social-Media-Plugins und keine Cookies zu Werbe- oder
+              Analysezwecken. Es werden keine Profile gebildet.
+            </li>
+          </ul>
+
+          <h2>3. Rechtsgrundlage</h2>
+          <p>
+            Die Verarbeitung der Verbindungsdaten ist zur Auslieferung der Website und zur
+            Gewährleistung der Systemsicherheit erforderlich (Art. 6 Abs. 1 lit. f DSGVO –
+            berechtigtes Interesse am sicheren Betrieb). Für die lokale Speicherung im Browser ist
+            keine Einwilligung nötig, da sie für die von Ihnen ausdrücklich gewünschte Funktion
+            (Spielstand sichern) unbedingt erforderlich ist (§ 25 Abs. 2 Nr. 2 TDDDG).
+          </p>
+
+          <h2>4. Hosting</h2>
+          <p>
+            Die Website wird bei <strong>Vercel Inc., 440 N Barranca Ave #4133,
+            Covina, CA 91723, USA</strong> gehostet. Der Anbieter verarbeitet in unserem Auftrag
+            Server-Logdaten; ein Auftragsverarbeitungsvertrag liegt vor bzw. wird abgeschlossen. Bei
+            Übermittlung in die USA stützt sich die Übermittlung auf die Standardvertragsklauseln
+            bzw. den EU-US Data Privacy Framework.
+          </p>
+
+          <h2>5. Speicherdauer</h2>
+          <p>
+            Lokale Spieldaten bleiben gespeichert, bis Sie sie löschen (über die Einstellungen der
+            Website oder die Browserdaten). Server-Logs werden vom Hoster für einen kurzen,
+            begrenzten Zeitraum (in der Regel wenige Tage) aufbewahrt und danach gelöscht.
+          </p>
+
+          <h2>6. Ihre Rechte</h2>
+          <p>
+            Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17),
+            Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) sowie ein
+            Widerspruchsrecht (Art. 21 DSGVO). Außerdem können Sie sich bei einer
+            Datenschutz-Aufsichtsbehörde beschweren.
+          </p>
+
+          <h2>7. Kinder</h2>
+          <p>
+            Das Spiel richtet sich an alle Altersgruppen und erhebt wissentlich keine
+            personenbezogenen Daten von Kindern.
+          </p>
+
+          <p class="updated">Stand: Oktober 2026 – Änderungen dieser Erklärung werden hier veröffentlicht.</p>
+        </section>
+
+        <!-- ------------------------------------------------------------ English -->
+        <section lang="en" data-lang="en" hidden>
+          <h1>Privacy policy</h1>
+          <p class="lead">
+            This website is a Sudoku game. You can use it completely without an account, without
+            cookies and without advertising.
+          </p>
+
+          <h2>1. Controller</h2>
+          <p>
+            Till<br />
+            Germany<br />
+            E-mail: <a href="mailto:till@siskos.org">till@siskos.org</a>
+          </p>
+
+          <h2>2. What data is processed</h2>
+          <ul>
+            <li>
+              <strong>Game state in your browser:</strong> the current puzzle, playing time, notes,
+              statistics and your settings (theme, language) are stored only in your browser's
+              <code>localStorage</code>. This data never leaves your device, is not sent to us and
+              is removed when you clear the site data.
+            </li>
+            <li>
+              <strong>Puzzle requests:</strong> when you start a new game, your browser calls our
+              server function <code>/api/puzzle</code>. As with any request on the internet, the
+              server receives the technically required connection data (IP address, timestamp, user
+              agent). The IP address is used only to deliver the response and to limit excessive
+              requests (rate limit, kept briefly in memory) and is not combined with other data.
+            </li>
+            <li>
+              <strong>No cookies, no tracking:</strong> there are no analytics, advertising or
+              tracking services, no social media plugins and no cookies for advertising or
+              analytics purposes. No profiles are created.
+            </li>
+          </ul>
+
+          <h2>3. Legal basis</h2>
+          <p>
+            Processing of connection data is necessary to deliver the website and to keep it secure
+            (Art. 6(1)(f) GDPR – legitimate interest in safe operation). Local browser storage does
+            not require consent because it is strictly necessary for the feature you explicitly
+            requested (saving your game).
+          </p>
+
+          <h2>4. Hosting</h2>
+          <p>
+            The site is hosted by <strong>Vercel Inc., 440 N Barranca Ave #4133,
+            Covina, CA 91723, USA</strong>. The provider processes server log data on our behalf under a
+            data processing agreement. International transfers rely on the standard contractual
+            clauses or the EU-US Data Privacy Framework.
+          </p>
+
+          <h2>5. Retention</h2>
+          <p>
+            Local game data stays stored until you delete it (via the site settings or your browser
+            data). Server logs are kept by the host for a short, limited period (usually a few days)
+            and then deleted.
+          </p>
+
+          <h2>6. Your rights</h2>
+          <p>
+            You have the right to access (Art. 15), rectification (Art. 16), erasure (Art. 17),
+            restriction of processing (Art. 18), data portability (Art. 20) and to object (Art. 21
+            GDPR). You may also lodge a complaint with a data protection supervisory authority.
+          </p>
+
+          <h2>7. Children</h2>
+          <p>
+            The game is intended for all ages and does not knowingly collect personal data from
+            children.
+          </p>
+
+          <p class="updated">Last updated: October 2026 – changes to this policy will be published here.</p>
+        </section>
+      </main>
+
+      <footer class="page-foot">
+        <a href="/" data-lang="de">← Zurück zum Spiel</a>
+        <a href="/" data-lang="en" hidden>← Back to the game</a>
+        <a href="/imprint" data-lang="de">Impressum</a>
+        <a href="/imprint" data-lang="en" hidden>Legal notice</a>
+      </footer>
+    </div>
+
+    <script src="/static-page.js" defer></script>
+  </body>
+</html>

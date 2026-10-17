@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sudoku &ndash; Play Online for Free</title>
+    <meta
+      name="description"
+      content="Play Sudoku online for free: four difficulty levels, pencil marks, hints, undo, timer and statistics. No sign-up required, works on mobile and desktop."
+    />
+    <meta name="theme-color" content="#f5f6fa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e1016" media="(prefers-color-scheme: dark)" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Change this to the real domain before going live (see README). -->
+    <link rel="canonical" href="https://sudoku.ddnsfree.com/" />
+    <link rel="alternate" hreflang="en" href="https://sudoku.ddnsfree.com/" />
+    <link rel="alternate" hreflang="de" href="https://sudoku.ddnsfree.com/?lang=de" />
+    <link rel="alternate" hreflang="x-default" href="https://sudoku.ddnsfree.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sudoku" />
+    <meta property="og:title" content="Sudoku &ndash; Play Online for Free" />
+    <meta
+      property="og:description"
+      content="Four difficulty levels, pencil marks, hints and statistics. Free, without sign-up, on any device."
+    />
+    <meta property="og:url" content="https://sudoku.ddnsfree.com/" />
+    <meta property="og:image" content="https://sudoku.ddnsfree.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "name": "Sudoku",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript",
+            "url": "https://sudoku.ddnsfree.com/",
+            "description": "Free online Sudoku game with four difficulty levels, pencil marks, hints, undo, timer and statistics.",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+            "featureList": [
+              "Four difficulty levels",
+              "Pencil marks and auto notes",
+              "Hints, undo and redo",
+              "Timer and personal statistics",
+              "Keyboard and touch support",
+              "Dark and light theme"
+            ],
+            "inLanguage": ["en", "de"]
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is the game free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. All difficulty levels are free, without registration and without advertising."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I play on my phone?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, the board adapts to any screen size and can be added to the home screen."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Where do the puzzles come from?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Puzzles are provided by the YouDoSudoku API and rated by this app. If the API is unavailable, a puzzle is generated in the browser."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#board-container" data-i18n="nav.skip">Skip to the board</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="brand" href="/">
+          <span class="brand__mark" aria-hidden="true">数</span>
+          <span class="brand__text">
+            <strong data-i18n="brand.name">Sudoku</strong>
+            <small data-i18n="brand.tagline">Play, think, relax</small>
+          </span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          <button
+            class="nav-button"
+            type="button"
+            id="nav-stats"
+            data-i18n="nav.statistics"
+            data-i18n-attr="aria-label:nav.statistics"
+          >
+            Statistics
+          </button>
+          <button
+            class="nav-button"
+            type="button"
+            id="nav-settings"
+            data-i18n="nav.settings"
+            data-i18n-attr="aria-label:nav.settings"
+          >
+            Settings
+          </button>
+          <button
+            class="nav-button nav-button--icon"
+            type="button"
+            id="nav-language"
+            title="Sprache / Language"
+            aria-label="Sprache / Language"
+          >
+            DE / EN
+          </button>
+          <button
+            class="nav-button nav-button--icon"
+            type="button"
+            id="nav-theme"
+            title="Theme"
+            aria-label="Theme"
+          >
+            Theme
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <section class="hero">
+        <h1 class="hero__title" data-i18n="content.intro.title">
+          Sudoku online &ndash; free, fast and without sign-up
+        </h1>
+        <p class="hero__lead" data-i18n="content.intro.p1">
+          Sudoku is a logic puzzle played on a 9x9 grid. Every row, every column and every 3x3 box
+          must contain the digits 1 to 9 exactly once.
+        </p>
+        <p class="hero__lead hero__lead--muted" data-i18n="content.intro.p2">
+          This page runs entirely in your browser. Pick a difficulty, tap a cell and start filling
+          in digits. Your progress is saved automatically.
+        </p>
+      </section>
+
+      <section class="game" id="game" aria-label="Sudoku game">
+        <div class="game__board">
+          <div class="difficulty-card">
+            <span class="difficulty-card__label" data-i18n="difficulty.label">Difficulty</span>
+            <div id="difficulty-container"></div>
+          </div>
+
+          <div class="board-frame" id="board-frame">
+            <div id="board-container"></div>
+            <div class="loading" id="loading-overlay">
+              <span class="spinner" aria-hidden="true"></span>
+              <p id="loading-label" data-i18n="loading.puzzle">Loading puzzle…</p>
+            </div>
+          </div>
+
+          <div class="keypad-card">
+            <div id="keypad-container"></div>
+          </div>
+
+          <div id="status-container"></div>
+        </div>
+
+        <aside class="game__panel">
+          <div class="panel-card">
+            <div id="controls-container"></div>
+            <div id="stats-container"></div>
+          </div>
+          <div class="shortcuts-card">
+            <h2 class="card__title" data-i18n="shortcuts.title">Keyboard shortcuts</h2>
+            <dl class="shortcuts">
+              <div><dt><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd></dt><dd data-i18n="shortcuts.move">Move the selection</dd></div>
+              <div><dt><kbd>1</kbd>–<kbd>9</kbd></dt><dd data-i18n="shortcuts.digit">Enter a digit</dd></div>
+              <div><dt><kbd>N</kbd></dt><dd data-i18n="shortcuts.notes">Toggle notes mode</dd></div>
+              <div><dt><kbd>Ctrl</kbd>+<kbd>Z</kbd></dt><dd data-i18n="shortcuts.undoRedo">Undo / redo</dd></div>
+              <div><dt><kbd>⌫</kbd></dt><dd data-i18n="shortcuts.erase">Erase a cell</dd></div>
+              <div><dt><kbd>H</kbd></dt><dd data-i18n="shortcuts.hint">Reveal a cell</dd></div>
+              <div><dt><kbd>Space</kbd></dt><dd data-i18n="shortcuts.pause">Pause or resume</dd></div>
+              <div><dt><kbd>C</kbd></dt><dd data-i18n="shortcuts.check">Check the board</dd></div>
+              <div><dt><kbd>Shift</kbd>+<kbd>N</kbd></dt><dd data-i18n="shortcuts.newGame">New game</dd></div>
+            </dl>
+          </div>
+        </aside>
+      </section>
+
+      <section class="content" id="how-to-play">
+        <article class="content__block">
+          <h2 data-i18n="content.howTo.title">How to play</h2>
+          <p data-i18n="content.howTo.p1">
+            Select an empty cell and type a digit. Correct entries stay black, wrong ones are marked
+            in red as soon as you enable the check option.
+          </p>
+          <p data-i18n="content.howTo.p2">
+            Use notes mode to write small candidates into a cell. Press the notes button or the N key
+            to switch modes.
+          </p>
+          <p data-i18n="content.howTo.p3">
+            Stuck? The hint button reveals a single cell. Undo and redo let you take moves back.
+          </p>
+          <p data-i18n="content.howTo.p4">
+            When every row, column and box contains the digits 1 to 9, the puzzle is solved. Your
+            time, mistakes and hints end up in your personal statistics.
+          </p>
+        </article>
+
+        <article class="content__block">
+          <h2 data-i18n="content.tips.title">Sudoku strategies for beginners</h2>
+          <ul class="tips">
+            <li data-i18n="content.tips.li1">
+              Scan first: look for rows, columns and boxes that already contain eight digits.
+            </li>
+            <li data-i18n="content.tips.li2">
+              Look for hidden singles: inside a box, check which digit has only one possible cell
+              left.
+            </li>
+            <li data-i18n="content.tips.li3">
+              Work box by box and use the highlighting to see which digits are already used.
+            </li>
+            <li data-i18n="content.tips.li4">
+              Note candidates instead of guessing - cross-hatching is faster than trial and error.
+            </li>
+            <li data-i18n="content.tips.li5">
+              If you are truly stuck, stop the clock, take a break and come back with fresh eyes.
+            </li>
+          </ul>
+        </article>
+
+        <article class="content__block content__block--wide">
+          <h2 data-i18n="content.faq.title">Frequently asked questions</h2>
+          <details class="faq">
+            <summary data-i18n="content.faq.q1">Is the game free?</summary>
+            <p data-i18n="content.faq.a1">
+              Yes. All difficulty levels are free, without registration and without advertising.
+            </p>
+          </details>
+          <details class="faq">
+            <summary data-i18n="content.faq.q2">Can I play on my phone?</summary>
+            <p data-i18n="content.faq.a2">
+              Yes, the board adapts to any screen size. You can also add the page to your home screen
+              and use it like an app.
+            </p>
+          </details>
+          <details class="faq">
+            <summary data-i18n="content.faq.q3">Where do the puzzles come from?</summary>
+            <p data-i18n="content.faq.a3">
+              Puzzles are provided by the YouDoSudoku API and rated by this app using human solving
+              techniques. If the API is unavailable, a puzzle is generated directly in your browser.
+            </p>
+          </details>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <span data-i18n="footer.credit">Puzzles by YouDoSudoku</span> ·
+        <span data-i18n="footer.note">No tracking, no cookies, no account.</span>
+      </p>
+      <p class="site-footer__links">
+        <a href="/privacy" data-i18n="footer.privacy">Privacy</a>
+        <a href="/imprint" data-i18n="footer.imprint">Legal notice</a>
+      </p>
+    </footer>
+
+    <p id="live-region" class="visually-hidden" aria-live="polite" role="status"></p>
+
+    <noscript>
+      <div class="noscript">
+        <strong>JavaScript is required</strong>
+        <p>
+          This Sudoku game runs entirely in your browser and needs JavaScript to be enabled. /
+          Dieses Sudoku-Spiel läuft vollständig im Browser und benötigt JavaScript.
+        </p>
+      </div>
+    </noscript>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
