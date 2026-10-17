@@ -640,10 +640,13 @@ button {
 }
 
 @media (max-width: 640px), (pointer: coarse) {
-  /* The header collapses to a single quiet icon in the corner: no bar, no
-     theme switcher. Settings (and the theme inside it) are one tap away. */
+  /* The header collapses to a single quiet icon that sits on the same line as
+     the "Sudoku" heading: no bar, no theme switcher. */
   .site-header {
-    position: static;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     background: transparent;
     backdrop-filter: none;
     border-bottom: 0;
@@ -733,14 +736,6 @@ button {
   /* Keyboard shortcuts are a desktop aid; phones and touch devices skip them. */
   .shortcuts-card {
     display: none;
-  }
-}
-
-/* Narrow screens: the header drops the sticky behaviour so the board stays
-   visible instead of being pushed down the page. */
-@media (max-width: 640px) {
-  .page-title {
-    margin-top: var(--space-2);
   }
 }
 
