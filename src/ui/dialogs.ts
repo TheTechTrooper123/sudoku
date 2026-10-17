@@ -3,17 +3,12 @@
  * overlay. One shared `Modal` base class handles focus management, the
  * backdrop and the `Escape` key.
  */
-import { formatPercent } from '../core/format.ts';
-import { winRate } from '../core/stats.ts';
-import { DIFFICULTIES } from '../core/types.ts';
-import type { Difficulty } from '../core/types.ts';
-import { localeOf } from '../i18n/index.ts';
-import type { TranslationKey } from '../i18n/index.ts';
 import type { App } from '../state/app.ts';
 import type { Settings } from '../state/settings.ts';
 import { append, clear, el, qsAll, setText, toggleClass } from './dom.ts';
 import type { Child } from './dom.ts';
 import { icon } from './icons.ts';
+import type { TranslationKey } from '../i18n/index.ts';
 
 type BooleanSettingKey = {
   [K in keyof Settings]: Settings[K] extends boolean ? K : never;
@@ -204,10 +199,6 @@ function button(
   return node;
 }
 
-function difficultyName(app: App, difficulty: Difficulty): string {
-  return app.t(`difficulty.${difficulty}` as TranslationKey);
-}
-
 // ----------------------------------------------------------------- settings
 
 export class SettingsDialog extends Modal {
@@ -280,93 +271,9 @@ export class SettingsDialog extends Modal {
           app.updateSetting('animations', value),
         ),
       ]),
-      section('settings.data', app, [
-        el('p', { class: 'modal__note', text: app.t('settings.dataHint') }),
-        el('div', { class: 'modal__actions' }, [
-          button('action.clearCache', app, {
-            icon: 'refresh',
-            onClick: () => {
-              app.clearPuzzleCache();
-              this.render();
-            },
-          }),
-          button('action.resetStats', app, {
-            icon: 'chart',
-            variant: 'danger',
-            onClick: () => {
-              app.resetStatistics();
-              this.render();
-            },
-          }),
-        ]),
-      ]),
     ]);
 
     this.setFooter([closeButton]);
-  }
-}
-
-// --------------------------------------------------------------- statistics
-
-export class StatsDialog extends Modal {
-  constructor(private readonly app: App) {
-    super('stats-title');
-    this.onClose = () => this.app.setDialog('none');
-    this.render();
-  }
-
-  render(): void {
-    const app = this.app;
-    const locale = localeOf(app.language);
-    const current = app.game?.difficulty ?? app.ui.selectedDifficulty;
-    this.setTitle(app.t('stats.title', { difficulty: difficultyName(app, current) }));
-
-    const head = el('tr', {}, [
-      el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('difficulty.label') }),
-      el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('stats.played') }),
-      el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('stats.won') }),
-      el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('stats.winRate') }),
-      el('th', { class: 'stats-table__th', attrs: { scope: 'col' }, text: app.t('stats.streakBest') }),
-    ]);
-
-    const rows = DIFFICULTIES.map((difficulty) => {
-      const entry = app.stats.byDifficulty[difficulty];
-      const rate = winRate(app.stats, difficulty);
-      const row = el(
-        'tr',
-        { class: difficulty === current ? 'is-current' : '' },
-        [
-          el('th', { class: 'stats-table__td', attrs: { scope: 'row' }, text: difficultyName(app, difficulty) }),
-          el('td', { class: 'stats-table__td', text: String(entry.played) }),
-          el('td', { class: 'stats-table__td', text: String(entry.won) }),
-          el('td', { class: 'stats-table__td', text: rate === null ? '–' : formatPercent(rate, locale) }),
-          el('td', { class: 'stats-table__td', text: String(entry.bestStreak) }),
-        ],
-      );
-      return row;
-    });
-
-    const table = el('table', { class: 'stats-table' }, [
-      el('thead', {}, [head]),
-      el('tbody', {}, rows),
-    ]);
-
-    this.setContent([
-      el('div', { class: 'stats-table__wrap' }, [table]),
-      el('p', { class: 'modal__note', text: app.t('stats.empty') }),
-    ]);
-
-    this.setFooter([
-      button('action.resetStats', app, {
-        icon: 'refresh',
-        variant: 'danger',
-        onClick: () => {
-          app.resetStatistics();
-          this.render();
-        },
-      }),
-      button('action.close', app, { variant: 'primary', onClick: () => this.close() }),
-    ]);
   }
 }
 
@@ -406,9 +313,6 @@ export class WinDialog extends Modal {
       ]),
       summary.flawless
         ? el('p', { class: 'badge badge--perfect' }, [icon('check', 18), el('span', { text: app.t('win.flawless') })])
-        : null,
-      summary.streak > 1
-        ? el('p', { class: 'modal__note', text: app.t('win.streak', { count: summary.streak }) })
         : null,
     ]);
 

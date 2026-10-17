@@ -1,24 +1,11 @@
 /**
  * Language switch for the static pages (privacy, legal notice).
  *
- * The game stores its language preference in localStorage under
- * `sudoku.v1.settings`; these pages read the same key so the language you
- * picked in the game is honoured. ?lang=de / ?lang=en wins over it, and
- * without either the browser language decides.
+ * ?lang=de / ?lang=en wins; otherwise the browser language decides. Nothing is
+ * read from or written to storage.
  */
 (function () {
   var DEFAULT_LANG = 'en';
-
-  function readStoredLanguage() {
-    try {
-      var raw = localStorage.getItem('sudoku.v1.settings');
-      if (!raw) return null;
-      var value = JSON.parse(raw).language;
-      return value === 'de' || value === 'en' ? value : null;
-    } catch {
-      return null;
-    }
-  }
 
   function browserLanguage() {
     var code = (navigator.language || navigator.userLanguage || DEFAULT_LANG)
@@ -66,5 +53,5 @@
 
   var params = new URLSearchParams(location.search);
   var requested = params.get('lang');
-  apply(requested === 'de' || requested === 'en' ? requested : readStoredLanguage() || browserLanguage());
+  apply(requested === 'de' || requested === 'en' ? requested : browserLanguage());
 })();

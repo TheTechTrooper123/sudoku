@@ -1,9 +1,8 @@
 /**
- * User settings. Kept deliberately small - the game should feel light, not
- * like a control panel.
+ * In-session user settings. Kept deliberately small - the game should feel
+ * light, not like a control panel. Nothing is persisted: on every reload the
+ * defaults below apply again.
  */
-import { loadJson, saveJson, STORAGE_KEYS } from '../core/storage.ts';
-
 export type ThemePreference = 'system' | 'light' | 'dark';
 export type LanguagePreference = 'auto' | 'de' | 'en';
 
@@ -32,28 +31,7 @@ export const DEFAULT_SETTINGS: Settings = {
   animations: true,
 };
 
-export function loadSettings(): Settings {
-  const raw = loadJson<Partial<Settings>>(STORAGE_KEYS.settings);
-  if (!raw || typeof raw !== 'object') return { ...DEFAULT_SETTINGS };
-  const settings = { ...DEFAULT_SETTINGS };
-  if (raw.theme === 'system' || raw.theme === 'light' || raw.theme === 'dark') {
-    settings.theme = raw.theme;
-  }
-  if (raw.language === 'auto' || raw.language === 'de' || raw.language === 'en') {
-    settings.language = raw.language;
-  }
-  for (const key of [
-    'highlightConflicts',
-    'highlightSameNumber',
-    'highlightPeers',
-    'autoRemoveNotes',
-    'animations',
-  ] as const) {
-    if (typeof raw[key] === 'boolean') settings[key] = raw[key] as boolean;
-  }
-  return settings;
-}
-
-export function saveSettings(settings: Settings): void {
-  saveJson(STORAGE_KEYS.settings, settings);
+/** A fresh, mutable copy of the defaults. */
+export function createSettings(): Settings {
+  return { ...DEFAULT_SETTINGS };
 }

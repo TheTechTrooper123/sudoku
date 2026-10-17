@@ -2,11 +2,8 @@
  * The control panel: status readout, difficulty selector, number pad,
  * action buttons and a compact statistics summary.
  */
-import { winRate } from '../core/stats.ts';
-import { formatPercent } from '../core/format.ts';
 import { DIFFICULTIES } from '../core/types.ts';
 import type { Difficulty } from '../core/types.ts';
-import { localeOf } from '../i18n/index.ts';
 import type { TranslationKey } from '../i18n/index.ts';
 import type { App } from '../state/app.ts';
 import { el, setAttr, setText, toggleClass } from './dom.ts';
@@ -80,11 +77,7 @@ export class StatusBar {
     setAttr(this.progressBar, 'aria-valuenow', String(filled));
 
     const sourceKey: TranslationKey =
-      this.app.origin === 'api'
-        ? 'status.source.api'
-        : this.app.origin === 'cache'
-          ? 'status.source.cache'
-          : 'status.source.local';
+      this.app.origin === 'api' ? 'status.source.api' : 'status.source.local';
     setText(
       this.meta,
       `${this.app.t(difficultyKey(game.difficulty))} · ${this.app.t(sourceKey)}`,
@@ -301,45 +294,3 @@ export class Controls {
   }
 }
 
-// ------------------------------------------------------------ statistics card
-
-export class StatsSummary {
-  readonly root: HTMLDivElement;
-  private readonly solved: HTMLElement;
-  private readonly rate: HTMLElement;
-  private readonly streak: HTMLElement;
-
-  constructor(
-    private readonly app: App,
-    container: HTMLElement,
-  ) {
-    const tile = (key: TranslationKey, value: HTMLElement) =>
-      el('div', { class: 'stat' }, [
-        el('span', { class: 'stat__label', dataset: { i18n: key } }),
-        value,
-      ]);
-
-    this.solved = el('strong', { class: 'stat__value', text: '0' });
-    this.rate = el('strong', { class: 'stat__value', text: '–' });
-    this.streak = el('strong', { class: 'stat__value', text: '0' });
-
-    this.root = el('div', { class: 'stats-summary' }, [
-      tile('stats.won', this.solved),
-      tile('stats.winRate', this.rate),
-      tile('stats.streak', this.streak),
-    ]);
-    container.appendChild(this.root);
-  }
-
-  render(): void {
-    const difficulty = this.app.game?.difficulty ?? this.app.ui.selectedDifficulty;
-    const stats = this.app.stats.byDifficulty[difficulty];
-    const locale = localeOf(this.app.language);
-    const rate = winRate(this.app.stats, difficulty);
-
-    setText(this.solved, String(stats.won));
-    setText(this.rate, rate === null ? '–' : formatPercent(rate, locale));
-    setText(this.streak, String(stats.streak));
-    toggleClass(this.root, 'is-empty', stats.played === 0);
-  }
-}

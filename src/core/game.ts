@@ -39,22 +39,6 @@ export interface Move {
   changes: CellChange[];
 }
 
-export interface SerializedGame {
-  version: 1;
-  puzzle: Grid;
-  solution: Grid;
-  difficulty: Difficulty;
-  source: PuzzleSource;
-  entries: { value: number; notes: number }[];
-  history: Move[];
-  future: Move[];
-  selected: number;
-  notesMode: boolean;
-  mistakes: number;
-  hints: number;
-  status: GameStatus;
-}
-
 /** Collects before/after snapshots so a group of edits can be undone at once. */
 class ChangeSet {
   private readonly before = new Map<number, CellSnapshot>();
@@ -165,13 +149,6 @@ export class Game {
     return cell.value !== 0 && cell.value !== this.solution[index];
   }
 
-  hasMistakesOnBoard(): boolean {
-    for (let index = 0; index < CELL_COUNT; index++) {
-      if (this.isWrong(index)) return true;
-    }
-    return false;
-  }
-
   /** Candidate digits of an empty cell, based on the current board. */
   candidatesAt(index: number): number[] {
     if (this.cells[index].value !== 0) return [];
@@ -181,10 +158,9 @@ export class Game {
   /** How many of each digit are still missing (index 0 carries empty cells). */
   remaining(): number[] {
     const counts = valueCounts(this.values());
-    const empty = CELL_COUNT - (counts[0] ?? 0);
     const result = new Array<number>(10).fill(0);
     for (let digit = 1; digit <= 9; digit++) result[digit] = 9 - (counts[digit] ?? 0);
-    result[0] = empty;
+    result[0] = counts[0] ?? 0;
     return result;
   }
 
@@ -366,67 +342,6 @@ export class Game {
     this.conflictsCache = null;
     this.checkWin();
     return true;
-  }
-
-  // ------------------------------------------------------------ persistence
-
-  serialize(): SerializedGame {
-    return {
-      version: 1,
-      puzzle: this.puzzle.slice(),
-      solution: this.solution.slice(),
-      difficulty: this.difficulty,
-      source: this.source,
-      entries: this.cells.map((cell) => ({ value: cell.value, notes: cell.notes })),
-      history: this.history,
-      future: this.future,
-      selected: this.selected,
-      notesMode: this.notesMode,
-      mistakes: this.mistakes,
-      hints: this.hints,
-      status: this.status,
-    };
-  }
-
-  /** Restores a game from localStorage. Returns `null` for damaged data. */
-  static restore(data: unknown): Game | null {
-    if (typeof data !== 'object' || data === null) return null;
-    const raw = data as Partial<SerializedGame>;
-    if (
-      !Array.isArray(raw.puzzle) ||
-      raw.puzzle.length !== CELL_COUNT ||
-      !Array.isArray(raw.solution) ||
-      raw.solution.length !== CELL_COUNT ||
-      !Array.isArray(raw.entries) ||
-      raw.entries.length !== CELL_COUNT
-    ) {
-      return null;
-    }
-
-    let game: Game;
-    try {
-      game = new Game({
-        puzzle: raw.puzzle,
-        solution: raw.solution,
-        difficulty: (raw.difficulty ?? 'easy') as Difficulty,
-        source: (raw.source ?? 'local') as PuzzleSource,
-      });
-    } catch {
-      return null;
-    }
-    game.cells = raw.entries.map((entry, index) => ({
-      value: entry?.value ?? 0,
-      given: raw.puzzle![index] !== 0,
-      notes: entry?.notes ?? 0,
-    }));
-    game.history = Array.isArray(raw.history) ? raw.history : [];
-    game.future = Array.isArray(raw.future) ? raw.future : [];
-    game.selected = typeof raw.selected === 'number' ? raw.selected : -1;
-    game.notesMode = raw.notesMode === true;
-    game.mistakes = typeof raw.mistakes === 'number' ? raw.mistakes : 0;
-    game.hints = typeof raw.hints === 'number' ? raw.hints : 0;
-    game.status = raw.status === 'won' ? 'won' : 'playing';
-    return game;
   }
 
   // --------------------------------------------------------------- internals

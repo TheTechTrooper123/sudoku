@@ -7,13 +7,12 @@ import type { TranslationKey } from './en.ts';
 export const de: Record<TranslationKey, string> = {
   'meta.title': 'Sudoku – kostenlos online spielen',
   'meta.description':
-    'Sudoku kostenlos online spielen: vier Schwierigkeitsgrade, Notizen, Hinweise, Undo und Statistiken. Ohne Anmeldung, auf Handy und Desktop.',
+    'Sudoku kostenlos online spielen: vier Schwierigkeitsgrade, Notizen, Hinweise und Undo. Ohne Anmeldung, auf Handy und Desktop.',
 
   'brand.name': 'Sudoku',
   'brand.tagline': 'Denken, spielen, entspannen',
 
   'nav.skip': 'Direkt zum Spielfeld',
-  'nav.statistics': 'Statistiken',
   'nav.settings': 'Einstellungen',
 
   'difficulty.label': 'Schwierigkeit',
@@ -34,7 +33,6 @@ export const de: Record<TranslationKey, string> = {
   'status.mistakes': 'Fehler',
   'status.hints': 'Hinweise',
   'status.source.api': 'Rätsel von YouDoSudoku',
-  'status.source.cache': 'Rätsel aus dem Zwischenspeicher',
   'status.source.local': 'Rätsel lokal erzeugt',
 
   'loading.puzzle': 'Rätsel wird geladen …',
@@ -53,8 +51,6 @@ export const de: Record<TranslationKey, string> = {
   'action.autoNotes': 'Notizen füllen',
   'action.close': 'Schließen',
   'action.cancel': 'Abbrechen',
-  'action.resetStats': 'Statistik zurücksetzen',
-  'action.clearCache': 'Rätsel-Cache leeren',
   'action.playAgain': 'Nochmal spielen',
 
   'win.title': 'Gelöst!',
@@ -62,8 +58,6 @@ export const de: Record<TranslationKey, string> = {
   'win.mistakes': 'Fehler',
   'win.hints': 'Hinweise',
   'win.flawless': 'Perfekt: ohne Fehler und ohne Hinweise gelöst.',
-  'win.newRecord': 'Neue Bestleistung!',
-  'win.streak': 'Siegesserie: {count}',
   'win.share': 'Ergebnis teilen',
   'win.copied': 'Ergebnis in die Zwischenablage kopiert.',
 
@@ -76,16 +70,6 @@ export const de: Record<TranslationKey, string> = {
   'toast.hintUsed': 'Ein Feld wurde aufgedeckt.',
   'toast.puzzleFromLocal': 'API nicht erreichbar – das Rätsel wurde im Browser erzeugt.',
   'toast.copied': 'In die Zwischenablage kopiert.',
-  'toast.statsReset': 'Statistik gelöscht.',
-  'toast.cacheCleared': 'Rätsel-Cache geleert.',
-
-  'stats.title': 'Statistik für {difficulty}',
-  'stats.played': 'Gespielt',
-  'stats.won': 'Gelöst',
-  'stats.winRate': 'Erfolgsquote',
-  'stats.streak': 'Aktuelle Serie',
-  'stats.streakBest': 'Beste Serie',
-  'stats.empty': 'Für diesen Grad sind noch keine Spiele erfasst.',
 
   'settings.title': 'Einstellungen',
   'settings.appearance': 'Darstellung',
@@ -106,9 +90,6 @@ export const de: Record<TranslationKey, string> = {
   'settings.autoRemoveNotesHint': 'Eine Zahl aus den Notizen in Zeile, Spalte und Block entfernen.',
   'settings.animations': 'Animationen',
   'settings.animationsHint': 'Sanfte Übergänge und ein kleines Highlight beim Lösen.',
-  'settings.data': 'Daten',
-  'settings.dataHint':
-    'Statistik und Einstellungen liegen nur in deinem Browser. Es wird nichts an einen Server gesendet.',
 
   'shortcuts.title': 'Tastaturkürzel',
   'shortcuts.move': 'Auswahl bewegen',

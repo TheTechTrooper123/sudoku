@@ -8,10 +8,10 @@
 import type { App, DialogKind } from '../state/app.ts';
 import { append, clear, qs, setText, toggleClass } from './dom.ts';
 import { BoardView } from './board.ts';
-import { ConfirmDialog, SettingsDialog, StatsDialog, Toast, WinDialog } from './dialogs.ts';
+import { ConfirmDialog, SettingsDialog, Toast, WinDialog } from './dialogs.ts';
 import { applyDocumentMeta, applyTranslations } from './i18n-dom.ts';
 import { icon } from './icons.ts';
-import { Controls, DifficultySelector, Keypad, StatsSummary, StatusBar } from './panel.ts';
+import { Controls, DifficultySelector, Keypad, StatusBar } from './panel.ts';
 import { applyTheme, watchSystemTheme } from './theme.ts';
 
 const SLOW_LOADING_MS = 3_000;
@@ -22,9 +22,7 @@ export class AppView {
   private readonly difficulty: DifficultySelector;
   private readonly keypad: Keypad;
   private readonly controls: Controls;
-  private readonly summary: StatsSummary;
   private readonly settingsDialog: SettingsDialog;
-  private readonly statsDialog: StatsDialog;
   private readonly winDialog: WinDialog;
   private readonly confirmDialog: ConfirmDialog;
   private readonly toast: Toast;
@@ -41,9 +39,7 @@ export class AppView {
     this.difficulty = new DifficultySelector(app, qs('#difficulty-container'));
     this.keypad = new Keypad(app, qs('#keypad-container'));
     this.controls = new Controls(app, qs('#controls-container'));
-    this.summary = new StatsSummary(app, qs('#stats-container'));
     this.settingsDialog = new SettingsDialog(app);
-    this.statsDialog = new StatsDialog(app);
     this.winDialog = new WinDialog(app);
     this.confirmDialog = new ConfirmDialog(app);
     this.toast = new Toast(app);
@@ -76,7 +72,6 @@ export class AppView {
   // ------------------------------------------------------------- rendering
 
   private bindHeader(): void {
-    qs('#nav-stats').addEventListener('click', () => this.app.openStatistics());
     qs('#nav-settings').addEventListener('click', () => this.app.openSettings());
     qs('#nav-theme').addEventListener('click', () => this.app.cycleTheme());
     qs('#nav-language').addEventListener('click', () => this.app.toggleLanguage());
@@ -99,7 +94,6 @@ export class AppView {
     this.difficulty.render();
     this.keypad.render();
     this.controls.render();
-    this.summary.render();
     this.renderLoading();
     this.renderDialogs();
     this.toast.render();
@@ -116,7 +110,6 @@ export class AppView {
     this.difficulty.render();
     this.keypad.render();
     this.controls.render();
-    this.summary.render();
   }
 
   private renderLoading(): void {
@@ -152,13 +145,6 @@ export class AppView {
       this.settingsDialog.close();
     }
 
-    if (kind === 'stats') {
-      this.statsDialog.render();
-      this.statsDialog.open();
-    } else {
-      this.statsDialog.close();
-    }
-
     if (kind === 'win') {
       this.winDialog.render();
       this.winDialog.open();
@@ -191,10 +177,8 @@ export class AppView {
     this.difficulty.translate();
     this.controls.translate();
     this.keypad.render();
-    this.summary.render();
     this.renderLoading();
     if (this.settingsDialog.isOpen) this.settingsDialog.render();
-    if (this.statsDialog.isOpen) this.statsDialog.render();
     if (this.winDialog.isOpen) this.winDialog.render();
   }
 
@@ -218,7 +202,6 @@ export class AppView {
     events.on('loading', () => this.renderLoading());
     events.on('dialog', () => this.renderDialogs());
     events.on('toast', () => this.toast.render());
-    events.on('stats', () => this.summary.render());
     events.on('language', () => this.applyLanguage());
     events.on('settings', () => {
       applyTheme(this.app.settings.theme);
@@ -232,10 +215,6 @@ export class AppView {
 
   private bindInput(): void {
     document.addEventListener('keydown', (event) => this.handleKeydown(event));
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) this.app.saveNow();
-    });
-    window.addEventListener('pagehide', () => this.app.saveNow());
   }
 
   private handleKeydown(event: KeyboardEvent): void {
@@ -336,7 +315,6 @@ export class AppView {
   private anyDialogOpen(): boolean {
     return (
       this.settingsDialog.isOpen ||
-      this.statsDialog.isOpen ||
       this.winDialog.isOpen ||
       this.confirmDialog.isOpen
     );

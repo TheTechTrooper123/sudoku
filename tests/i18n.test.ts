@@ -29,8 +29,12 @@ describe('translations', () => {
   });
 
   it('replaces parameters', () => {
-    expect(translate('de', 'stats.title', { difficulty: 'Schwer' })).toBe('Statistik für Schwer');
-    expect(translate('en', 'win.streak', { count: 3 })).toBe('Winning streak: 3');
+    expect(translate('de', 'board.cellGiven', { row: 2, col: 3, value: 7 })).toBe(
+      'Zeile 2, Spalte 3, Vorgabe 7',
+    );
+    expect(translate('en', 'board.cellNotes', { row: 1, col: 1, notes: '3 5' })).toBe(
+      'row 1, column 1, notes 3 5',
+    );
   });
 
   it('falls back to the key for unknown input', () => {

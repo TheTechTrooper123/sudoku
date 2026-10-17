@@ -6,32 +6,22 @@
     <title>Sudoku &ndash; Play Online for Free</title>
     <meta
       name="description"
-      content="Play Sudoku online for free: four difficulty levels, pencil marks, hints, undo and statistics. No sign-up required, works on mobile and desktop."
+      content="Play Sudoku online for free: four difficulty levels, pencil marks, hints and undo. No sign-up required, works on mobile and desktop."
     />
     <meta name="theme-color" content="#f5f6fa" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0e1016" media="(prefers-color-scheme: dark)" />
     <meta name="robots" content="index, follow" />
 
-    <!-- Applies the stored colour scheme before the first paint so that dark
+    <!-- Applies the system colour scheme before the first paint so that dark
          mode never flashes a white page. Kept inline and dependency-free on
-         purpose. Keep the storage key in sync with `src/core/storage.ts`. -->
+         purpose. Nothing is stored. -->
     <script>
       (function () {
-        try {
-          var raw = localStorage.getItem('sudoku.v1.settings');
-          var pref = raw ? JSON.parse(raw).theme : 'system';
-          if (pref !== 'light' && pref !== 'dark') pref = 'system';
-          var dark =
-            pref === 'dark' ||
-            (pref === 'system' &&
-              window.matchMedia &&
-              window.matchMedia('(prefers-color-scheme: dark)').matches);
-          var theme = dark ? 'dark' : 'light';
-          document.documentElement.dataset.theme = theme;
-          document.documentElement.style.colorScheme = theme;
-        } catch (error) {
-          /* keep the light default */
-        }
+        var dark =
+          window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = dark ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
       })();
     </script>
 
@@ -47,7 +37,7 @@
     <meta property="og:title" content="Sudoku &ndash; Play Online for Free" />
     <meta
       property="og:description"
-      content="Four difficulty levels, pencil marks, hints and statistics. Free, without sign-up, on any device."
+      content="Four difficulty levels, pencil marks, hints and undo. Free, without sign-up, on any device."
     />
     <meta property="og:url" content="https://sudoku-game.ddnsfree.com/" />
     <meta property="og:image" content="https://sudoku-game.ddnsfree.com/og-image.png" />
@@ -68,13 +58,12 @@
         "operatingSystem": "Any",
         "browserRequirements": "Requires JavaScript",
         "url": "https://sudoku-game.ddnsfree.com/",
-        "description": "Free online Sudoku game with four difficulty levels, pencil marks, hints, undo and statistics.",
+        "description": "Free online Sudoku game with four difficulty levels, pencil marks, hints and undo.",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
         "featureList": [
           "Four difficulty levels",
           "Pencil marks and auto notes",
           "Hints, undo and redo",
-          "Personal statistics",
           "Keyboard and touch support",
           "Dark and light theme"
         ],
@@ -95,15 +84,6 @@
           </span>
         </a>
         <nav class="site-nav" aria-label="Primary">
-          <button
-            class="nav-button"
-            type="button"
-            id="nav-stats"
-            data-i18n="nav.statistics"
-            data-i18n-attr="aria-label:nav.statistics"
-          >
-            Statistics
-          </button>
           <button
             class="nav-button"
             type="button"
@@ -165,7 +145,6 @@
         <aside class="game__panel">
           <div class="panel-card">
             <div id="controls-container"></div>
-            <div id="stats-container"></div>
           </div>
           <div class="shortcuts-card">
             <h2 class="card__title" data-i18n="shortcuts.title">Keyboard shortcuts</h2>

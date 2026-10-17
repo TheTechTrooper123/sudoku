@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CELL_COUNT, PEERS } from '../src/core/board.ts';
 import { Game } from '../src/core/game.ts';
-import { easyPuzzle, gridOf, nearlySolvedPuzzle, EASY_SOLUTION_STRING } from './helpers.ts';
+import { easyPuzzle, nearlySolvedPuzzle } from './helpers.ts';
 
 function newGame(): Game {
   return new Game(easyPuzzle());
@@ -253,40 +253,19 @@ describe('win detection', () => {
   });
 });
 
-describe('serialisation', () => {
-  it('round-trips the full state', () => {
+describe('progress', () => {
+  it('reports empty cells in remaining[0] and filled cells as progress', () => {
     const game = newGame();
+    const empty = game.remaining()[0];
+    expect(empty).toBe(game.puzzle.filter((value) => value === 0).length);
+    expect(game.progress()).toBeCloseTo((81 - empty) / 81);
+
+    // Filling the first empty cell raises the progress.
+    const before = game.progress();
     const index = firstEmpty(game);
     game.select(index);
-    game.toggleNotesMode();
-    game.toggleNote(2);
-    game.toggleNotesMode();
     game.placeDigit(game.solution[index]);
-    game.hint();
-
-    const restored = Game.restore(JSON.parse(JSON.stringify(game.serialize())));
-    expect(restored).not.toBeNull();
-    const other = restored as Game;
-    expect(other.cells.map((cell) => cell.value)).toEqual(game.cells.map((cell) => cell.value));
-    expect(other.cells.map((cell) => cell.notes)).toEqual(game.cells.map((cell) => cell.notes));
-    expect(other.mistakes).toBe(game.mistakes);
-    expect(other.hints).toBe(game.hints);
-    expect(other.selected).toBe(game.selected);
-    expect(other.status).toBe(game.status);
-    expect(other.canUndo()).toBe(true);
-  });
-
-  it('returns null for damaged data', () => {
-    expect(Game.restore(null)).toBeNull();
-    expect(Game.restore({ puzzle: [1, 2, 3] })).toBeNull();
-    expect(Game.restore('nonsense')).toBeNull();
-  });
-
-  it('restores a solved game as won', () => {
-    const solution = gridOf(EASY_SOLUTION_STRING);
-    const game = new Game({ difficulty: 'easy', puzzle: solution.slice(), solution, source: 'local' });
-    expect(game.status).toBe('playing');
-    const restored = Game.restore(game.serialize()) as Game;
-    expect(restored.solution).toEqual(solution);
+    expect(game.remaining()[0]).toBe(empty - 1);
+    expect(game.progress()).toBeGreaterThan(before);
   });
 });

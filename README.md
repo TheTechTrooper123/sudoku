@@ -4,16 +4,17 @@
 <https://github.com/TheTechTrooper123/sudoku> · **Vercel-Projekt:** `sudoku`
 
 Ein schlankes, werbefreies Sudoku für das Web: vier Schwierigkeitsstufen,
-Notizen, Hinweise, Undo/Redo, Statistik, Hell/Dunkel-Design und
-zweisprachige Oberfläche (Deutsch/Englisch).
+Notizen, Hinweise, Undo/Redo, Hell/Dunkel-Design und zweisprachige Oberfläche
+(Deutsch/Englisch). Ohne Konten, ohne Tracking – und ohne Speicherung: ein
+Reload startet immer ein frisches Spiel.
 
 * **Stack:** Vite + TypeScript (Vanilla, kein Framework) – ca. 23 kB gzip JS/CSS
 * **Rätsel:** [YouDoSudoku-API](https://www.youdosudoku.com) über eine eigene
   Serverless-Funktion; fällt bei Ausfall auf einen Generator im Browser zurück
 * **Hosting:** Vercel (statisches Frontend + eine Serverless Function),
   erreichbar unter der Dynu-Subdomain `sudoku-game.ddnsfree.com`
-* **Tests:** 87 Unit-Tests (Vitest) – Solver, Generator, Bewertung, Spielregeln,
-  i18n, Formatierung, API-Validierung, Fallback-Kette
+* **Tests:** 79 Unit-Tests (Vitest) – Solver, Generator, Bewertung, Spielregeln,
+  i18n, API-Validierung, Fallback-Kette
 
 ---
 
@@ -107,9 +108,9 @@ index.html            Statisches Grundgerüst + SEO-Basis (Titel, Meta,
 src/
   main.ts             Einstiegspunkt, verdrahtet DOM-IDs mit dem Controller
   core/               Reine Logik ohne DOM: board, solver, generator,
-                      difficulty, game, stats, storage, rng, format
+                      difficulty, game, rng
   services/           apiClient (→ /api/puzzle), localGenerator (Worker),
-                      puzzleService (Kette: Cache → API → lokal)
+                      puzzleService (Kette: API → lokal)
   state/              app.ts (Controller), settings.ts, store.ts (Mini-Store)
   ui/                 Rendering: view, board, panel, dialogs, theme, i18n-dom
   i18n/               Typisierte Wörterbücher de.ts / en.ts (Schlüsselparität
@@ -131,15 +132,12 @@ tests/                Vitest-Suite mit Fixtures in helpers.ts
 
 ### Rätsel-Versorgung
 
-1. **Cache** – im Browser liegt ein kleiner Vorrat fertiger Rätsel
-   (`sudoku.v1.pool` in `localStorage`), damit ein neues Spiel sofort startet.
-2. **API** – `POST /api/puzzle` mit `{ difficulty, count }`; die Funktion holt
+1. **API** – `POST /api/puzzle` mit `{ difficulty, count }`; die Funktion holt
    bei youdosudoku.com, prüft die Antwort strukturell (81 Zeichen, `0` = leer,
    Lösung vollständig, Rätsel ⊆ Lösung) und liefert normalisierte Daten zurück.
-3. **Lokaler Generator** – ist die API nicht erreichbar oder liefert sie
-   fehlerhafte Daten, generiert der Server ersatzweise selbst; schlägt auch das
-   fehl, erzeugt ein Web-Worker im Browser ein Rätsel. Der Nutzer sieht in
-   keinem Fall eine Fehlermeldung, nur einen Hinweis in den Statistiken.
+2. **Lokaler Generator** – ist die API nicht erreichbar oder liefert sie
+   fehlerhafte Daten, erzeugt ein Web-Worker im Browser ein Rätsel. Der Nutzer
+   sieht statt einer Fehlermeldung nur einen kurzen Hinweis.
 
 ### Schwierigkeitsgrade
 
@@ -189,11 +187,12 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
   `Entf`/`0`/Rücktaste löschen, `Strg+Z`/`Strg+Y` rückgängig/wiederholen.
 * **Hilfen:** Konflikthervorhebung, gleiche Ziffern, Peers – alle einzeln
   abschaltbar. „Notizen füllen" trägt alle Kandidaten ein.
-* **Automatik:** Spielstand, Statistik und Einstellungen liegen im
-  `localStorage` (Schlüsselpräfix `sudoku.v1.`).
-* **Sprache/Thema:** In der Kopfzeile umschaltbar; die Wahl wird gespeichert
-  und beim nächsten Aufruf ohne Aufblitzen angewendet. Die statischen
-  Rechtsseiten lesen zusätzlich `?lang=de`/`?lang=en`.
+* **Keine Speicherung:** Es wird nichts in `localStorage` oder an einen Server
+  geschrieben. Ein Reload startet ein frisches Spiel und setzt alle
+  Einstellungen auf die Standardwerte zurück.
+* **Sprache/Thema:** In der Kopfzeile umschaltbar (gilt für die laufende
+  Sitzung); das Thema folgt standardmäßig dem System. Die statischen
+  Rechtsseiten verstehen `?lang=de`/`?lang=en`.
 
 ## 7. Assets neu erzeugen
 

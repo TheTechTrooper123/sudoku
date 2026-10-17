@@ -2,7 +2,7 @@
  * Translation layer.
  *
  * - `auto` follows the browser language (German browsers get German),
- *   an explicit choice always wins and is stored in the settings.
+ *   an explicit choice always wins for the current session.
  * - Placeholders use `{name}` syntax.
  */
 import type { LanguagePreference } from '../state/settings.ts';
