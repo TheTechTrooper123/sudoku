@@ -278,10 +278,6 @@ export class App {
     this.updateSetting('theme', this.resolvedTheme === 'dark' ? 'light' : 'dark');
   }
 
-  toggleLanguage(): void {
-    this.updateSetting('language', this.currentLanguage === 'de' ? 'en' : 'de');
-  }
-
   applyLanguage(): void {
     this.currentLanguage = this.settings.language;
     this.translator = createTranslator(this.currentLanguage);

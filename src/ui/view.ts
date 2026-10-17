@@ -83,7 +83,6 @@ export class AppView {
   private bindHeader(): void {
     qs('#nav-settings').addEventListener('click', () => this.app.openSettings());
     qs('#nav-theme').addEventListener('click', () => this.app.cycleTheme());
-    qs('#nav-language').addEventListener('click', () => this.app.toggleLanguage());
   }
 
   private renderHeader(): void {
@@ -91,7 +90,6 @@ export class AppView {
     clear(themeButton);
     append(themeButton, [icon(this.app.resolvedTheme === 'dark' ? 'moon' : 'sun', 18)]);
     themeButton.setAttribute('aria-label', `${this.app.t('settings.theme')}: ${this.app.t(this.app.resolvedTheme === 'dark' ? 'settings.themeDark' : 'settings.themeLight')}`);
-    setText(qs('#nav-language'), this.app.language === 'de' ? 'DE' : 'EN');
   }
 
   private renderAll(): void {
