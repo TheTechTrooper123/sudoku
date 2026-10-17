@@ -1,5 +1,8 @@
 # Sudoku
 
+**Live:** <https://sudoku-game.ddnsfree.com> · **Repository:**
+<https://github.com/TheTechTrooper123/sudoku> · **Vercel-Projekt:** `sudoku`
+
 Ein schlankes, werbefreies Sudoku für das Web: vier Schwierigkeitsstufen,
 Notizen, Hinweise, Undo/Redo, Timer, Statistik, Hell/Dunkel-Design und
 zweisprachige Oberfläche (Deutsch/Englisch).
@@ -7,7 +10,8 @@ zweisprachige Oberfläche (Deutsch/Englisch).
 * **Stack:** Vite + TypeScript (Vanilla, kein Framework) – ca. 23 kB gzip JS/CSS
 * **Rätsel:** [YouDoSudoku-API](https://www.youdosudoku.com) über eine eigene
   Serverless-Funktion; fällt bei Ausfall auf einen Generator im Browser zurück
-* **Hosting:** Vercel (statisches Frontend + eine Serverless Function)
+* **Hosting:** Vercel (statisches Frontend + eine Serverless Function),
+  erreichbar unter der Dynu-Subdomain `sudoku-game.ddnsfree.com`
 * **Tests:** 94 Unit-Tests (Vitest) – Solver, Generator, Bewertung, Spielregeln,
   i18n, Formatierung, API-Validierung, Fallback-Kette
 
@@ -49,6 +53,17 @@ Serverless-Funktion verwendet.
 
 ## 3. Deployment auf Vercel
 
+Das Projekt ist bereits deployt (`sudoku` im Vercel-Team `till9`,
+<https://sudoku-game.ddnsfree.com>) und das lokale Arbeitsverzeichnis ist mit
+`vercel link` daran gebunden. Ein neuer Stand geht so live:
+
+```sh
+npm run verify      # muss grün sein
+vercel --prod       # Produktions-Deployment
+```
+
+Für ein neues Projekt/Umgebung von Grund auf:
+
 1. Repository zu GitHub pushen (oder Ordner direkt mit `vercel` deployen).
 2. In Vercel „New Project" → Repository importieren. Framework wird über
    `vercel.json` erkannt (`framework: vite`, Build `npm run build`, Output `dist`).
@@ -57,12 +72,12 @@ Serverless-Funktion verwendet.
 4. Deployen. `npm run build` bündelt die Function zu `api/puzzle.js`; Vercel
    liefert sie automatisch unter `/api/puzzle` aus, alles andere ist statisch.
 
-Vor dem ersten Deploy ohne Vercel CLI:
-
-```sh
-npx vercel          # Preview-Deployment
-npx vercel --prod   # Produktions-Deployment
-```
+Automatisches Deployment bei jedem Push ist **nicht** eingerichtet: `vercel git
+connect` scheitert derzeit mit „You need admin or write access", weil dem
+Vercel-Konto der GitHub-Namespace `TheTechTrooper123` nicht freigegeben ist.
+Dafür im Vercel-Dashboard unter *Account Settings → Git* die GitHub-App für
+diesen Account installieren/autorisieren; danach `vercel git connect` erneut
+ausführen.
 
 ### Domain und Rechtstexte
 
