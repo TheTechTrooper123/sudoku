@@ -95,7 +95,6 @@ export const de: Record<TranslationKey, string> = {
 
   'content.intro.title': 'Sudoku',
 
-  'footer.credit': 'Rätsel von YouDoSudoku',
   'footer.privacy': 'Datenschutz',
   'footer.imprint': 'Impressum',
 };

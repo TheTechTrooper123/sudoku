@@ -94,7 +94,6 @@ export const en = {
 
   'content.intro.title': 'Sudoku',
 
-  'footer.credit': 'Puzzles by YouDoSudoku',
   'footer.privacy': 'Privacy',
   'footer.imprint': 'Legal notice',
 } as const;
