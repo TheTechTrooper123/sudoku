@@ -99,6 +99,39 @@
   --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.6);
 }
 
+/* Phones and tablets: the stock light theme is brighter than comfortable on a
+   small, close-up screen. Lower the overall brightness and warm the greys a
+   touch, and avoid pure white for the large board surface. Only the light
+   scheme is touched - the dark one is left as is. */
+@media (max-width: 640px), (pointer: coarse) {
+  :root[data-theme='light'] {
+    --bg: #e7eaf0;
+    --bg-elevated: #f3f4f8;
+    --bg-subtle: #dfe3eb;
+    --bg-sunken: #d8dde6;
+    --text: #1f232c;
+    --text-muted: #545c6c;
+    --text-soft: #7f879a;
+    --border: #d4d9e3;
+    --border-strong: #b7bfcf;
+    --line: #d1d7e1;
+    --line-strong: #a3acbe;
+
+    --accent: #405ccc;
+    --accent-strong: #3349b4;
+    --accent-soft: rgba(64, 92, 204, 0.1);
+
+    --given: #1a1e26;
+    --user: #3349b4;
+    --note: #737b90;
+
+    --cell-bg: #eff1f5;
+    --cell-peer: #e6ebf6;
+    --cell-same: #d3ddf0;
+    --cell-selected: #c1cdea;
+  }
+}
+
 /* --------------------------------------------------------------- 2. base */
 
 *,

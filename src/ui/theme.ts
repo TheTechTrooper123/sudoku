@@ -7,7 +7,7 @@ import type { ThemePreference } from '../state/settings.ts';
 export type ResolvedTheme = 'light' | 'dark';
 
 export const THEME_COLORS: Record<ResolvedTheme, string> = {
-  light: '#f5f6fa',
+  light: '#e7eaf0',
   dark: '#0e1016',
 };
 
