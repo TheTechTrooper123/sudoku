@@ -87,7 +87,6 @@ beforeEach(() => {
 afterEach(() => {
   vi.unstubAllGlobals();
   delete process.env.ALLOWED_ORIGINS;
-  delete process.env.BANNED_IPS;
 });
 
 describe('GET /api/puzzle', () => {
@@ -237,44 +236,5 @@ describe('GET /api/puzzle', () => {
       allowed,
     );
     expect(allowed.headers.get('access-control-allow-origin')).toBe('https://sudoku.example');
-  });
-});
-
-describe('abuse protection', () => {
-  it('refuses a banned client with 403 and logs the attempt', async () => {
-    process.env.BANNED_IPS = '203.0.113.7';
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    const response = makeResponse();
-    await handler(makeRequest({ url: '/api/puzzle?difficulty=easy', ip: '203.0.113.7' }), response);
-
-    expect(response.status).toBe(403);
-    expect(fetchMock).not.toHaveBeenCalled();
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('[abuse] reason=banned ip=203.0.113.7'));
-    warn.mockRestore();
-  });
-
-  it('blocks a whole prefix with a wildcard entry', async () => {
-    process.env.BANNED_IPS = '198.51.100.*';
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    const response = makeResponse();
-    await handler(makeRequest({ url: '/api/puzzle?difficulty=easy', ip: '198.51.100.42' }), response);
-    expect(response.status).toBe(403);
-    warn.mockRestore();
-  });
-
-  it('logs rate limited clients', async () => {
-    fetchMock.mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => upstreamPayload(EASY_PUZZLE_STRING, EASY_SOLUTION_STRING),
-    });
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    for (let attempt = 0; attempt < 13; attempt++) {
-      await handler(makeRequest({ url: '/api/puzzle?difficulty=easy' }), makeResponse());
-    }
-    expect(warn).toHaveBeenCalledWith(
-      expect.stringContaining('[abuse] reason=rate-limit ip=203.0.113.7'),
-    );
-    warn.mockRestore();
   });
 });

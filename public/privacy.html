@@ -185,13 +185,9 @@
               <strong>Rätsel-Abruf:</strong> Beim Start eines neuen Spiels ruft Ihr Browser unsere
               Serverfunktion <code>/api/puzzle</code> auf. Dabei überträgt der Server technisch
               notwendige Verbindungsdaten (IP-Adresse, Zeitpunkt, User-Agent), wie es bei jedem
-              Seitenaufruf im Internet der Fall ist. Die IP-Adresse wird zur Auslieferung der
-              Antwort, zur Begrenzung übermäßiger Anfragen (Rate Limit, kurzzeitig im
-              Arbeitsspeicher) und zur Abwehr von Missbrauch verwendet und nicht mit anderen Daten
-              zusammengeführt. Auffällige, missbräuchliche Anfragen (z. B. das Überschreiten des
-              Rate-Limits) werden zur Nachverfolgung kurzzeitig in den Server-Logs des Hosters
-              protokolliert; die betroffene IP kann zum dauerhaften Sperren missbräuchlicher Quellen
-              verwendet werden.
+              Seitenaufruf im Internet der Fall ist. Die IP-Adresse wird nur zur Auslieferung der
+              Antwort und zur Begrenzung übermäßiger Anfragen (Rate Limit, kurzzeitig im
+              Arbeitsspeicher) verwendet und nicht mit anderen Daten zusammengeführt.
             </li>
             <li>
               <strong>Keine Cookies, kein Tracking:</strong> Es gibt keine Analyse-, Werbe- oder
@@ -266,11 +262,8 @@
               <strong>Puzzle requests:</strong> when you start a new game, your browser calls our
               server function <code>/api/puzzle</code>. As with any request on the internet, the
               server receives the technically required connection data (IP address, timestamp, user
-              agent). The IP address is used to deliver the response, to limit excessive requests
-              (rate limit, kept briefly in memory) and to defend against abuse, and is not combined
-              with other data. Suspicious, abusive requests (for example exceeding the rate limit)
-              are logged briefly in the host's server logs for follow-up; the affected IP may be
-              used to permanently block abusive sources.
+              agent). The IP address is used only to deliver the response and to limit excessive
+              requests (rate limit, kept briefly in memory) and is not combined with other data.
             </li>
             <li>
               <strong>No cookies, no tracking:</strong> there are no analytics, advertising or
