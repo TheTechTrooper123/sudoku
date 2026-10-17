@@ -3,4 +3,4 @@ Allow: /
 Disallow: /api/
 
 # Replace the domain with your own before going live.
-Sitemap: https://sudoku.ddnsfree.com/sitemap.xml
+Sitemap: https://sudoku-game.ddnsfree.com/sitemap.xml

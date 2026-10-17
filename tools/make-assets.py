@@ -126,7 +126,7 @@ def make_og_image():
         digit_color=(238, 242, 255),
     )
     draw.rounded_rectangle([696, 101, 1134, 539], radius=18, outline=(120, 138, 190), width=4)
-    draw.text((84, 550), "sudoku.ddnsfree.com", font=credit_font, fill=(110, 122, 156))
+    draw.text((84, 550), "sudoku-game.ddnsfree.com", font=credit_font, fill=(110, 122, 156))
 
     img.save(f"{OUT}/og-image.png", optimize=True)
     print("wrote og-image.png")

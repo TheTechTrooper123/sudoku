@@ -40,7 +40,7 @@ Middleware – lokal verhält sich alles wie auf Vercel.
 | Variable | Pflicht | Bedeutung |
 |---|---|---|
 | `YOUDOSUDOKU_API_KEY` | nein | API-Key für youdosudoku.com. Ist er nicht gesetzt, greift der eingebaute Fallback-Key in `server/lib/config.ts`. |
-| `ALLOWED_ORIGINS` | nein | Kommagetrennte Liste erlaubter Origins (z. B. `https://sudoku.ddnsfree.com`). Gesetzt → Der Endpunkt sendet CORS-Header nur für diese Origins. Leer → kein CORS (empfohlen, da Frontend und API auf derselben Domain liegen). |
+| `ALLOWED_ORIGINS` | nein | Kommagetrennte Liste erlaubter Origins (z. B. `https://sudoku-game.ddnsfree.com`). Gesetzt → Der Endpunkt sendet CORS-Header nur für diese Origins. Leer → kein CORS (empfohlen, da Frontend und API auf derselben Domain liegen). |
 | `SITE_URL` | nein | Öffentliche Domain, für Dokumentation/Kanonisierung. |
 
 Der Key liegt bewusst im Repository (siehe Abschnitt 5) und wird **nie** an den
@@ -70,10 +70,10 @@ Domain und Rechtstexte sind für den Livebetrieb bereits eingetragen:
 
 | Datei | Inhalt |
 |---|---|
-| `index.html` | `https://sudoku.ddnsfree.com/` in `canonical`, `hreflang`, `og:url`, `og:image` und im JSON-LD-Block |
+| `index.html` | `https://sudoku-game.ddnsfree.com/` in `canonical`, `hreflang`, `og:url`, `og:image` und im JSON-LD-Block |
 | `public/robots.txt` | Domain in der `Sitemap:`-Zeile |
 | `public/sitemap.xml` | Domain in allen `<loc>`/`href`-Angaben |
-| `public/og-image.png` | Aufdruck „sudoku.ddnsfree.com" (Neu-Erzeugung: `python3 tools/make-assets.py`, siehe unten) |
+| `public/og-image.png` | Aufdruck „sudoku-game.ddnsfree.com" (Neu-Erzeugung: `python3 tools/make-assets.py`, siehe unten) |
 | `public/privacy.html` | Verantwortlicher (Till), Kontakt, Hoster (Vercel Inc.) |
 | `public/imprint.html` | Anbieter (Till), Kontakt (§ 5 DDG); bewusst ohne vollständige Anschrift (privat, nicht kommerziell) |
 
