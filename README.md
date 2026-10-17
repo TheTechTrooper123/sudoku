@@ -46,11 +46,29 @@ Middleware – lokal verhält sich alles wie auf Vercel.
 |---|---|---|
 | `YOUDOSUDOKU_API_KEY` | nein | API-Key für youdosudoku.com. Ist er nicht gesetzt, greift der eingebaute Fallback-Key in `server/lib/config.ts`. |
 | `ALLOWED_ORIGINS` | nein | Kommagetrennte Liste erlaubter Origins (z. B. `https://sudoku-game.ddnsfree.com`). Gesetzt → Der Endpunkt sendet CORS-Header nur für diese Origins. Leer → kein CORS (empfohlen, da Frontend und API auf derselben Domain liegen). |
+| `BANNED_IPS` | nein | Kommagetrennte Sperrliste für `/api/puzzle`. Eintrag ist eine exakte IP oder ein Präfix mit `*`, z. B. `203.0.113.9,198.51.100.*`. Gesperrte Clients erhalten `403`. Siehe „Missbrauch erkennen und IPs bannen". |
 | `SITE_URL` | nein | Öffentliche Domain, für Dokumentation/Kanonisierung. |
 
 Der Key liegt bewusst im Repository (siehe Abschnitt 5) und wird **nie** an den
 Browser ausgeliefert: Er wird ausschließlich serverseitig in der
 Serverless-Funktion verwendet.
+
+### Missbrauch erkennen und IPs bannen
+
+Die Serverfunktion protokolliert **nur auffällige** Anfragen mit IP (dauerhaft
+wird nichts eigenständig gespeichert): Sperrversuche (`reason=banned`) und
+Anfragen, die das Rate-Limit überschreiten (`reason=rate-limit`). Normale
+Besucher werden nicht mitgeschrieben.
+
+1. **Sehen:** Vercel → Projekt → **Logs** öffnen und nach `[abuse]` filtern.
+   Jede Zeile enthält `reason`, `ip`, `method`, `path` und User-Agent.
+2. **Bannen:** Die IP in die Umgebungsvariable `BANNED_IPS` eintragen (Vercel →
+   Settings → Environment Variables) und neu deployen. Ein Präfix wie
+   `203.0.113.*` sperrt einen ganzen Bereich.
+
+Die Verarbeitung der Verbindungsdaten zu Sicherheitszwecken ist in der
+Datenschutzerklärung unter „berechtigtes Interesse am sicheren Betrieb"
+(Art. 6 Abs. 1 lit. f DSGVO) abgedeckt.
 
 ## 3. Deployment auf Vercel
 

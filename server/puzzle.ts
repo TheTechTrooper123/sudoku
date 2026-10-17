@@ -15,6 +15,7 @@ import { generatePuzzle } from '../src/core/generator.ts';
 import { isDifficulty } from '../src/core/types.ts';
 import type { Difficulty } from '../src/core/types.ts';
 import { allowedOrigins } from './lib/config.ts';
+import { isBannedIp, logAbuse } from './lib/access.ts';
 import { takePuzzle, scheduleRefill } from './lib/pool.ts';
 import { allowRequest } from './lib/rateLimit.ts';
 import { UpstreamError } from './lib/upstream.ts';
@@ -37,6 +38,16 @@ export default async function handler(
 ): Promise<void> {
   applyCors(req, res);
 
+  const client = clientKey(req);
+
+  // Manually banned clients (see `server/lib/access.ts`): refuse early and log
+  // the attempt so repeat offenders stay visible.
+  if (isBannedIp(client)) {
+    logAbuse('banned', client, abuseDetails(req));
+    sendJson(res, 403, { error: 'Access denied.' });
+    return;
+  }
+
   if (req.method === 'OPTIONS') {
     res.statusCode = 204;
     res.end();
@@ -48,8 +59,8 @@ export default async function handler(
     return;
   }
 
-  const client = clientKey(req);
   if (!allowRequest(client)) {
+    logAbuse('rate-limit', client, abuseDetails(req));
     res.setHeader('retry-after', '30');
     sendJson(res, 429, { error: 'Too many requests. Please slow down.' });
     return;
@@ -122,6 +133,16 @@ function clientKey(req: IncomingMessage): string {
   const raw = Array.isArray(forwarded) ? forwarded[0] : forwarded;
   const first = raw?.split(',')[0]?.trim();
   return first || req.socket?.remoteAddress || 'unknown';
+}
+
+/** The bits of a request worth logging when it looks abusive. */
+function abuseDetails(req: IncomingMessage): { method: string; url: string; userAgent: string } {
+  const ua = req.headers['user-agent'];
+  return {
+    method: req.method ?? '-',
+    url: req.url ?? '-',
+    userAgent: typeof ua === 'string' ? ua : '-',
+  };
 }
 
 /** Reads the difficulty from the query string or a small JSON body. */
