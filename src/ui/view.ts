@@ -211,7 +211,7 @@ export class AppView {
   // ------------------------------------------------------------- eventing
 
   private subscribe(): void {
-    const { events, settings } = this.app;
+    const { events } = this.app;
 
     events.on('board', () => this.renderBoard());
     events.on('panel', () => this.renderPanel());
@@ -221,7 +221,7 @@ export class AppView {
     events.on('stats', () => this.summary.render());
     events.on('language', () => this.applyLanguage());
     events.on('settings', () => {
-      applyTheme(settings.theme);
+      applyTheme(this.app.settings.theme);
       this.renderHeader();
       if (this.settingsDialog.isOpen) this.settingsDialog.render();
       this.renderPanel();
