@@ -452,6 +452,12 @@ button {
   font-weight: 600;
 }
 
+/* Correctly solved cells are locked and rendered like the given clues. */
+.cell.is-locked .cell__value {
+  color: var(--given);
+  font-weight: 600;
+}
+
 .cell__notes {
   position: absolute;
   inset: 3px;

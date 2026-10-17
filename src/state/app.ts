@@ -45,8 +45,6 @@ export interface UiState {
   loading: LoadingPhase | null;
   dialog: DialogKind;
   selectedDifficulty: Difficulty;
-  /** `true` after the player pressed "check": wrong cells stay marked. */
-  revealErrors: boolean;
   lastWin: WinSummary | null;
 }
 
@@ -89,7 +87,6 @@ export class App {
       loading: null,
       dialog: 'none',
       selectedDifficulty: this.game?.difficulty ?? 'easy',
-      revealErrors: false,
       lastWin: null,
     };
   }
@@ -126,7 +123,6 @@ export class App {
     this.ui.selectedDifficulty = difficulty;
     this.ui.loading = 'requesting';
     this.ui.lastWin = null;
-    this.ui.revealErrors = false;
     this.setDialog('none');
     this.events.emit('loading');
     this.events.emit('panel');
@@ -200,7 +196,6 @@ export class App {
     this.game = game;
     this.origin = origin;
     this.ui.loading = null;
-    this.ui.revealErrors = false;
     this.stats = recordStart(this.stats, puzzle.difficulty);
     this.persistStats();
     this.saveNow();
@@ -270,19 +265,6 @@ export class App {
   redo(): void {
     if (!this.game) return;
     if (this.game.redo()) this.afterEdit();
-  }
-
-  /** Marks every wrong entry (the check button). */
-  checkBoard(): void {
-    const game = this.game;
-    if (!game) return;
-    this.ui.revealErrors = true;
-    const hasMistakes = game.hasMistakesOnBoard();
-    this.showToast(
-      hasMistakes ? this.t('toast.checkFound') : this.t('toast.checkClean'),
-      hasMistakes ? 'info' : 'success',
-    );
-    this.events.emit('board');
   }
 
   // -------------------------------------------------------------- dialogs
@@ -389,7 +371,6 @@ export class App {
   private afterEdit(): void {
     const game = this.game;
     if (!game) return;
-    if (this.ui.revealErrors && !game.hasMistakesOnBoard()) this.ui.revealErrors = false;
     this.detectWin();
     this.scheduleSave();
     this.events.emit('board');

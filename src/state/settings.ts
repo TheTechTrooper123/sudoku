@@ -18,8 +18,6 @@ export interface Settings {
   highlightPeers: boolean;
   /** Remove a digit from the notes of its peers when placing it. */
   autoRemoveNotes: boolean;
-  /** Mark wrong entries immediately. */
-  autoCheck: boolean;
   /** Play a subtle animation when the puzzle is solved. */
   animations: boolean;
 }
@@ -31,7 +29,6 @@ export const DEFAULT_SETTINGS: Settings = {
   highlightSameNumber: true,
   highlightPeers: true,
   autoRemoveNotes: true,
-  autoCheck: false,
   animations: true,
 };
 
@@ -50,7 +47,6 @@ export function loadSettings(): Settings {
     'highlightSameNumber',
     'highlightPeers',
     'autoRemoveNotes',
-    'autoCheck',
     'animations',
   ] as const) {
     if (typeof raw[key] === 'boolean') settings[key] = raw[key] as boolean;

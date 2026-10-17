@@ -50,7 +50,6 @@ export const en = {
   'action.notesOff': 'Notes off',
   'action.hint': 'Hint',
   'action.autoNotes': 'Fill notes',
-  'action.check': 'Check',
   'action.close': 'Close',
   'action.cancel': 'Cancel',
   'action.resetStats': 'Reset statistics',
@@ -73,8 +72,6 @@ export const en = {
 
   'toast.notesFilled': 'Pencil marks filled in.',
   'toast.notesNothing': 'There is nothing left to fill in.',
-  'toast.checkClean': 'No mistakes so far. Keep going!',
-  'toast.checkFound': 'Some cells are wrong - they are highlighted now.',
   'toast.hintUsed': 'A cell was revealed for you.',
   'toast.puzzleFromLocal': 'API unavailable - this puzzle was generated in your browser.',
   'toast.copied': 'Copied to the clipboard.',
@@ -106,8 +103,6 @@ export const en = {
   'settings.highlightPeersHint': 'Shade the units of the selected cell.',
   'settings.autoRemoveNotes': 'Clean up pencil marks',
   'settings.autoRemoveNotesHint': 'Remove a digit from the notes of its row, column and box.',
-  'settings.autoCheck': 'Check entries immediately',
-  'settings.autoCheckHint': 'Show wrong digits in red as soon as you enter them.',
   'settings.animations': 'Animations',
   'settings.animationsHint': 'Subtle transitions and a small celebration when you win.',
   'settings.data': 'Data',
@@ -121,7 +116,6 @@ export const en = {
   'shortcuts.undoRedo': 'Undo / redo',
   'shortcuts.erase': 'Erase a cell',
   'shortcuts.hint': 'Reveal a cell',
-  'shortcuts.check': 'Check the board',
   'shortcuts.newGame': 'New game',
 
   'content.intro.title': 'Sudoku online - free, fast and without sign-up',

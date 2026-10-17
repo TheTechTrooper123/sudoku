@@ -328,10 +328,6 @@ export class AppView {
       case 'H':
         app.useHint();
         return;
-      case 'c':
-      case 'C':
-        app.checkBoard();
-        return;
       default:
         return;
     }

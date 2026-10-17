@@ -2,8 +2,7 @@
  * The 9x9 board.
  *
  * Cells are created once; every render only writes the attributes that
- * actually changed. That keeps the board smooth even while the timer ticks
- * several times per second.
+ * actually changed, so re-renders stay cheap.
  */
 import { CELL_COUNT, colOf, maskDigits, rowOf, sharesUnit } from '../core/board.ts';
 import { SIZE } from '../core/board.ts';
@@ -105,7 +104,6 @@ export class BoardView {
     const conflicts = game.conflicts();
     const selectedIndex = game.selected;
     const selectedValue = selectedIndex >= 0 ? game.cells[selectedIndex].value : 0;
-    const showWrong = this.app.ui.revealErrors || settings.autoCheck;
     const highlightSame = settings.highlightSameNumber && selectedValue !== 0;
 
     for (let index = 0; index < CELL_COUNT; index++) {
@@ -114,6 +112,7 @@ export class BoardView {
       const selected = selectedIndex === index;
       const classes = ['cell'];
       if (cell.given) classes.push('is-given');
+      else if (game.isLocked(index)) classes.push('is-locked');
       if (selected) classes.push('is-selected');
       if (cell.value === 0) classes.push('is-blank');
       if (cell.value === 0 && cell.notes !== 0) classes.push('has-notes');
@@ -128,7 +127,7 @@ export class BoardView {
       if (highlightSame && cell.value === selectedValue && !selected) classes.push('is-same');
       if (settings.highlightConflicts && conflicts[index] === 1) classes.push('is-conflict');
       const wrong = cell.value !== 0 && game.isWrong(index);
-      if (showWrong && wrong) classes.push('is-wrong');
+      if (wrong) classes.push('is-wrong');
       if (this.flashIndex === index) classes.push('is-hint');
 
       const className = classes.join(' ');
@@ -149,7 +148,7 @@ export class BoardView {
         view.lastNotes = cell.notes;
       }
 
-      const label = this.cellLabel(index, cell, selected, showWrong && wrong);
+      const label = this.cellLabel(index, cell, selected, wrong);
       if (label !== view.lastLabel) {
         setAttr(view.root, 'aria-label', label);
         view.lastLabel = label;
@@ -164,7 +163,7 @@ export class BoardView {
         setAttr(view.root, 'tabindex', tabIndex);
         view.lastTabIndex = tabIndex;
       }
-      if (wrong && showWrong) setAttr(view.root, 'aria-invalid', 'true');
+      if (wrong) setAttr(view.root, 'aria-invalid', 'true');
       else setAttr(view.root, 'aria-invalid', null);
     }
 

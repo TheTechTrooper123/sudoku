@@ -182,12 +182,13 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 ## 6. Bedienung
 
 * **Spielen:** Zelle wählen (Maus/Touch), Ziffer per Tastatur `1`–`9`, Nummernblock
-  oder Tastenfeld eintragen. Pfeiltasten/WASD bewegen die Auswahl.
+  oder Tastenfeld eintragen. Pfeiltasten/WASD bewegen die Auswahl. Falsche Zahlen
+  werden sofort rot markiert; richtig gelöste Felder werden gesperrt und wie die
+  Vorgaben fest geschrieben (kein Überschreiben/Löschen mehr möglich).
 * **Tastenkürzel:** `N` Notizmodus, `Shift+N` neues Spiel, `H` Hinweis,
-  `C` Kandidaten automatisch setzen, `Entf`/`0`/Rücktaste löschen,
-  `Strg+Z`/`Strg+Y` rückgängig/wiederholen.
+  `Entf`/`0`/Rücktaste löschen, `Strg+Z`/`Strg+Y` rückgängig/wiederholen.
 * **Hilfen:** Konflikthervorhebung, gleiche Ziffern, Peers – alle einzeln
-  abschaltbar. „Falsche Eingaben prüfen" markiert Fehler sofort.
+  abschaltbar. „Notizen füllen" trägt alle Kandidaten ein.
 * **Automatik:** Spielstand, Statistik und Einstellungen liegen im
   `localStorage` (Schlüsselpräfix `sudoku.v1.`).
 * **Sprache/Thema:** In der Kopfzeile umschaltbar; die Wahl wird gespeichert

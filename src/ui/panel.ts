@@ -235,7 +235,6 @@ export class Controls {
         labelKey: 'action.autoNotes',
         action: () => app.fillNotes(),
       },
-      { id: 'check', icon: 'info', labelKey: 'action.check', action: () => app.checkBoard() },
       { id: 'restart', icon: 'refresh', labelKey: 'action.restart', action: () => app.restartGame() },
       {
         id: 'new-game',
@@ -278,7 +277,6 @@ export class Controls {
     setDisabled('erase', busy || !playing);
     setDisabled('hint', busy || !playing);
     setDisabled('fill-notes', busy || !playing);
-    setDisabled('check', busy || !game);
     setDisabled('restart', busy || !game);
 
     const notesEntry = this.buttons.get('notes');

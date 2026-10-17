@@ -47,13 +47,45 @@ describe('Game basics', () => {
     expect(game.isConflict(index)).toBe(false);
   });
 
-  it('toggles a digit off when the same digit is entered twice', () => {
+  it('toggles a wrong digit off when the same digit is entered twice', () => {
     const game = newGame();
     const index = firstEmpty(game);
+    const wrong = game.candidatesAt(index).find((digit) => digit !== game.solution[index]);
     game.select(index);
-    game.placeDigit(game.solution[index]);
-    game.placeDigit(game.solution[index]);
+    game.placeDigit(wrong as number);
+    expect(game.cells[index].value).toBe(wrong);
+    game.placeDigit(wrong as number);
     expect(game.cells[index].value).toBe(0);
+  });
+
+  it('locks a correctly solved cell so it can never change again', () => {
+    const game = newGame();
+    const index = firstEmpty(game);
+    const solution = game.solution[index];
+    const other = (solution % 9) + 1;
+    game.select(index);
+    expect(game.placeDigit(solution)).toBe(true);
+    expect(game.isLocked(index)).toBe(true);
+    expect(game.isEditable(index)).toBe(false);
+
+    // Neither overwriting, erasing nor annotating is possible any more.
+    expect(game.placeDigit(other)).toBe(false);
+    expect(game.erase()).toBe(false);
+    expect(game.toggleNote(other)).toBe(false);
+    expect(game.cells[index].value).toBe(solution);
+    expect(game.mistakes).toBe(0);
+  });
+
+  it('replaces a wrong entry with the correct one and locks it', () => {
+    const game = newGame();
+    const index = firstEmpty(game);
+    const wrong = game.candidatesAt(index).find((digit) => digit !== game.solution[index]);
+    game.select(index);
+    game.placeDigit(wrong as number);
+    expect(game.isEditable(index)).toBe(true);
+    expect(game.placeDigit(game.solution[index])).toBe(true);
+    expect(game.isLocked(index)).toBe(true);
+    expect(game.isWrong(index)).toBe(false);
   });
 
   it('never edits given cells', () => {

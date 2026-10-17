@@ -134,8 +134,19 @@ export class Game {
     return this.cells[index];
   }
 
+  /**
+   * A cell is locked once it holds the correct digit - either a given or a
+   * digit the player solved correctly. Locked cells can no longer be changed,
+   * erased or annotated, so a solved digit can never be turned wrong again.
+   */
+  isLocked(index: number): boolean {
+    const cell = this.cells[index];
+    return cell.value !== 0 && cell.value === this.solution[index];
+  }
+
+  /** A cell can be edited while it is empty or holds a wrong entry. */
   isEditable(index: number): boolean {
-    return index >= 0 && index < CELL_COUNT && !this.cells[index].given;
+    return index >= 0 && index < CELL_COUNT && !this.isLocked(index);
   }
 
   /** Cells that break the rules of Sudoku (duplicates in a unit). */
@@ -422,7 +433,7 @@ export class Game {
 
   private firstEditableCell(): number {
     for (let index = 0; index < CELL_COUNT; index++) {
-      if (!this.cells[index].given) return index;
+      if (!this.isLocked(index)) return index;
     }
     return -1;
   }

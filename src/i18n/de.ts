@@ -51,7 +51,6 @@ export const de: Record<TranslationKey, string> = {
   'action.notesOff': 'Notizen aus',
   'action.hint': 'Hinweis',
   'action.autoNotes': 'Notizen füllen',
-  'action.check': 'Prüfen',
   'action.close': 'Schließen',
   'action.cancel': 'Abbrechen',
   'action.resetStats': 'Statistik zurücksetzen',
@@ -74,8 +73,6 @@ export const de: Record<TranslationKey, string> = {
 
   'toast.notesFilled': 'Notizen eingetragen.',
   'toast.notesNothing': 'Es gibt nichts mehr einzutragen.',
-  'toast.checkClean': 'Bisher keine Fehler. Weiter so!',
-  'toast.checkFound': 'Einige Zellen sind falsch – sie sind jetzt markiert.',
   'toast.hintUsed': 'Ein Feld wurde aufgedeckt.',
   'toast.puzzleFromLocal': 'API nicht erreichbar – das Rätsel wurde im Browser erzeugt.',
   'toast.copied': 'In die Zwischenablage kopiert.',
@@ -107,8 +104,6 @@ export const de: Record<TranslationKey, string> = {
   'settings.highlightPeersHint': 'Die Einheiten der ausgewählten Zelle einfärben.',
   'settings.autoRemoveNotes': 'Notizen aufräumen',
   'settings.autoRemoveNotesHint': 'Eine Zahl aus den Notizen in Zeile, Spalte und Block entfernen.',
-  'settings.autoCheck': 'Eingaben sofort prüfen',
-  'settings.autoCheckHint': 'Falsche Zahlen direkt rot markieren.',
   'settings.animations': 'Animationen',
   'settings.animationsHint': 'Sanfte Übergänge und ein kleines Highlight beim Lösen.',
   'settings.data': 'Daten',
@@ -122,7 +117,6 @@ export const de: Record<TranslationKey, string> = {
   'shortcuts.undoRedo': 'Rückgängig / Wiederholen',
   'shortcuts.erase': 'Feld löschen',
   'shortcuts.hint': 'Feld aufdecken',
-  'shortcuts.check': 'Spielfeld prüfen',
   'shortcuts.newGame': 'Neues Spiel',
 
   'content.intro.title': 'Sudoku online – kostenlos, schnell und ohne Anmeldung',
