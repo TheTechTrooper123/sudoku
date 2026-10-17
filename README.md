@@ -90,8 +90,8 @@ Domain und Rechtstexte sind für den Livebetrieb bereits eingetragen:
 | `public/robots.txt` | Domain in der `Sitemap:`-Zeile |
 | `public/sitemap.xml` | Domain in allen `<loc>`/`href`-Angaben |
 | `public/og-image.png` | Aufdruck „sudoku-game.ddnsfree.com" (Neu-Erzeugung: `python3 tools/make-assets.py`, siehe unten) |
-| `public/privacy.html` | Verantwortlicher (Till), Kontakt, Hoster (Vercel Inc.) |
-| `public/imprint.html` | Anbieter (Till), Kontakt (§ 5 DDG); bewusst ohne vollständige Anschrift (privat, nicht kommerziell) |
+| `public/privacy.html` | Verantwortlicher (privater Betreiber, ohne Namensnennung), Hoster (Vercel Inc.) |
+| `public/imprint.html` | Anbieter (privater Betreiber, neutrale Angabe); benennt bewusst keine Person, Anschrift oder E-Mail |
 
 Bei einem Domain- oder Betreiberwechsel müssen genau diese Stellen angepasst
 werden – `index.html`, `public/robots.txt`, `public/sitemap.xml`, der Aufdruck
