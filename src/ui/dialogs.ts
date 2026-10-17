@@ -161,6 +161,13 @@ function segmented(
   return group;
 }
 
+function settingRow(app: App, labelKey: TranslationKey, control: HTMLElement): HTMLElement {
+  return el('div', { class: 'setting-row' }, [
+    el('span', { class: 'setting-row__label', text: app.t(labelKey) }),
+    control,
+  ]);
+}
+
 function toggleRow(
   app: App,
   key: BooleanSettingKey,
@@ -220,26 +227,33 @@ export class SettingsDialog extends Modal {
 
     this.setContent([
       section('settings.appearance', app, [
-        segmented(
+        settingRow(
           app,
           'settings.theme',
-          [
-            { value: 'light', labelKey: 'settings.themeLight', icon: 'sun' },
-            { value: 'dark', labelKey: 'settings.themeDark', icon: 'moon' },
-          ],
-          resolveTheme(app.settings.theme),
-          (value) => app.updateSetting('theme', value as Settings['theme']),
+          segmented(
+            app,
+            'settings.theme',
+            [
+              { value: 'light', labelKey: 'settings.themeLight', icon: 'sun' },
+              { value: 'dark', labelKey: 'settings.themeDark', icon: 'moon' },
+            ],
+            resolveTheme(app.settings.theme),
+            (value) => app.updateSetting('theme', value as Settings['theme']),
+          ),
         ),
-        segmented(
+        settingRow(
           app,
           'settings.language',
-          [
-            { value: 'auto', labelKey: 'settings.languageAuto', icon: 'globe' },
-            { value: 'de', label: 'Deutsch' },
-            { value: 'en', label: 'English' },
-          ],
-          app.settings.language,
-          (value) => app.updateSetting('language', value as Settings['language']),
+          segmented(
+            app,
+            'settings.language',
+            [
+              { value: 'de', label: 'Deutsch' },
+              { value: 'en', label: 'English' },
+            ],
+            app.settings.language,
+            (value) => app.updateSetting('language', value as Settings['language']),
+          ),
         ),
       ]),
       section('settings.gameplay', app, [

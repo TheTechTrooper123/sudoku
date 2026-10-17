@@ -9,7 +9,7 @@
  */
 import { Game } from '../core/game.ts';
 import type { Difficulty, Puzzle } from '../core/types.ts';
-import { createTranslator, detectLanguage } from '../i18n/index.ts';
+import { createTranslator, detectDeviceLanguage } from '../i18n/index.ts';
 import type { Language, TranslationKey, Translator } from '../i18n/index.ts';
 import { deliverPuzzle } from '../services/puzzleService.ts';
 import type { PuzzleOrigin } from '../services/puzzleService.ts';
@@ -66,7 +66,10 @@ export class App {
   private pendingRequest: AbortController | null = null;
 
   constructor() {
-    this.currentLanguage = detectLanguage(this.settings.language);
+    // Nothing is persisted, so the first run adopts the device language;
+    // from then on the user can only choose between German and English.
+    this.settings = { ...createSettings(), language: detectDeviceLanguage() };
+    this.currentLanguage = this.settings.language;
     this.translator = createTranslator(this.currentLanguage);
 
     this.ui = {
@@ -280,7 +283,7 @@ export class App {
   }
 
   applyLanguage(): void {
-    this.currentLanguage = detectLanguage(this.settings.language);
+    this.currentLanguage = this.settings.language;
     this.translator = createTranslator(this.currentLanguage);
     this.events.emit('language');
     this.events.emit('panel');

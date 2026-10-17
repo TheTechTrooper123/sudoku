@@ -4,7 +4,8 @@
  * defaults below apply again.
  */
 export type ThemePreference = 'system' | 'light' | 'dark';
-export type LanguagePreference = 'auto' | 'de' | 'en';
+/** The user can only pick a concrete language; the start value is detected. */
+export type LanguagePreference = 'de' | 'en';
 
 export interface Settings {
   theme: ThemePreference;
@@ -23,7 +24,8 @@ export interface Settings {
 
 export const DEFAULT_SETTINGS: Settings = {
   theme: 'system',
-  language: 'auto',
+  // Overridden at startup with the detected device language (see `App`).
+  language: 'en',
   highlightConflicts: true,
   highlightSameNumber: true,
   highlightPeers: true,

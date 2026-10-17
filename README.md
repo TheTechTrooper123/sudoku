@@ -197,10 +197,11 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 * **Keine Speicherung:** Es wird nichts in `localStorage` oder an einen Server
   geschrieben. Ein Reload startet ein frisches Spiel und setzt alle
   Einstellungen auf die Standardwerte zurück.
-* **Sprache/Thema:** In der Kopfzeile umschaltbar (gilt für die laufende
-  Sitzung); das Thema folgt anfangs dem System und lässt sich nur zwischen
-  Hell und Dunkel wählen. Die statischen Rechtsseiten verstehen
-  `?lang=de`/`?lang=en`.
+* **Sprache/Thema:** Die Sprache startet in der Gerätesprache und lässt sich in
+  der Kopfzeile oder in den Einstellungen nur zwischen Deutsch und Englisch
+  umschalten; das Thema folgt anfangs dem System und lässt sich nur zwischen
+  Hell und Dunkel wählen. Beides gilt für die laufende Sitzung. Die statischen
+  Rechtsseiten verstehen `?lang=de`/`?lang=en`.
 
 ## 7. Assets neu erzeugen
 

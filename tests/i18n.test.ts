@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { de } from '../src/i18n/de.ts';
 import { en } from '../src/i18n/en.ts';
-import { detectLanguage, LANGUAGES, translate } from '../src/i18n/index.ts';
+import { detectDeviceLanguage, LANGUAGES, translate } from '../src/i18n/index.ts';
 
 function placeholders(template: string): string[] {
   return [...template.matchAll(/\{(\w+)\}/g)].map((match) => match[1]).sort();
@@ -42,9 +42,7 @@ describe('translations', () => {
     expect(translate('en', unknown)).toBe('does.not.exist');
   });
 
-  it('honours an explicit language preference', () => {
-    expect(detectLanguage('de')).toBe('de');
-    expect(detectLanguage('en')).toBe('en');
-    expect(LANGUAGES).toContain(detectLanguage('auto'));
+  it('detects a supported device language, defaulting to English', () => {
+    expect(LANGUAGES).toContain(detectDeviceLanguage());
   });
 });

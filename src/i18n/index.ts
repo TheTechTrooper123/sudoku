@@ -1,11 +1,10 @@
 /**
  * Translation layer.
  *
- * - `auto` follows the browser language (German browsers get German),
- *   an explicit choice always wins for the current session.
+ * - The starting language is the device/browser language, limited to German
+ *   and English; the user can then switch between the two at any time.
  * - Placeholders use `{name}` syntax.
  */
-import type { LanguagePreference } from '../state/settings.ts';
 import { de } from './de.ts';
 import { en } from './en.ts';
 import type { TranslationKey } from './en.ts';
@@ -17,16 +16,14 @@ export const LANGUAGES: Language[] = ['de', 'en'];
 
 const DICTIONARIES: Record<Language, Record<TranslationKey, string>> = { de, en };
 
-export function detectLanguage(preference: LanguagePreference): Language {
-  if (preference === 'de' || preference === 'en') return preference;
+/** The start language: German for a German device, English otherwise. */
+export function detectDeviceLanguage(): Language {
   const candidates = [
     ...(Array.isArray(globalThis.navigator?.languages) ? globalThis.navigator.languages : []),
     globalThis.navigator?.language ?? '',
   ];
   for (const candidate of candidates) {
-    const tag = String(candidate).toLowerCase();
-    if (tag.startsWith('de')) return 'de';
-    if (tag.startsWith('en')) return 'en';
+    if (String(candidate).toLowerCase().startsWith('de')) return 'de';
   }
   return 'en';
 }

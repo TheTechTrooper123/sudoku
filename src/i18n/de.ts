@@ -73,7 +73,6 @@ export const de: Record<TranslationKey, string> = {
   'settings.themeLight': 'Hell',
   'settings.themeDark': 'Dunkel',
   'settings.language': 'Sprache',
-  'settings.languageAuto': 'Sprache des Browsers',
   'settings.gameplay': 'Spielverhalten',
   'settings.highlightConflicts': 'Doppelte Zahlen markieren',
   'settings.highlightConflictsHint': 'Zahlen hervorheben, die gegen die Sudoku-Regeln verstoßen.',

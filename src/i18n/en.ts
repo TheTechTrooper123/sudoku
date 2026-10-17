@@ -72,7 +72,6 @@ export const en = {
   'settings.themeLight': 'Light',
   'settings.themeDark': 'Dark',
   'settings.language': 'Language',
-  'settings.languageAuto': 'Browser language',
   'settings.gameplay': 'Gameplay',
   'settings.highlightConflicts': 'Highlight duplicates',
   'settings.highlightConflictsHint': 'Mark digits that break the rules of Sudoku.',
