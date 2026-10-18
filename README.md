@@ -13,7 +13,7 @@ ein Reload startet immer ein frisches Spiel.
   Serverless-Funktion; fällt bei Ausfall auf einen Generator im Browser zurück
 * **Hosting:** Vercel (statisches Frontend + eine Serverless Function),
   erreichbar unter der Dynu-Subdomain `sudoku-game.ddnsfree.com`
-* **Tests:** 79 Unit-Tests (Vitest) – Solver, Generator, Bewertung, Spielregeln,
+* **Tests:** 83 Unit-Tests (Vitest) – Solver, Generator, Bewertung, Spielregeln,
   i18n, API-Validierung, Fallback-Kette
 
 ---
@@ -197,8 +197,11 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 * **Tastenkürzel:** `N` Notizmodus, `Entf`/`0`/Rücktaste löschen,
   `Strg+Z`/`Strg+Y` rückgängig/wiederholen. „Feld lösen" deckt ein einzelnes
   Feld auf.
-* **Hilfen:** Konflikthervorhebung, gleiche Ziffern, Peers – alle einzeln
-  abschaltbar.
+* **Hilfen:** Peers und gleiche Ziffern – einzeln abschaltbar.
+* **Gestaltung:** Ruhiger „Papier & Tinte"-Look – warmes Papier als Grund,
+  Serifen-Überschrift, präzises Druckraster und Hairlines statt schwebender
+  Karten. Kein Glas, keine Gradienten, keine generische Komponenten-Optik. Die
+  Zellfarben (rot = falsch, neutral-blau = Grund) sind dabei fest.
 * **Status:** Unter dem Brett steht eine dezente Zeile mit Fehlern und gelösten
   Feldern; die Schwierigkeitsauswahl ist bewusst zurückhaltend gestaltet.
 * **Keine Speicherung:** Es wird nichts in `localStorage` oder an einen Server
@@ -239,9 +242,12 @@ Erzeugt `public/og-image.png` (1200×630) und `public/apple-touch-icon.png`
   bzw. `npm run build` erzeugen, `api/` ist Build-Artefakt und nicht
   eingecheckt. Lokal (Vite-Middleware) und in den Tests wird weiterhin direkt
   `server/puzzle.ts` verwendet.
-* Layout prüfen: `npm run dev`, dann Fenster schmal ziehen (≤ 640 px:
-  Bedienfeld wandert unter das Brett) und Hell/Dunkel sowie Deutsch/Englisch
-  (beides nur in den Einstellungen) durchspielen.
+* Layout prüfen: `npm run dev`, dann prüfen – ≤ 640 px: der Zahlenblock ist als
+  Leiste am unteren Rand angeheftet, das Bedienfeld steht darüber; 641–899 px
+  (Tablet): Zahlenblock inline unter dem Brett, Bedienfeld als Kachelraster;
+  ab 900 px: Brett links, Bedienleiste mit Hairline rechts (die Gesamtbreite ist
+  auf 1120 px begrenzt). Hell/Dunkel sowie Deutsch/Englisch (beides nur in den
+  Einstellungen) durchspielen.
   Das Brett füllt den verfügbaren Platz und wird über `--board-max` an Breite und
   Viewporthöhe gekoppelt.
 
