@@ -30,9 +30,9 @@
   --border-strong: #c2b69b;
   --scrim: rgba(28, 26, 20, 0.45);
 
-  /* The board grid stays exactly as fixed: light hairlines, darker box rules. */
-  --line: #dfe4f0;
-  --line-strong: #aab3c9;
+  /* The board grid: warm printed rules, not cool hairlines. */
+  --line: #e8e1d1;
+  --line-strong: #b3a98f;
 
   --accent: #2f4d8f;
   --accent-strong: #233b70;
@@ -43,18 +43,20 @@
   --danger: #d0402f;
   --danger-soft: rgba(208, 64, 47, 0.12);
 
-  /* Semantic cell colours - fixed by design, never re-tuned by the theme. */
-  --given: #12151d;
-  --user: #2a4ede;
-  --note: #7b8497;
+  /* Cell inks and washes, drawn from the paper/ink palette. The *meaning* is
+     fixed: wrong = red, the duplicate reason = a neutral mark. Only the hues
+     follow the theme - warm paper shades instead of cool blue. */
+  --given: #1b1a14;
+  --user: #2b4a93;
+  --note: #8a8065;
 
-  --cell-bg: #ffffff;
-  --cell-peer: #f1f4fd;
-  --cell-same: #dde6ff;
-  --cell-selected: #c9d7ff;
-  --cell-duplicate: #c6d6ff;
-  --duplicate-outline: #4f68c4;
-  --duplicate-glow: rgba(79, 104, 196, 0.28);
+  --cell-bg: #fffdf9;
+  --cell-peer: #f2ecdf;
+  --cell-same: #e7dfcc;
+  --cell-selected: #d9cfb6;
+  --cell-duplicate: #dcd6c6;
+  --duplicate-outline: #3f5590;
+  --duplicate-glow: rgba(63, 85, 144, 0.22);
 
   --radius-sm: 4px;
   --radius: 6px;
@@ -89,8 +91,8 @@
   --border-strong: #4d4431;
   --scrim: rgba(0, 0, 0, 0.62);
 
-  --line: #2a2f3d;
-  --line-strong: #5b6480;
+  --line: #2c2820;
+  --line-strong: #5c5340;
 
   --accent: #97b0e6;
   --accent-strong: #c0d2f7;
@@ -101,17 +103,17 @@
   --danger: #ff7a68;
   --danger-soft: rgba(255, 122, 104, 0.16);
 
-  --given: #f4f6fc;
-  --user: #a3b8ff;
-  --note: #8b94ab;
+  --given: #f2ecdf;
+  --user: #9fb6ef;
+  --note: #8a8065;
 
-  --cell-bg: #171a23;
-  --cell-peer: #1e2331;
-  --cell-same: #263049;
-  --cell-selected: #2c3a5f;
-  --cell-duplicate: #313f70;
-  --duplicate-outline: #8ea3e0;
-  --duplicate-glow: rgba(142, 163, 224, 0.25);
+  --cell-bg: #1c1a15;
+  --cell-peer: #252119;
+  --cell-same: #302a1e;
+  --cell-selected: #3d3627;
+  --cell-duplicate: #383226;
+  --duplicate-outline: #97b0e6;
+  --duplicate-glow: rgba(151, 176, 230, 0.22);
 
   --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.3);
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 30px rgba(0, 0, 0, 0.45);
@@ -137,14 +139,15 @@
     --accent-strong: #223264;
     --accent-soft: rgba(43, 63, 119, 0.1);
 
-    --given: #1a1e26;
-    --user: #3349b4;
-    --note: #737b90;
+    --given: #1b1a14;
+    --user: #2b4a93;
+    --note: #7e7661;
 
-    --cell-bg: #eff1f5;
-    --cell-peer: #e6ebf6;
-    --cell-same: #d3ddf0;
-    --cell-selected: #c1cdea;
+    --cell-bg: #f6f2e9;
+    --cell-peer: #ece5d5;
+    --cell-same: #ded5bf;
+    --cell-selected: #cec3a8;
+    --cell-duplicate: #d6ceba;
   }
 }
 
@@ -388,10 +391,12 @@ button {
   gap: var(--space-4);
 }
 
-/* A quiet rail beside the grid instead of a stack of floating cards. */
+/* A quiet rail beside the grid instead of a stack of floating cards: one
+   vertical rule that runs the full height, content centred against it. */
 @media (min-width: 900px) {
   .game__panel {
-    align-self: center;
+    align-self: stretch;
+    justify-content: center;
     padding-left: var(--space-5);
     border-left: 1px solid var(--border);
   }

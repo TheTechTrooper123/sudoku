@@ -186,9 +186,13 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 * **Fehler und Grund:** Rot = die Zahl passt nicht zur Lösung (die zu löschende
   Zahl). Die *richtige* Zahl (gelöst oder Vorgabe), die sich damit in
   Zeile/Spalte/Block doppelt – also der Grund, warum der Eintrag falsch ist –
-  wird neutral markiert: kräftige Blaufärbung mit gestricheltem Rahmen, nie rot
-  und nie bernstein. So bleibt der Auslöser deutlich sichtbar, ohne dass eine
-  korrekte Zelle wie ein Fehler aussieht.
+  wird neutral markiert: kräftige Papierton-Füllung mit gestricheltem
+  Tinten-Rahmen, nie rot und nie bernstein. So bleibt der Auslöser deutlich
+  sichtbar, ohne dass eine korrekte Zelle wie ein Fehler aussieht.
+* **Farbwelt:** Alle Zell- und Rasterfarben sind aus der Papier/Tinte-Palette
+  abgeleitet (warme Papiertöne statt kühler Pastell-Blautöne). Kräftigere
+  Hervorhebungen sind warme Papiertöne, die Leuchtfarbe für „deine" Ziffern und
+  den Grund ist ein Tintenblau; die Fehlerfarbe bleibt Rot.
 * **Tastenfeld:** Auf dem Handy ist der Zahlenblock automatisch sichtbar und
   enthält in der zweiten Reihe eine Löschen-Taste (`⨯`) für den schnellen Weg zur
   richtigen Zahl; am Computer ist er standardmäßig ausgeblendet (Löschen per
@@ -200,8 +204,8 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 * **Hilfen:** Peers und gleiche Ziffern – einzeln abschaltbar.
 * **Gestaltung:** Ruhiger „Papier & Tinte"-Look – warmes Papier als Grund,
   Serifen-Überschrift, präzises Druckraster und Hairlines statt schwebender
-  Karten. Kein Glas, keine Gradienten, keine generische Komponenten-Optik. Die
-  Zellfarben (rot = falsch, neutral-blau = Grund) sind dabei fest.
+  Karten. Kein Glas, keine Gradienten, keine generische Komponenten-Optik.
+  Fehler bleibt rot, der Grund ist ein neutraler Papierton mit Tinten-Rahmen.
 * **Status:** Unter dem Brett steht eine dezente Zeile mit Fehlern und gelösten
   Feldern; die Schwierigkeitsauswahl ist bewusst zurückhaltend gestaltet.
 * **Keine Speicherung:** Es wird nichts in `localStorage` oder an einen Server
