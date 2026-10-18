@@ -183,12 +183,11 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
   das Tastenfeld eintragen. Pfeiltasten/WASD bewegen die Auswahl. Falsche Zahlen
   werden sofort rot markiert; richtig gelöste Felder werden gesperrt und wie die
   Vorgaben fest geschrieben (kein Überschreiben/Löschen mehr möglich).
-* **Zwei Markierungen, klar getrennt:** Rot = die Zahl passt nicht zur Lösung
-  (die zu löschende Zahl). Bernstein = eine *richtige* Zahl (gelöst **oder eine
-  Vorgabe**), die sich mit einer anderen Zahl in Zeile/Spalte/Block doppelt –
-  also genau die Zahl, wegen der dein Eintrag dort nicht stehen darf. So wird
-  eine korrekte Zelle nie fälschlich rot, und der Auslöser der Doppelung bleibt
-  immer sichtbar.
+* **Eine Markierung – nur der Fehler:** Rot = die Zahl passt nicht zur Lösung
+  (die zu löschende Zahl). Eine **richtige** Zelle – gelöst oder Vorgabe – wird
+  nie eingefärbt, damit sie nie fälschlich falsch aussieht. Welche Zahl den
+  Eintrag blockiert, zeigt die neutrale „gleiche Zahlen"-Hervorhebung (leichte
+  Blaufärbung), sobald die falsche Zelle gewählt ist.
 * **Tastenfeld:** Auf dem Handy ist der Zahlenblock automatisch sichtbar und
   enthält in der zweiten Reihe eine Löschen-Taste (`⨯`) für den schnellen Weg zur
   richtigen Zahl; am Computer ist er standardmäßig ausgeblendet (Löschen per

@@ -253,7 +253,7 @@ describe('win detection', () => {
   });
 });
 
-describe('cell marks', () => {
+describe('error marking', () => {
   /** First empty cell in the same row that needs a different digit. */
   function emptyPeerInRow(game: Game, index: number): number {
     const digit = game.solution[index];
@@ -284,18 +284,10 @@ describe('cell marks', () => {
     const wrong = game.candidatesAt(index).find((digit) => digit !== game.solution[index]) as number;
     game.select(index);
     game.placeDigit(wrong);
-    expect(game.cellMark(index)).toBe('wrong');
+    expect(game.isWrong(index)).toBe(true);
   });
 
-  it('leaves a lone correct digit unmarked', () => {
-    const game = newGame();
-    const index = firstEmpty(game);
-    game.select(index);
-    game.placeDigit(game.solution[index]);
-    expect(game.cellMark(index)).toBeNull();
-  });
-
-  it('marks a correct digit that collides with a wrong entry as duplicate, not wrong', () => {
+  it('leaves a correct digit unmarked, even when it duplicates a wrong entry', () => {
     const game = newGame();
     const { target, intruder } = pairInRow(game);
     const digit = game.solution[target];
@@ -303,17 +295,18 @@ describe('cell marks', () => {
     // A wrong entry with the same digit elsewhere in the row ...
     game.select(intruder);
     game.placeDigit(digit);
-    expect(game.cellMark(intruder)).toBe('wrong');
+    expect(game.isWrong(intruder)).toBe(true);
 
-    // ... must not paint the *correct* cell red; it is at most a duplicate.
+    // ... is the *only* thing marked: the correct cell stays clean. This is the
+    // design guarantee - a right digit must never look wrong.
     game.select(target);
     game.placeDigit(digit);
     expect(game.isLocked(target)).toBe(true);
-    expect(game.isConflict(target)).toBe(true);
-    expect(game.cellMark(target)).toBe('duplicate');
+    expect(game.isConflict(target)).toBe(true); // the rules still see the pair ...
+    expect(game.isWrong(target)).toBe(false); // ... but a correct cell is never flagged
   });
 
-  it('shows the given clue that blocks a wrong entry, so the cause is visible', () => {
+  it('never flags a given clue as wrong when a wrong entry duplicates it', () => {
     const game = newGame();
     let given = -1;
     let intruder = -1;
@@ -330,9 +323,8 @@ describe('cell marks', () => {
 
     game.select(intruder);
     game.placeDigit(game.cells[given].value);
-    expect(game.isConflict(given)).toBe(true); // the rule flags the pair ...
-    expect(game.cellMark(given)).toBe('duplicate'); // ... and the blocking clue stays visible
-    expect(game.cellMark(intruder)).toBe('wrong');
+    expect(game.isWrong(given)).toBe(false); // the blocking clue stays clean
+    expect(game.isWrong(intruder)).toBe(true); // only the wrong entry is marked
   });
 });
 

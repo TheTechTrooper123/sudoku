@@ -19,17 +19,6 @@ import type { Cell, Difficulty, Grid, Puzzle, PuzzleSource } from './types.ts';
 export type GameStatus = 'playing' | 'won';
 export type MoveKind = 'value' | 'notes' | 'erase' | 'hint' | 'auto-notes';
 
-/**
- * How a filled cell is highlighted:
- * - `wrong`     - the digit does not match the solution (the mistake to fix)
- * - `duplicate` - a correct digit (solved or a given clue) that shares its row,
- *                 column or box with an equal digit - almost always caused by a
- *                 wrong entry elsewhere; marked so the *blocking* number stays
- *                 visible, yet clearly distinct from `wrong`
- * - `null`      - nothing to mark
- */
-export type CellMark = 'wrong' | 'duplicate' | null;
-
 export interface CellSnapshot {
   value: number;
   notes: number;
@@ -144,7 +133,11 @@ export class Game {
     return index >= 0 && index < CELL_COUNT && !this.isLocked(index);
   }
 
-  /** Cells that break the rules of Sudoku (duplicates in a unit). */
+  /**
+   * Cells that break the rules of Sudoku (duplicates in a unit). Used only to
+   * decide whether the puzzle is finished - a *correct* cell is never styled
+   * from this, so a right digit can never look wrong.
+   */
   conflicts(): Uint8Array {
     if (this.conflictsCache === null) this.conflictsCache = conflictsOf(this.values());
     return this.conflictsCache;
@@ -158,20 +151,6 @@ export class Game {
   isWrong(index: number): boolean {
     const cell = this.cells[index];
     return cell.value !== 0 && cell.value !== this.solution[index];
-  }
-
-  /**
-   * The single highlight a filled cell deserves. A wrong digit always wins over
-   * the duplicate mark (it is the one to delete). Every other cell that shares
-   * the duplicated digit - a solved cell *or a given clue* - is marked as the
-   * duplicate, so the digit that blocks the wrong entry is always visible.
-   */
-  cellMark(index: number): CellMark {
-    const cell = this.cells[index];
-    if (cell.value === 0) return null;
-    if (cell.value !== this.solution[index]) return 'wrong';
-    if (this.isConflict(index)) return 'duplicate';
-    return null;
   }
 
   /** Candidate digits of an empty cell, based on the current board. */

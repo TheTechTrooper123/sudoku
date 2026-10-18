@@ -25,7 +25,6 @@ export const en = {
   'board.cellFilled': 'row {row}, column {col}, {value}',
   'board.cellNotes': 'row {row}, column {col}, notes {notes}',
   'board.cellWrong': 'row {row}, column {col}, {value} - wrong',
-  'board.cellConflict': 'row {row}, column {col}, {value} - duplicate',
   'board.cellSelected': 'selected',
 
   'status.mistakes': 'Mistakes',
@@ -73,8 +72,6 @@ export const en = {
   'settings.themeDark': 'Dark',
   'settings.language': 'Language',
   'settings.gameplay': 'Gameplay',
-  'settings.highlightConflicts': 'Highlight duplicates',
-  'settings.highlightConflictsHint': 'Mark correct digits that duplicate another one.',
   'settings.highlightSameNumber': 'Highlight equal digits',
   'settings.highlightSameNumberHint': 'Shade every cell that holds the selected digit.',
   'settings.highlightPeers': 'Highlight row, column and box',

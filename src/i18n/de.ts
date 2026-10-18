@@ -26,7 +26,6 @@ export const de: Record<TranslationKey, string> = {
   'board.cellFilled': 'Zeile {row}, Spalte {col}, {value}',
   'board.cellNotes': 'Zeile {row}, Spalte {col}, Notizen {notes}',
   'board.cellWrong': 'Zeile {row}, Spalte {col}, {value} – falsch',
-  'board.cellConflict': 'Zeile {row}, Spalte {col}, {value} – doppelt',
   'board.cellSelected': 'ausgewählt',
 
   'status.mistakes': 'Fehler',
@@ -74,8 +73,6 @@ export const de: Record<TranslationKey, string> = {
   'settings.themeDark': 'Dunkel',
   'settings.language': 'Sprache',
   'settings.gameplay': 'Spielverhalten',
-  'settings.highlightConflicts': 'Doppelte Zahlen markieren',
-  'settings.highlightConflictsHint': 'Korrekte Zahlen markieren, wenn sie sich mit einer anderen doppeln.',
   'settings.highlightSameNumber': 'Gleiche Zahlen hervorheben',
   'settings.highlightSameNumberHint': 'Alle Felder der gewählten Zahl leicht einfärben.',
   'settings.highlightPeers': 'Zeile, Spalte und Block hervorheben',

@@ -10,8 +10,6 @@ export type LanguagePreference = 'de' | 'en';
 export interface Settings {
   theme: ThemePreference;
   language: LanguagePreference;
-  /** Highlight duplicate digits in rows, columns and boxes. */
-  highlightConflicts: boolean;
   /** Highlight all cells that share the selected digit. */
   highlightSameNumber: boolean;
   /** Highlight row/column/box of the selected cell. */
@@ -26,7 +24,6 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: 'system',
   // Overridden at startup with the detected device language (see `App`).
   language: 'en',
-  highlightConflicts: true,
   highlightSameNumber: true,
   highlightPeers: true,
   autoRemoveNotes: true,

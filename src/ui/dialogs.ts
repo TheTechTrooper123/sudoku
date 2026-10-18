@@ -268,13 +268,6 @@ export class SettingsDialog extends Modal {
         ),
         toggleRow(
           app,
-          'highlightConflicts',
-          'settings.highlightConflicts',
-          'settings.highlightConflictsHint',
-          (value) => app.updateSetting('highlightConflicts', value),
-        ),
-        toggleRow(
-          app,
           'autoRemoveNotes',
           'settings.autoRemoveNotes',
           'settings.autoRemoveNotesHint',

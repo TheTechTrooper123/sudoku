@@ -32,8 +32,6 @@
   --success-soft: rgba(15, 138, 95, 0.12);
   --danger: #d0402f;
   --danger-soft: rgba(208, 64, 47, 0.12);
-  --warn: #b45309;
-  --warn-soft: rgba(180, 83, 9, 0.14);
 
   --given: #12151d;
   --user: #2a4ede;
@@ -85,8 +83,6 @@
   --success-soft: rgba(58, 209, 155, 0.16);
   --danger: #ff7a68;
   --danger-soft: rgba(255, 122, 104, 0.16);
-  --warn: #f0b95a;
-  --warn-soft: rgba(240, 185, 90, 0.2);
 
   --given: #f4f6fc;
   --user: #a3b8ff;
@@ -514,16 +510,6 @@ button {
 .cell.is-selected {
   background: var(--cell-selected);
   box-shadow: inset 0 0 0 2px var(--accent);
-}
-
-/* A duplicated *correct* digit: a softer, amber note ("collides with a wrong
-   entry"), clearly different from the red of an actually wrong digit. */
-.cell.is-conflict {
-  background: var(--warn-soft);
-}
-
-.cell.is-conflict .cell__value {
-  color: var(--warn);
 }
 
 /* A digit that does not match the solution: the mistake to delete. */
