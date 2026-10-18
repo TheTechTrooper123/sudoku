@@ -71,9 +71,11 @@
   --space-5: 24px;
   --transition: 140ms ease;
   /* The board stays square and grows to fill the viewport: the smaller of the
-     available width, the viewport height and an upper bound so very large
-     monitors do not produce an absurdly big grid. */
-  --board-max: clamp(280px, min(92vw, 80dvh), 760px);
+     available width and the viewport height. On big screens a height-driven
+     value is used so the whole game fills the screen. */
+  --board-max: min(92vw, 80dvh);
+  /* Side gutter: full-bleed layout, so the margins scale with the viewport. */
+  --gutter: clamp(var(--space-4), 2.6vw, 56px);
   color-scheme: light;
 }
 
@@ -269,9 +271,7 @@ button {
 }
 
 .site-header__inner {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: var(--space-3) var(--space-4) 0;
+  padding: var(--space-3) var(--gutter) 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -335,9 +335,7 @@ button {
   flex: 1;
   flex-direction: column;
   width: 100%;
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: var(--space-4) var(--space-4) var(--space-5);
+  padding: var(--space-4) var(--gutter) var(--space-5);
 }
 
 /* The masthead: an inked serif word, centred over the grid. */
@@ -362,8 +360,18 @@ button {
 }
 
 @media (min-width: 900px) {
+  /* Fill the screen: the grid takes the full width and the board column is
+     centred against the height, so the game uses the whole viewport. */
   .game {
     grid-template-columns: minmax(0, 1fr) minmax(236px, 288px);
+    align-items: center;
+  }
+
+  :root {
+    /* Height-driven so the whole game fits the viewport without scrolling;
+       the fixed chrome (title, difficulty, status, footer, paddings) is
+       subtracted, and a cap keeps the grid sane on very large monitors. */
+    --board-max: min(74vw, calc(100dvh - 200px), 1100px);
   }
 }
 
@@ -1213,7 +1221,7 @@ kbd {
   display: flex;
   justify-content: flex-end;
   gap: var(--space-3);
-  padding: 0 var(--space-3) var(--space-2);
+  padding: 0 var(--gutter) var(--space-2);
   font-family: var(--font-display);
   font-size: 0.7rem;
   line-height: 1.4;
