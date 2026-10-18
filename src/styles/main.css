@@ -41,7 +41,9 @@
   --cell-peer: #f1f4fd;
   --cell-same: #dde6ff;
   --cell-selected: #c9d7ff;
-  --duplicate-outline: #8ea3e0;
+  --cell-duplicate: #c6d6ff;
+  --duplicate-outline: #4f68c4;
+  --duplicate-glow: rgba(79, 104, 196, 0.28);
 
   --radius-sm: 8px;
   --radius: 14px;
@@ -93,7 +95,9 @@
   --cell-peer: #1e2331;
   --cell-same: #263049;
   --cell-selected: #2c3a5f;
-  --duplicate-outline: #5b6ba3;
+  --cell-duplicate: #313f70;
+  --duplicate-outline: #8ea3e0;
+  --duplicate-glow: rgba(142, 163, 224, 0.25);
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
@@ -511,12 +515,14 @@ button {
 
 /* A correct cell (solved or a given clue) that shares its row, column or box
    with a wrong entry: the *reason* that digit is wrong. Deliberately neutral -
-   a quiet tint and a dashed outline, never red or amber - so a right cell can
-   never look like a mistake, yet the cause of the red mark stays visible. */
+   a strong blue tint, a bold dashed outline and a soft inner glow, but never
+   red or amber - so a right cell can never look like a mistake, yet stands out
+   clearly as the cause of the red mark. */
 .cell.is-duplicate {
-  background: var(--cell-same);
-  outline: 2px dashed var(--duplicate-outline);
-  outline-offset: -3px;
+  background: var(--cell-duplicate);
+  outline: 3px dashed var(--duplicate-outline);
+  outline-offset: -4px;
+  box-shadow: inset 0 0 14px var(--duplicate-glow);
 }
 
 .cell.is-selected {

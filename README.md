@@ -186,9 +186,9 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 * **Fehler und Grund:** Rot = die Zahl passt nicht zur Lösung (die zu löschende
   Zahl). Die *richtige* Zahl (gelöst oder Vorgabe), die sich damit in
   Zeile/Spalte/Block doppelt – also der Grund, warum der Eintrag falsch ist –
-  wird neutral markiert: leichte Blaufärbung plus gestrichelter Rahmen, nie rot
-  und nie bernstein. So bleibt der Auslöser sichtbar, ohne dass eine korrekte
-  Zelle wie ein Fehler aussieht.
+  wird neutral markiert: kräftige Blaufärbung mit gestricheltem Rahmen, nie rot
+  und nie bernstein. So bleibt der Auslöser deutlich sichtbar, ohne dass eine
+  korrekte Zelle wie ein Fehler aussieht.
 * **Tastenfeld:** Auf dem Handy ist der Zahlenblock automatisch sichtbar und
   enthält in der zweiten Reihe eine Löschen-Taste (`⨯`) für den schnellen Weg zur
   richtigen Zahl; am Computer ist er standardmäßig ausgeblendet (Löschen per
