@@ -176,6 +176,7 @@ function toggleRow(
 ): HTMLElement {
   const input = el('input', {
     attrs: { type: 'checkbox', checked: Boolean(app.settings[key]) },
+    dataset: { setting: key },
     on: {
       change: (event) => onChange((event.currentTarget as HTMLInputElement).checked),
     },
@@ -217,6 +218,14 @@ export class SettingsDialog extends Modal {
 
   render(): void {
     const app = this.app;
+
+    // The dialog is rebuilt whenever a setting changes. Remember which control
+    // the user is on so keyboard focus is not dropped to the body (which would
+    // also let Tab escape the modal).
+    const active = document.activeElement;
+    const focusKey =
+      active instanceof HTMLElement ? active.dataset.setting ?? active.dataset.value ?? null : null;
+
     this.setTitle(app.t('settings.title'));
 
     const closeButton = button('action.close', app, {
@@ -280,6 +289,13 @@ export class SettingsDialog extends Modal {
     ]);
 
     this.setFooter([closeButton]);
+
+    if (focusKey !== null) {
+      const next = this.body.querySelector<HTMLElement>(
+        `[data-setting="${focusKey}"], .segmented__option[data-value="${focusKey}"]`,
+      );
+      next?.focus({ preventScroll: true });
+    }
   }
 }
 

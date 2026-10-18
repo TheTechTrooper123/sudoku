@@ -202,6 +202,11 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
   `Strg+Z`/`Strg+Y` rückgängig/wiederholen. „Feld lösen" deckt ein einzelnes
   Feld auf.
 * **Hilfen:** Peers und gleiche Ziffern – einzeln abschaltbar.
+* **Animationen:** Der Schalter „Animationen" in den Einstellungen legt alle
+  Übergänge und Effekte global still – Zellwechsel, Dialog-Einblendung,
+  Hinweis-Highlight und die Gewinn-Animation (das „Gelöst!"-Fenster bleibt). Die
+  Ladeanzeige dreht weiter, weil sie ein Fortschritt und keine Dekoration ist.
+  Eine System-Einstellung „Bewegung reduzieren" hat weiterhin Vorrang.
 * **Gestaltung:** Ruhiger „Papier & Tinte"-Look – warmes Papier als Grund,
   Serifen-Überschrift, präzises Druckraster und Hairlines statt schwebender
   Karten. Kein Glas, keine Gradienten, keine generische Komponenten-Optik.

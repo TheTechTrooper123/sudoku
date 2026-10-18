@@ -1349,8 +1349,27 @@ kbd {
   }
 }
 
-/* ------------------------------------------------- 11. reduced motion */
+/* --------------------------------------------- 11. motion preferences */
 
+/* The player's own switch (settings → "Animations"): one attribute on the root
+   turns every transition and keyframe animation off. The loading spinner is
+   exempt because it is a progress indicator, not decoration. */
+:root[data-animations='off'] *,
+:root[data-animations='off'] *::before,
+:root[data-animations='off'] *::after {
+  animation-duration: 0.001ms !important;
+  animation-delay: 0ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  transition-delay: 0ms !important;
+}
+
+:root[data-animations='off'] .spinner {
+  animation-duration: 800ms !important;
+  animation-iteration-count: infinite !important;
+}
+
+/* The operating system's "reduce motion" preference always wins. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

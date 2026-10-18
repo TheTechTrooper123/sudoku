@@ -22,6 +22,15 @@ function isTouchDevice(): boolean {
   return window.matchMedia('(pointer: coarse)').matches;
 }
 
+/**
+ * The "Animations" setting. One attribute on the root element drives a global
+ * CSS switch that turns every transition and keyframe animation off - the same
+ * effect as the OS "reduce motion" preference, but chosen by the player.
+ */
+function applyAnimations(enabled: boolean): void {
+  document.documentElement.dataset.animations = enabled ? 'on' : 'off';
+}
+
 export class AppView {
   private readonly board: BoardView;
   private readonly status: StatusBar;
@@ -68,6 +77,7 @@ export class AppView {
   /** Boots the view: theme, translations, first game. */
   async init(): Promise<void> {
     applyTheme(this.app.settings.theme);
+    applyAnimations(this.app.settings.animations);
     watchSystemTheme(() => {
       if (this.app.settings.theme === 'system') applyTheme('system');
     });
@@ -212,6 +222,7 @@ export class AppView {
     events.on('language', () => this.applyLanguage());
     events.on('settings', () => {
       applyTheme(this.app.settings.theme);
+      applyAnimations(this.app.settings.animations);
       if (this.settingsDialog.isOpen) this.settingsDialog.render();
       this.renderPanel();
     });
