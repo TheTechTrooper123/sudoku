@@ -1,6 +1,6 @@
 /**
- * The control panel: status readout, difficulty selector, number pad,
- * action buttons and a compact statistics summary.
+ * The control panel: status readout, difficulty selector, number pad and
+ * action buttons.
  */
 import { DIFFICULTIES } from '../core/types.ts';
 import type { Difficulty } from '../core/types.ts';

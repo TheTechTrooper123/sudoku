@@ -1,7 +1,6 @@
 /**
- * Modals: settings, statistics, win screen, confirmations and the pause
- * overlay. One shared `Modal` base class handles focus management, the
- * backdrop and the `Escape` key.
+ * Modals: settings, win screen and confirmations. One shared `Modal` base class
+ * handles focus management, the backdrop and the `Escape` key.
  */
 import type { App } from '../state/app.ts';
 import type { Settings } from '../state/settings.ts';
@@ -193,7 +192,7 @@ function toggleRow(
 function button(
   labelKey: TranslationKey,
   app: App,
-  options: { variant?: 'primary' | 'ghost' | 'danger'; onClick: () => void; icon?: Parameters<typeof icon>[0] },
+  options: { variant?: 'primary' | 'ghost'; onClick: () => void; icon?: Parameters<typeof icon>[0] },
 ): HTMLButtonElement {
   const node = el(
     'button',

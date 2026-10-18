@@ -53,7 +53,6 @@
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 24px;
-  --space-6: 32px;
   --transition: 140ms ease;
   /* The board stays square and grows to fill the viewport: the smaller of the
      available width, the viewport height and an upper bound so very large
@@ -254,15 +253,10 @@ button {
   gap: var(--space-2);
 }
 
-/* The theme switcher lives in the settings dialog, not in the header. */
 .nav-button__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.nav-button__label {
-  display: none;
 }
 
 #nav-settings {
@@ -284,6 +278,24 @@ button {
 #nav-settings:active {
   background: var(--bg-subtle);
   color: var(--text-muted);
+}
+
+/* A touch larger where there is room to spare and the pointer is precise
+   (desktop/laptop) - kept centred on the "Sudoku" heading. */
+@media (min-width: 641px) and (pointer: fine) {
+  .site-header__inner {
+    padding-top: 1px;
+  }
+
+  #nav-settings {
+    width: 44px;
+    height: 44px;
+  }
+
+  #nav-settings .nav-button__icon svg {
+    width: 22px;
+    height: 22px;
+  }
 }
 
 /* --------------------------------------------------------------- 4. intro */
@@ -978,15 +990,6 @@ kbd {
   background: var(--accent-strong);
 }
 
-.button--danger {
-  color: var(--danger);
-  border-color: color-mix(in srgb, var(--danger) 40%, var(--border-strong));
-}
-
-.button--danger:hover {
-  background: var(--danger-soft);
-}
-
 .segmented {
   display: inline-flex;
   flex-wrap: wrap;
@@ -1150,11 +1153,6 @@ kbd {
   padding: var(--space-2) var(--space-3);
   border-radius: 999px;
   font-size: 0.85rem;
-}
-
-.badge--record {
-  background: var(--accent-soft);
-  color: var(--accent-strong);
 }
 
 .badge--perfect {

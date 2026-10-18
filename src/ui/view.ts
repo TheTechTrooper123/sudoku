@@ -56,8 +56,8 @@ export class AppView {
     this.loadingLabel = qs('#loading-label');
     this.liveRegion = qs('#live-region');
 
-    // The header is a single quiet icon (the same at every screen size); the
-    // icon is injected once here, the label span only carries a translation.
+    // The header is a single quiet icon (the same at every screen size); CSS
+    // scales it up slightly on desktop/laptop.
     append(qs('#nav-settings .nav-button__icon'), [icon('sliders', 18)]);
 
     this.bindHeader();

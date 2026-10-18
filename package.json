@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Professional Sudoku web app with puzzle generation, notes, hints, statistics and i18n (DE/EN).",
+  "description": "Sudoku web app with puzzle generation, notes, hints and i18n (DE/EN).",
   "engines": {
     "node": ">=20"
   },
