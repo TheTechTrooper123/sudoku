@@ -151,21 +151,40 @@ describe('notes', () => {
 });
 
 describe('undo and redo', () => {
-  it('reverts values, notes and counters', () => {
+  it('reverts values and notes', () => {
     const game = newGame();
     const index = firstEmpty(game);
     const wrong = (game.solution[index] % 9) + 1;
     game.select(index);
     game.placeDigit(wrong);
     expect(game.canUndo()).toBe(true);
-    expect(game.mistakes).toBe(1);
     expect(game.undo()).toBe(true);
     expect(game.cells[index].value).toBe(0);
-    expect(game.mistakes).toBe(0);
     expect(game.canRedo()).toBe(true);
     expect(game.redo()).toBe(true);
     expect(game.cells[index].value).toBe(wrong);
+  });
+
+  it('never refunds a counted mistake - undo is not a free pass', () => {
+    const game = newGame();
+    const index = firstEmpty(game);
+    const wrong = (game.solution[index] % 9) + 1;
+    game.select(index);
+    game.placeDigit(wrong);
     expect(game.mistakes).toBe(1);
+
+    // Undo clears the cell just like "erase", but the mistake stays counted.
+    game.undo();
+    expect(game.cells[index].value).toBe(0);
+    expect(game.mistakes).toBe(1);
+
+    game.redo();
+    expect(game.mistakes).toBe(1);
+
+    // A second wrong attempt is a second mistake.
+    game.undo();
+    game.placeDigit(wrong);
+    expect(game.mistakes).toBe(2);
   });
 
   it('undoes compound edits (value + note cleanup) in one step', () => {
@@ -214,6 +233,21 @@ describe('hints', () => {
     expect(game.hints).toBe(1);
     expect(game.lastRevealed).toBe(index);
     expect(game.mistakes).toBe(0);
+  });
+
+  it('never refunds a used hint', () => {
+    const game = newGame();
+    const index = firstEmpty(game);
+    game.select(index);
+    expect(game.hint()).toBe(index);
+    expect(game.hints).toBe(1);
+
+    game.undo();
+    expect(game.cells[index].value).toBe(0);
+    expect(game.hints).toBe(1);
+
+    game.redo();
+    expect(game.hints).toBe(1);
   });
 
   it('prefers a wrong entry when nothing is selected', () => {

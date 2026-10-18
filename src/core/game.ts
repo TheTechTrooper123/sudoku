@@ -323,8 +323,9 @@ export class Game {
       cell.value = change.before.value;
       cell.notes = change.before.notes;
     }
-    if (move.mistake) this.mistakes = Math.max(0, this.mistakes - 1);
-    if (move.kind === 'hint') this.hints = Math.max(0, this.hints - 1);
+    // The mistake and hint counters are deliberately NOT refunded here. A wrong
+    // digit is charged the moment it is entered, and a revealed cell cannot be
+    // un-seen; otherwise undo would be a free pass around both counters.
     this.future.push(move);
     if (this.status === 'won') this.status = 'playing';
     this.conflictsCache = null;
@@ -339,8 +340,7 @@ export class Game {
       cell.value = change.after.value;
       cell.notes = change.after.notes;
     }
-    if (move.mistake) this.mistakes++;
-    if (move.kind === 'hint') this.hints++;
+    // Re-applying a move must not charge a second time - see `undo`.
     this.history.push(move);
     this.selected = move.changes[move.changes.length - 1]?.index ?? this.selected;
     this.conflictsCache = null;

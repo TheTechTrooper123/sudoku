@@ -212,6 +212,11 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
   Fehler bleibt rot, der Grund ist ein neutraler Papierton mit Tinten-Rahmen.
 * **Status:** Unter dem Brett steht eine dezente Zeile mit Fehlern und gelösten
   Feldern; die Schwierigkeitsauswahl ist bewusst zurückhaltend gestaltet.
+* **Fehler/Hinweise sind endgültig:** Beide Zähler werden in dem Moment erhöht, in
+  dem der Fehler passiert bzw. der Hinweis genutzt wird, und werden **nicht**
+  erstattet. „Rückgängig" entfernt die falsche Ziffer (wie „Löschen"), der Fehler
+  bleibt aber gezählt – sonst wäre Undo ein Freifahrtschein für die Statistik und
+  das „Perfekt"-Abzeichen. Ein erneutes Eintippen zählt als neuer Fehler.
 * **Keine Speicherung:** Es wird nichts in `localStorage` oder an einen Server
   geschrieben. Ein Reload startet ein frisches Spiel und setzt alle
   Einstellungen auf die Standardwerte zurück.
