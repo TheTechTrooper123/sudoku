@@ -199,9 +199,12 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
   Einstellungen auf die Standardwerte zurück.
 * **Sprache/Thema:** Die Sprache startet in der Gerätesprache und lässt sich nur
   in den Einstellungen zwischen Deutsch und Englisch umschalten; das Thema folgt
-  anfangs dem System und lässt sich in der Kopfzeile oder den Einstellungen nur
-  zwischen Hell und Dunkel wählen. Beides gilt für die laufende Sitzung. Die
-  statischen Rechtsseiten verstehen `?lang=de`/`?lang=en`.
+  anfangs dem System und lässt sich in den Einstellungen nur zwischen Hell und
+  Dunkel wählen. Beides gilt für die laufende Sitzung. Die statischen Rechtsseiten
+  verstehen `?lang=de`/`?lang=en`.
+* **Kopfleiste:** Statt einer klassischen Leiste gibt es auf allen Bildschirmgrößen
+  nur ein einzelnes, zurückhaltendes Einstellungen-Symbol oben rechts – auf einer
+  Höhe mit der Überschrift „Sudoku“. Thema und Sprache liegen in den Einstellungen.
 
 ## 7. Assets neu erzeugen
 
@@ -229,9 +232,9 @@ Erzeugt `public/og-image.png` (1200×630) und `public/apple-touch-icon.png`
   bzw. `npm run build` erzeugen, `api/` ist Build-Artefakt und nicht
   eingecheckt. Lokal (Vite-Middleware) und in den Tests wird weiterhin direkt
   `server/puzzle.ts` verwendet.
-* Layout prüfen: `npm run dev`, dann Fenster schmal ziehen (≤ 640 px: Kopfzeile
-  bricht um, Bedienfeld wandert unter das Brett) und Hell/Dunkel (Kopfzeile oder
-  Einstellungen) sowie Deutsch/Englisch (nur in den Einstellungen) durchspielen.
+* Layout prüfen: `npm run dev`, dann Fenster schmal ziehen (≤ 640 px:
+  Bedienfeld wandert unter das Brett) und Hell/Dunkel sowie Deutsch/Englisch
+  (beides nur in den Einstellungen) durchspielen.
   Das Brett füllt den verfügbaren Platz und wird über `--board-max` an Breite und
   Viewporthöhe gekoppelt.
 

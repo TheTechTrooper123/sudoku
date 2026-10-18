@@ -6,7 +6,7 @@
  * (keyboard, theme).
  */
 import type { App, DialogKind } from '../state/app.ts';
-import { append, clear, qs, setText, toggleClass } from './dom.ts';
+import { append, qs, setText, toggleClass } from './dom.ts';
 import { BoardView } from './board.ts';
 import { ConfirmDialog, SettingsDialog, Toast, WinDialog } from './dialogs.ts';
 import { applyDocumentMeta, applyTranslations } from './i18n-dom.ts';
@@ -56,8 +56,8 @@ export class AppView {
     this.loadingLabel = qs('#loading-label');
     this.liveRegion = qs('#live-region');
 
-    // The header shows a label on desktop and a single quiet icon on phones;
-    // the icon is injected once here (translations only touch the label span).
+    // The header is a single quiet icon (the same at every screen size); the
+    // icon is injected once here, the label span only carries a translation.
     append(qs('#nav-settings .nav-button__icon'), [icon('sliders', 18)]);
 
     this.bindHeader();
@@ -86,18 +86,9 @@ export class AppView {
 
   private bindHeader(): void {
     qs('#nav-settings').addEventListener('click', () => this.app.openSettings());
-    qs('#nav-theme').addEventListener('click', () => this.app.cycleTheme());
-  }
-
-  private renderHeader(): void {
-    const themeButton = qs('#nav-theme');
-    clear(themeButton);
-    append(themeButton, [icon(this.app.resolvedTheme === 'dark' ? 'moon' : 'sun', 18)]);
-    themeButton.setAttribute('aria-label', `${this.app.t('settings.theme')}: ${this.app.t(this.app.resolvedTheme === 'dark' ? 'settings.themeDark' : 'settings.themeLight')}`);
   }
 
   private renderAll(): void {
-    this.renderHeader();
     this.board.render();
     this.status.render();
     this.difficulty.render();
@@ -188,7 +179,6 @@ export class AppView {
     const t = this.app.t.bind(this.app);
     applyDocumentMeta(t, this.app.language);
     applyTranslations(document, t);
-    this.renderHeader();
     this.board.render();
     this.status.translate();
     this.difficulty.translate();
@@ -222,7 +212,6 @@ export class AppView {
     events.on('language', () => this.applyLanguage());
     events.on('settings', () => {
       applyTheme(this.app.settings.theme);
-      this.renderHeader();
       if (this.settingsDialog.isOpen) this.settingsDialog.render();
       this.renderPanel();
     });

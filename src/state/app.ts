@@ -274,10 +274,6 @@ export class App {
     return resolveTheme(this.settings.theme);
   }
 
-  cycleTheme(): void {
-    this.updateSetting('theme', this.resolvedTheme === 'dark' ? 'light' : 'dark');
-  }
-
   applyLanguage(): void {
     this.currentLanguage = this.settings.language;
     this.translator = createTranslator(this.currentLanguage);

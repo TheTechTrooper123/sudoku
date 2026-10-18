@@ -229,23 +229,23 @@ button {
 
 /* ------------------------------------------------------------- 3. header */
 
+/* A single quiet control, aligned with the "Sudoku" heading: no bar, no theme
+   switcher - the same at every screen size. The settings dialog (which also
+   holds the theme and language) is one tap away. */
 .site-header {
-  position: sticky;
+  position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 30;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  background: transparent;
 }
 
 .site-header__inner {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-1) var(--space-3);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--space-3);
 }
 
 .site-nav {
@@ -254,40 +254,36 @@ button {
   gap: var(--space-2);
 }
 
-.nav-button {
+/* The theme switcher lives in the settings dialog, not in the header. */
+.nav-button__icon {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--bg-elevated);
-  color: var(--text);
-  cursor: pointer;
-  transition: background var(--transition), border-color var(--transition), transform var(--transition);
-}
-
-.nav-button:hover {
-  background: var(--bg-subtle);
-}
-
-.nav-button:active {
-  transform: translateY(1px);
-}
-
-.nav-button--icon {
-  min-width: 44px;
   justify-content: center;
-  font-weight: 600;
-  font-size: 0.85rem;
 }
 
-/* The header button carries both an icon and a text label; on pointer devices
-   the label is shown, on phones the icon takes over (see the media query). */
-.nav-button__icon {
+.nav-button__label {
   display: none;
+}
+
+#nav-settings {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+#nav-settings:hover,
+#nav-settings:active {
+  background: var(--bg-subtle);
+  color: var(--text-muted);
 }
 
 /* --------------------------------------------------------------- 4. intro */
@@ -305,6 +301,7 @@ button {
   margin: 0;
   font-size: clamp(1rem, 2.6vw, 1.4rem);
   font-weight: 600;
+  line-height: 1;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -640,52 +637,6 @@ button {
 }
 
 @media (max-width: 640px), (pointer: coarse) {
-  /* The header collapses to a single quiet icon that sits on the same line as
-     the "Sudoku" heading: no bar, no theme switcher. */
-  .site-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: transparent;
-    backdrop-filter: none;
-    border-bottom: 0;
-  }
-
-  .site-header__inner {
-    padding: var(--space-1) var(--space-2);
-  }
-
-  #nav-theme {
-    display: none;
-  }
-
-  #nav-settings {
-    flex: 0 0 auto;
-    width: 36px;
-    height: 36px;
-    min-width: 0;
-    padding: 0;
-    justify-content: center;
-    border-color: transparent;
-    background: transparent;
-    color: var(--text-soft);
-  }
-
-  #nav-settings:hover,
-  #nav-settings:active {
-    background: var(--bg-subtle);
-    color: var(--text-muted);
-  }
-
-  .nav-button__icon {
-    display: inline-flex;
-  }
-
-  .nav-button__label {
-    display: none;
-  }
-
   /* The number pad becomes a thumb-friendly bar pinned to the bottom of the
      screen: every digit is reachable at once without scrolling and without
      covering the board. */
