@@ -313,7 +313,7 @@ describe('cell marks', () => {
     expect(game.cellMark(target)).toBe('duplicate');
   });
 
-  it('never marks a given clue as a duplicate', () => {
+  it('shows the given clue that blocks a wrong entry, so the cause is visible', () => {
     const game = newGame();
     let given = -1;
     let intruder = -1;
@@ -331,7 +331,7 @@ describe('cell marks', () => {
     game.select(intruder);
     game.placeDigit(game.cells[given].value);
     expect(game.isConflict(given)).toBe(true); // the rule flags the pair ...
-    expect(game.cellMark(given)).toBeNull(); // ... but a clue always stays clean
+    expect(game.cellMark(given)).toBe('duplicate'); // ... and the blocking clue stays visible
     expect(game.cellMark(intruder)).toBe('wrong');
   });
 });

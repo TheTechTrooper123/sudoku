@@ -184,10 +184,11 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
   werden sofort rot markiert; richtig gelöste Felder werden gesperrt und wie die
   Vorgaben fest geschrieben (kein Überschreiben/Löschen mehr möglich).
 * **Zwei Markierungen, klar getrennt:** Rot = die Zahl passt nicht zur Lösung
-  (die zu löschende Zahl). Bernstein = eine *richtige* Zahl, die sich mit einer
-  anderen Zahl in Zeile/Spalte/Block doppelt – fast immer die Folge eines falschen
-  Eintrags. So wird eine korrekte Zelle nie fälschlich rot, und man sieht sofort,
-  welche Zahl weg muss. Vorgaben werden nie als doppelt markiert.
+  (die zu löschende Zahl). Bernstein = eine *richtige* Zahl (gelöst **oder eine
+  Vorgabe**), die sich mit einer anderen Zahl in Zeile/Spalte/Block doppelt –
+  also genau die Zahl, wegen der dein Eintrag dort nicht stehen darf. So wird
+  eine korrekte Zelle nie fälschlich rot, und der Auslöser der Doppelung bleibt
+  immer sichtbar.
 * **Tastenfeld:** Auf dem Handy ist der Zahlenblock automatisch sichtbar und
   enthält in der zweiten Reihe eine Löschen-Taste (`⨯`) für den schnellen Weg zur
   richtigen Zahl; am Computer ist er standardmäßig ausgeblendet (Löschen per
