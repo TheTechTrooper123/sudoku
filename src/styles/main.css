@@ -77,43 +77,45 @@
   color-scheme: light;
 }
 
-/* The same paper, after dark: an ink-black page, not a cold slate screen. */
+/* After dark the page is ink, not paper: a near-neutral charcoal with only a
+   whisper of warmth. Strongly yellow/olive tones are avoided on purpose - on a
+   dark screen they read as sickly, not cosy. */
 [data-theme='dark'] {
   color-scheme: dark;
-  --bg: #15130d;
-  --bg-elevated: #1e1b13;
-  --bg-subtle: #262117;
-  --bg-sunken: #100e08;
-  --text: #f3edde;
-  --text-muted: #b8ad94;
-  --text-soft: #8a8065;
-  --border: #332d20;
-  --border-strong: #4d4431;
+  --bg: #171615;
+  --bg-elevated: #201f1d;
+  --bg-subtle: #282725;
+  --bg-sunken: #111110;
+  --text: #f2f0ed;
+  --text-muted: #b4b1ab;
+  --text-soft: #8b8983;
+  --border: #31302d;
+  --border-strong: #484640;
   --scrim: rgba(0, 0, 0, 0.62);
 
-  --line: #2c2820;
-  --line-strong: #5c5340;
+  --line: #2b2a28;
+  --line-strong: #57554f;
 
-  --accent: #97b0e6;
-  --accent-strong: #c0d2f7;
-  --accent-soft: rgba(151, 176, 230, 0.16);
-  --accent-contrast: #15130d;
+  --accent: #9fb4e4;
+  --accent-strong: #c3d1f4;
+  --accent-soft: rgba(159, 180, 228, 0.16);
+  --accent-contrast: #171615;
   --success: #3ad19b;
   --success-soft: rgba(58, 209, 155, 0.16);
   --danger: #ff7a68;
   --danger-soft: rgba(255, 122, 104, 0.16);
 
-  --given: #f2ecdf;
-  --user: #9fb6ef;
-  --note: #8a8065;
+  --given: #f2f0ed;
+  --user: #a6b8ee;
+  --note: #8b8983;
 
-  --cell-bg: #1c1a15;
-  --cell-peer: #252119;
-  --cell-same: #302a1e;
-  --cell-selected: #3d3627;
-  --cell-duplicate: #383226;
-  --duplicate-outline: #97b0e6;
-  --duplicate-glow: rgba(151, 176, 230, 0.22);
+  --cell-bg: #1c1b1a;
+  --cell-peer: #232221;
+  --cell-same: #2d2c2a;
+  --cell-selected: #3a3936;
+  --cell-duplicate: #343331;
+  --duplicate-outline: #9fb4e4;
+  --duplicate-glow: rgba(159, 180, 228, 0.22);
 
   --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.3);
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 30px rgba(0, 0, 0, 0.45);
