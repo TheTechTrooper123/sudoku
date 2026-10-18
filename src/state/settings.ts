@@ -16,8 +16,6 @@ export interface Settings {
   highlightPeers: boolean;
   /** Remove a digit from the notes of its peers when placing it. */
   autoRemoveNotes: boolean;
-  /** Play a subtle animation when the puzzle is solved. */
-  animations: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -27,7 +25,6 @@ export const DEFAULT_SETTINGS: Settings = {
   highlightSameNumber: true,
   highlightPeers: true,
   autoRemoveNotes: true,
-  animations: true,
 };
 
 /** A fresh, mutable copy of the defaults. */

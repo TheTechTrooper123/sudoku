@@ -22,13 +22,9 @@ interface CellView {
   lastSelected: string;
 }
 
-const FLASH_MS = 900;
-
 export class BoardView {
   readonly root: HTMLDivElement;
   private readonly cells: CellView[] = [];
-  private flashIndex: number | null = null;
-  private flashTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     private readonly app: App,
@@ -70,7 +66,6 @@ export class BoardView {
           },
           [value, notes],
         );
-        cell.style.setProperty('--i', String(index));
         rowNode.appendChild(cell);
         this.cells.push({
           root: cell,
@@ -131,7 +126,6 @@ export class BoardView {
       const wrong = game.isWrong(index);
       if (wrong) classes.push('is-wrong');
       else if (game.isConflict(index)) classes.push('is-duplicate');
-      if (this.flashIndex === index) classes.push('is-hint');
 
       const className = classes.join(' ');
       if (className !== view.lastClass) {
@@ -170,8 +164,7 @@ export class BoardView {
       else setAttr(view.root, 'aria-invalid', null);
     }
 
-    toggleClass(this.root, 'is-won', game.status === 'won' && this.app.settings.animations);
-    this.syncFlash();
+    toggleClass(this.root, 'is-won', game.status === 'won');
   }
 
   focusSelected(): void {
@@ -189,22 +182,6 @@ export class BoardView {
     if (!Number.isInteger(index)) return;
     this.app.selectCell(index);
     this.focusSelected();
-  }
-
-  private syncFlash(): void {
-    const game = this.app.game;
-    if (!game) return;
-    const revealed = game.lastRevealed;
-    if (revealed === null || revealed === this.flashIndex) return;
-    if (this.flashTimer !== null) clearTimeout(this.flashTimer);
-    this.flashIndex = revealed;
-    const view = this.cells[revealed];
-    this.flashTimer = setTimeout(() => {
-      this.flashIndex = null;
-      this.flashTimer = null;
-      view.root.classList.remove('is-hint');
-      view.lastClass = view.root.className;
-    }, FLASH_MS);
   }
 
   private cellLabel(index: number, cell: Cell, selected: boolean, wrong: boolean): string {

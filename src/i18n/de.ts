@@ -79,8 +79,6 @@ export const de: Record<TranslationKey, string> = {
   'settings.highlightPeersHint': 'Die Einheiten der ausgewählten Zelle einfärben.',
   'settings.autoRemoveNotes': 'Notizen aufräumen',
   'settings.autoRemoveNotesHint': 'Eine Zahl aus den Notizen in Zeile, Spalte und Block entfernen.',
-  'settings.animations': 'Animationen',
-  'settings.animationsHint': 'Sanfte Übergänge und ein kleines Highlight beim Lösen.',
 
   'shortcuts.title': 'Steuerung',
   'shortcuts.move': 'Feld auswählen',

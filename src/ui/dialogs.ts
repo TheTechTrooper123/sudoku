@@ -282,9 +282,6 @@ export class SettingsDialog extends Modal {
           'settings.autoRemoveNotesHint',
           (value) => app.updateSetting('autoRemoveNotes', value),
         ),
-        toggleRow(app, 'animations', 'settings.animations', 'settings.animationsHint', (value) =>
-          app.updateSetting('animations', value),
-        ),
       ]),
     ]);
 

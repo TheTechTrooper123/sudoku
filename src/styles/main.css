@@ -69,7 +69,6 @@
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 24px;
-  --transition: 140ms ease;
   /* The board stays square and grows to fill the viewport: the smaller of the
      available width and the viewport height. On big screens a height-driven
      value is used so the whole game fills the screen. */
@@ -301,7 +300,6 @@ button {
   background: transparent;
   color: var(--text-soft);
   cursor: pointer;
-  transition: background var(--transition), color var(--transition);
 }
 
 #nav-settings:hover,
@@ -483,7 +481,6 @@ button {
   border-bottom: 1px solid var(--line);
   cursor: pointer;
   user-select: none;
-  transition: background var(--transition), color var(--transition);
   font-variant-numeric: tabular-nums;
 }
 
@@ -581,44 +578,8 @@ button {
   color: var(--danger);
 }
 
-.cell.is-hint .cell__value {
-  animation: reveal 800ms ease;
-}
-
-@keyframes reveal {
-  0% {
-    transform: scale(0.4);
-    opacity: 0;
-  }
-  55% {
-    transform: scale(1.22);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.board.is-won .cell {
-  animation: celebrate 620ms ease both;
-  animation-delay: calc(var(--i) * 9ms);
-}
-
 .board.is-won .cell__value {
   color: var(--success);
-}
-
-@keyframes celebrate {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(0.88);
-    background: var(--success-soft);
-  }
-  100% {
-    transform: scale(1);
-  }
 }
 
 .board.is-loading {
@@ -672,7 +633,6 @@ button {
   font-size: 0.82rem;
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: color var(--transition), border-color var(--transition);
 }
 
 .difficulty__option:hover {
@@ -713,7 +673,6 @@ button {
   background: var(--bg-elevated);
   color: var(--accent-strong);
   cursor: pointer;
-  transition: background var(--transition), border-color var(--transition), transform var(--transition);
 }
 
 .keypad__key:hover:not(:disabled) {
@@ -798,7 +757,6 @@ button {
   cursor: pointer;
   font-size: 0.9rem;
   text-align: left;
-  transition: color var(--transition), background var(--transition);
 }
 
 .controls__button:first-child {
@@ -895,14 +853,6 @@ kbd {
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  animation: modal-in 180ms ease;
-}
-
-@keyframes modal-in {
-  from {
-    transform: translateY(8px);
-    opacity: 0;
-  }
 }
 
 .modal__head {
@@ -969,7 +919,6 @@ kbd {
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: background var(--transition), border-color var(--transition), transform var(--transition);
 }
 
 .button:hover {
@@ -1034,7 +983,6 @@ kbd {
   color: var(--text-soft);
   cursor: pointer;
   font-size: 0.85rem;
-  transition: color var(--transition), border-color var(--transition);
 }
 
 .segmented__option:hover {
@@ -1095,7 +1043,6 @@ kbd {
   border-radius: 999px;
   background: var(--bg-sunken);
   border: 1px solid var(--border-strong);
-  transition: background var(--transition), border-color var(--transition);
 }
 
 .switch__track::after {
@@ -1108,7 +1055,6 @@ kbd {
   border-radius: 50%;
   background: var(--bg-elevated);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition);
 }
 
 .switch input:checked + .switch__track {
@@ -1196,7 +1142,6 @@ kbd {
   background: var(--bg-elevated);
   box-shadow: var(--shadow);
   font-size: 0.85rem;
-  animation: toast-in 200ms ease;
 }
 
 .toast[hidden] {
@@ -1205,13 +1150,6 @@ kbd {
 
 .toast--success {
   color: var(--success);
-}
-
-@keyframes toast-in {
-  from {
-    transform: translate(-50%, 12px);
-    opacity: 0;
-  }
 }
 
 /* -------------------------------------------------------------- footer */
@@ -1346,37 +1284,6 @@ kbd {
 
   .site-footer {
     padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
-  }
-}
-
-/* --------------------------------------------- 11. motion preferences */
-
-/* The player's own switch (settings → "Animations"): one attribute on the root
-   turns every transition and keyframe animation off. The loading spinner is
-   exempt because it is a progress indicator, not decoration. */
-:root[data-animations='off'] *,
-:root[data-animations='off'] *::before,
-:root[data-animations='off'] *::after {
-  animation-duration: 0.001ms !important;
-  animation-delay: 0ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.001ms !important;
-  transition-delay: 0ms !important;
-}
-
-:root[data-animations='off'] .spinner {
-  animation-duration: 800ms !important;
-  animation-iteration-count: infinite !important;
-}
-
-/* The operating system's "reduce motion" preference always wins. */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
   }
 }
 

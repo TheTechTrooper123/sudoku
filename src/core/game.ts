@@ -87,7 +87,7 @@ export class Game {
   mistakes = 0;
   hints = 0;
   status: GameStatus = 'playing';
-  /** Index of the cell that was revealed by the last hint (for animations). */
+  /** Index of the cell that was revealed by the last hint. */
   lastRevealed: number | null = null;
 
   private conflictsCache: Uint8Array | null = null;

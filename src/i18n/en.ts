@@ -78,8 +78,6 @@ export const en = {
   'settings.highlightPeersHint': 'Shade the units of the selected cell.',
   'settings.autoRemoveNotes': 'Clean up pencil marks',
   'settings.autoRemoveNotesHint': 'Remove a digit from the notes of its row, column and box.',
-  'settings.animations': 'Animations',
-  'settings.animationsHint': 'Subtle transitions and a small celebration when you win.',
 
   'shortcuts.title': 'Controls',
   'shortcuts.move': 'Select a cell',
