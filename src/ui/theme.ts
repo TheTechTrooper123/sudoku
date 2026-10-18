@@ -6,9 +6,10 @@ import type { ThemePreference } from '../state/settings.ts';
 
 export type ResolvedTheme = 'light' | 'dark';
 
+/** Browser UI colour per theme - must stay in sync with `--bg` in main.css. */
 export const THEME_COLORS: Record<ResolvedTheme, string> = {
-  light: '#e7eaf0',
-  dark: '#0e1016',
+  light: '#f4efe4',
+  dark: '#171615',
 };
 
 export function systemTheme(): ResolvedTheme {

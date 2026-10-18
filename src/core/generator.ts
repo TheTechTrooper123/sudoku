@@ -137,7 +137,10 @@ function digPuzzle(solution: Grid, target: Difficulty, rng: Rng, deadline: numbe
     puzzle[index] = 0;
     puzzle[mirror] = 0;
     if (countSolutions(puzzle, 2).count === 1) {
-      filled -= (first === 0 ? 0 : 1) + (second === 0 ? 0 : 1);
+      // The centre cell (index 40) is its own mirror, so it must only count
+      // once - otherwise `filled` drifts and the digger stops one clue early.
+      const removed = (first === 0 ? 0 : 1) + (mirror === index || second === 0 ? 0 : 1);
+      filled -= removed;
     } else {
       puzzle[index] = first;
       puzzle[mirror] = second;

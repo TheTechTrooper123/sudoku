@@ -684,6 +684,12 @@ button {
   transform: translateY(1px);
 }
 
+.keypad__key:disabled {
+  color: var(--text-soft);
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .keypad__digit {
   font-size: 1.55rem;
   font-weight: 600;

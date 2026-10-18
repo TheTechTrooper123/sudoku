@@ -223,8 +223,10 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 * **Sprache/Thema:** Die Sprache startet in der Gerätesprache und lässt sich nur
   in den Einstellungen zwischen Deutsch und Englisch umschalten; das Thema folgt
   anfangs dem System und lässt sich in den Einstellungen nur zwischen Hell und
-  Dunkel wählen. Beides gilt für die laufende Sitzung. Die statischen Rechtsseiten
-  verstehen `?lang=de`/`?lang=en`.
+  Dunkel wählen. Beides gilt für die laufende Sitzung. `?lang=de`/`?lang=en`
+  überschreibt beim Start die Gerätesprache (darauf verweisen die `hreflang`-
+  Alternates in `index.html` und `sitemap.xml`) – auf der Spielseite wie auf den
+  statischen Rechtsseiten.
 * **Kopfleiste:** Statt einer klassischen Leiste gibt es auf allen Bildschirmgrößen
   nur ein einzelnes, zurückhaltendes Einstellungen-Symbol oben rechts – auf einer
   Höhe mit der Überschrift „Sudoku“. Thema und Sprache liegen in den Einstellungen.
@@ -236,7 +238,11 @@ python3 tools/make-assets.py     # benötigt Pillow + Noto-CJK-Fonts
 ```
 
 Erzeugt `public/og-image.png` (1200×630) und `public/apple-touch-icon.png`
-(180×180). Text und Domain im Skript anpassen.
+(180×180). Text und Domain im Skript anpassen. Die Farben des Skripts spiegeln
+die Papier/Tinte-Tokens aus `src/styles/main.css` (flächiges Papier, Tinte,
+gedruckte Haarlinien – keine Verläufe); bei einer Palettenänderung müssen sie
+dort mitgezogen werden. Dasselbe gilt für `src/ui/theme.ts` (Browser-Farbe),
+`public/site.webmanifest` und `public/favicon.svg`.
 
 ## 8. Entwicklungshinweise
 

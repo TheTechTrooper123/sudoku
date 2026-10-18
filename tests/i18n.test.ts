@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { de } from '../src/i18n/de.ts';
 import { en } from '../src/i18n/en.ts';
-import { detectDeviceLanguage, LANGUAGES, translate } from '../src/i18n/index.ts';
+import { detectDeviceLanguage, LANGUAGES, startLanguage, translate } from '../src/i18n/index.ts';
 
 function placeholders(template: string): string[] {
   return [...template.matchAll(/\{(\w+)\}/g)].map((match) => match[1]).sort();
@@ -44,5 +44,16 @@ describe('translations', () => {
 
   it('detects a supported device language, defaulting to English', () => {
     expect(LANGUAGES).toContain(detectDeviceLanguage());
+  });
+
+  it('honours an explicit ?lang= over the device language', () => {
+    expect(startLanguage('?lang=de')).toBe('de');
+    expect(startLanguage('lang=en')).toBe('en');
+    expect(startLanguage('?foo=1&lang=de')).toBe('de');
+  });
+
+  it('ignores an unsupported ?lang= and falls back to the device language', () => {
+    expect(LANGUAGES).toContain(startLanguage('?lang=fr'));
+    expect(LANGUAGES).toContain(startLanguage(''));
   });
 });

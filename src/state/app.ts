@@ -9,7 +9,7 @@
  */
 import { Game } from '../core/game.ts';
 import type { Difficulty, Puzzle } from '../core/types.ts';
-import { createTranslator, detectDeviceLanguage } from '../i18n/index.ts';
+import { createTranslator, startLanguage } from '../i18n/index.ts';
 import type { Language, TranslationKey, Translator } from '../i18n/index.ts';
 import { deliverPuzzle } from '../services/puzzleService.ts';
 import type { PuzzleOrigin } from '../services/puzzleService.ts';
@@ -66,9 +66,11 @@ export class App {
   private pendingRequest: AbortController | null = null;
 
   constructor() {
-    // Nothing is persisted, so the first run adopts the device language;
-    // from then on the user can only choose between German and English.
-    this.settings = { ...createSettings(), language: detectDeviceLanguage() };
+    // Nothing is persisted, so the first run adopts `?lang=` when the URL asks
+    // for a language and the device language otherwise; from then on the user
+    // can only choose between German and English in the settings.
+    const search = typeof location === 'undefined' ? '' : location.search;
+    this.settings = { ...createSettings(), language: startLanguage(search) };
     this.currentLanguage = this.settings.language;
     this.translator = createTranslator(this.currentLanguage);
 
@@ -102,7 +104,6 @@ export class App {
     if (this.isBusy) return;
     this.ui.selectedDifficulty = difficulty;
     this.ui.loading = 'requesting';
-    this.ui.lastWin = null;
     this.setDialog('none');
     this.events.emit('loading');
     this.events.emit('panel');
@@ -177,6 +178,9 @@ export class App {
     this.game = game;
     this.origin = origin;
     this.ui.loading = null;
+    // A fresh board starts a fresh cycle: without this, winning a restarted
+    // puzzle would not raise the win dialog again.
+    this.ui.lastWin = null;
     this.events.emit('board');
     this.events.emit('panel');
   }

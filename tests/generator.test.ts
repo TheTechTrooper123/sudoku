@@ -48,6 +48,18 @@ describe('generatePuzzle', () => {
     expect(generated.rating.difficulty).toBe(generated.difficulty);
   });
 
+  it('digs down to the requested clue target', () => {
+    // Regression: the centre cell is its own mirror and used to be counted
+    // twice while digging, which stopped the digger one clue early.
+    const generated = generatePuzzle({
+      difficulty: 'hard',
+      rng: createRng(1),
+      timeBudgetMs: 20_000,
+      maxAttempts: 1,
+    });
+    expect(countFilled(generated.puzzle)).toBeLessThanOrEqual(27);
+  });
+
   it('produces distinguishable boards for different seeds', () => {
     const a = generatePuzzle({ difficulty: 'medium', rng: createRng(7), timeBudgetMs: 8_000 });
     const b = generatePuzzle({ difficulty: 'medium', rng: createRng(8), timeBudgetMs: 8_000 });

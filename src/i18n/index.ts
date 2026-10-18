@@ -28,6 +28,18 @@ export function detectDeviceLanguage(): Language {
   return 'en';
 }
 
+/**
+ * Language of the first render. An explicit `?lang=de|en` wins - the language
+ * alternates declared in `index.html`, `sitemap.xml` and the share links point
+ * at those URLs - and the device language decides otherwise. There is no
+ * visible switch and nothing is stored.
+ */
+export function startLanguage(search: string): Language {
+  const requested = new URLSearchParams(search).get('lang');
+  if (requested === 'de' || requested === 'en') return requested;
+  return detectDeviceLanguage();
+}
+
 export interface TranslateParams {
   [key: string]: string | number;
 }

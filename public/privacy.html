@@ -10,21 +10,26 @@
     <style>
       :root {
         color-scheme: light dark;
-        --bg: #f4f6fb;
-        --card: #ffffff;
-        --text: #161a24;
-        --muted: #5a6377;
-        --border: #e0e5f0;
-        --accent: #3b64f6;
+        /* Same "paper & ink" palette as the game (see src/styles/main.css). */
+        --bg: #f4efe4;
+        --card: #fffdf8;
+        --text: #1c1a14;
+        --muted: #57503f;
+        --border: #ddd3bd;
+        --accent: #2f4d8f;
+        --accent-contrast: #fdfbf6;
+        --font-display: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua',
+          Georgia, 'Times New Roman', serif;
       }
       @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #0e1016;
-          --card: #171a23;
-          --text: #eef1f8;
-          --muted: #a2abc0;
-          --border: #262b38;
-          --accent: #7d9bff;
+          --bg: #171615;
+          --card: #201f1d;
+          --text: #f2f0ed;
+          --muted: #b4b1ab;
+          --border: #31302d;
+          --accent: #9fb4e4;
+          --accent-contrast: #171615;
         }
       }
       * {
@@ -55,7 +60,8 @@
         display: inline-flex;
         align-items: center;
         gap: 12px;
-        font-weight: 700;
+        font-family: var(--font-display);
+        font-weight: 600;
         font-size: 20px;
         color: inherit;
         text-decoration: none;
@@ -66,8 +72,8 @@
         width: 38px;
         height: 38px;
         border-radius: 11px;
-        background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #000));
-        color: #fff;
+        background: var(--accent);
+        color: var(--accent-contrast);
         font-size: 20px;
       }
       .toolbar {
@@ -94,6 +100,11 @@
         border: 1px solid var(--border);
         border-radius: 18px;
         padding: 8px 28px 32px;
+      }
+      h1,
+      h2 {
+        font-family: var(--font-display);
+        font-weight: 600;
       }
       h1 {
         font-size: 30px;

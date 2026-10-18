@@ -145,14 +145,18 @@ export class Keypad {
   render(): void {
     const game = this.app.game;
     const remaining = game ? game.remaining() : new Array<number>(10).fill(9);
+    // Nothing can be entered while a puzzle is loading or already solved, so the
+    // whole pad is disabled - the delete key used to be the only one.
+    const disabled = this.app.isBusy || game?.status !== 'playing';
     for (const [digit, key] of this.keys) {
       const left = remaining[digit];
       setText(key.count, left > 0 ? String(left) : '✓');
       toggleClass(key.button, 'is-complete', left <= 0);
       setAttr(key.button, 'aria-label', `${digit} – ${left}`);
+      key.button.disabled = disabled;
     }
     setAttr(this.deleteButton, 'aria-label', this.app.t('action.erase'));
-    this.deleteButton.disabled = this.app.isBusy || game?.status !== 'playing';
+    this.deleteButton.disabled = disabled;
     toggleClass(this.root, 'is-notes', game?.notesMode === true);
   }
 }
@@ -254,6 +258,9 @@ export class Controls {
     const notesEntry = this.buttons.get('notes');
     if (notesEntry) {
       notesEntry.button.disabled = busy || !playing;
+      // The caption follows the mode, so it has to be refreshed on every render
+      // - not only when the language changes.
+      setText(notesEntry.label, this.app.t(game?.notesMode ? 'action.notesOn' : 'action.notes'));
       setAttr(notesEntry.button, 'aria-pressed', game?.notesMode ? 'true' : 'false');
       toggleClass(notesEntry.button, 'is-active', game?.notesMode === true);
     }
