@@ -125,11 +125,12 @@ export class BoardView {
       }
       if (highlightSame && cell.value === selectedValue && !selected) classes.push('is-same');
 
-      // Only a wrong digit is ever marked - a correct cell (solved or a given
-      // clue) stays clean, so it can never look wrong. The digit that blocks a
-      // wrong entry is shown by the neutral "same digit" highlight instead.
+      // Rot = the mistake to delete. The other half of a duplicate - a correct
+      // cell or a given clue - is only the *reason*: a quiet, neutral mark that
+      // can never be mistaken for an error (never red, never amber).
       const wrong = game.isWrong(index);
       if (wrong) classes.push('is-wrong');
+      else if (game.isConflict(index)) classes.push('is-duplicate');
       if (this.flashIndex === index) classes.push('is-hint');
 
       const className = classes.join(' ');

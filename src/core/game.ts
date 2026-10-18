@@ -134,9 +134,9 @@ export class Game {
   }
 
   /**
-   * Cells that break the rules of Sudoku (duplicates in a unit). Used only to
-   * decide whether the puzzle is finished - a *correct* cell is never styled
-   * from this, so a right digit can never look wrong.
+   * Cells that break the rules of Sudoku (duplicates in a unit). Used to decide
+   * whether the puzzle is finished and to point out the *reason* a wrong digit
+   * is wrong - the duplicate is marked in a neutral tone, never as an error.
    */
   conflicts(): Uint8Array {
     if (this.conflictsCache === null) this.conflictsCache = conflictsOf(this.values());

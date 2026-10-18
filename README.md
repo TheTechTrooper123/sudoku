@@ -183,11 +183,12 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
   das Tastenfeld eintragen. Pfeiltasten/WASD bewegen die Auswahl. Falsche Zahlen
   werden sofort rot markiert; richtig gelöste Felder werden gesperrt und wie die
   Vorgaben fest geschrieben (kein Überschreiben/Löschen mehr möglich).
-* **Eine Markierung – nur der Fehler:** Rot = die Zahl passt nicht zur Lösung
-  (die zu löschende Zahl). Eine **richtige** Zelle – gelöst oder Vorgabe – wird
-  nie eingefärbt, damit sie nie fälschlich falsch aussieht. Welche Zahl den
-  Eintrag blockiert, zeigt die neutrale „gleiche Zahlen"-Hervorhebung (leichte
-  Blaufärbung), sobald die falsche Zelle gewählt ist.
+* **Fehler und Grund:** Rot = die Zahl passt nicht zur Lösung (die zu löschende
+  Zahl). Die *richtige* Zahl (gelöst oder Vorgabe), die sich damit in
+  Zeile/Spalte/Block doppelt – also der Grund, warum der Eintrag falsch ist –
+  wird neutral markiert: leichte Blaufärbung plus gestrichelter Rahmen, nie rot
+  und nie bernstein. So bleibt der Auslöser sichtbar, ohne dass eine korrekte
+  Zelle wie ein Fehler aussieht.
 * **Tastenfeld:** Auf dem Handy ist der Zahlenblock automatisch sichtbar und
   enthält in der zweiten Reihe eine Löschen-Taste (`⨯`) für den schnellen Weg zur
   richtigen Zahl; am Computer ist er standardmäßig ausgeblendet (Löschen per

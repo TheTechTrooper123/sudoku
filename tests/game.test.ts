@@ -287,7 +287,16 @@ describe('error marking', () => {
     expect(game.isWrong(index)).toBe(true);
   });
 
-  it('leaves a correct digit unmarked, even when it duplicates a wrong entry', () => {
+  it('does not mark a lone correct digit as a duplicate', () => {
+    const game = newGame();
+    const index = firstEmpty(game);
+    game.select(index);
+    game.placeDigit(game.solution[index]);
+    expect(game.isWrong(index)).toBe(false);
+    expect(game.isConflict(index)).toBe(false);
+  });
+
+  it('marks the correct half of a duplicate as the reason, never as wrong', () => {
     const game = newGame();
     const { target, intruder } = pairInRow(game);
     const digit = game.solution[target];
