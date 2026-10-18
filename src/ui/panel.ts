@@ -102,6 +102,7 @@ export class DifficultySelector {
 export class Keypad {
   readonly root: HTMLDivElement;
   private readonly keys = new Map<number, { button: HTMLButtonElement; count: HTMLElement }>();
+  private readonly deleteButton: HTMLButtonElement;
 
   constructor(
     private readonly app: App,
@@ -123,6 +124,21 @@ export class Keypad {
       this.keys.set(digit, { button, count });
       this.root.appendChild(button);
     }
+
+    // The delete key rounds the pad out to two rows of five on touch screens;
+    // CSS hides it on pointer devices, where Backspace does the same job.
+    this.deleteButton = el(
+      'button',
+      {
+        class: 'keypad__key keypad__key--delete',
+        attrs: { type: 'button' },
+        dataset: { action: 'erase' },
+        on: { click: () => this.app.eraseCell() },
+      },
+      [icon('erase', 20)],
+    );
+    this.root.appendChild(this.deleteButton);
+
     container.appendChild(this.root);
   }
 
@@ -135,6 +151,8 @@ export class Keypad {
       toggleClass(key.button, 'is-complete', left <= 0);
       setAttr(key.button, 'aria-label', `${digit} – ${left}`);
     }
+    setAttr(this.deleteButton, 'aria-label', this.app.t('action.erase'));
+    this.deleteButton.disabled = this.app.isBusy || game?.status !== 'playing';
     toggleClass(this.root, 'is-notes', game?.notesMode === true);
   }
 }

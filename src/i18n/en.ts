@@ -74,7 +74,7 @@ export const en = {
   'settings.language': 'Language',
   'settings.gameplay': 'Gameplay',
   'settings.highlightConflicts': 'Highlight duplicates',
-  'settings.highlightConflictsHint': 'Mark digits that break the rules of Sudoku.',
+  'settings.highlightConflictsHint': 'Mark correct digits that duplicate another one.',
   'settings.highlightSameNumber': 'Highlight equal digits',
   'settings.highlightSameNumberHint': 'Shade every cell that holds the selected digit.',
   'settings.highlightPeers': 'Highlight row, column and box',

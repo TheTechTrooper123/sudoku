@@ -101,7 +101,6 @@ export class BoardView {
     }
     toggleClass(this.root, 'is-loading', false);
 
-    const conflicts = game.conflicts();
     const selectedIndex = game.selected;
     const selectedValue = selectedIndex >= 0 ? game.cells[selectedIndex].value : 0;
     const highlightSame = settings.highlightSameNumber && selectedValue !== 0;
@@ -125,9 +124,12 @@ export class BoardView {
         classes.push('is-peer');
       }
       if (highlightSame && cell.value === selectedValue && !selected) classes.push('is-same');
-      if (settings.highlightConflicts && conflicts[index] === 1) classes.push('is-conflict');
-      const wrong = cell.value !== 0 && game.isWrong(index);
+
+      // A cell is either wrong or part of a duplicate (never both).
+      const mark = game.cellMark(index);
+      const wrong = mark === 'wrong';
       if (wrong) classes.push('is-wrong');
+      else if (mark === 'duplicate' && settings.highlightConflicts) classes.push('is-conflict');
       if (this.flashIndex === index) classes.push('is-hint');
 
       const className = classes.join(' ');

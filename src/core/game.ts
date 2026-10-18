@@ -19,6 +19,17 @@ import type { Cell, Difficulty, Grid, Puzzle, PuzzleSource } from './types.ts';
 export type GameStatus = 'playing' | 'won';
 export type MoveKind = 'value' | 'notes' | 'erase' | 'hint' | 'auto-notes';
 
+/**
+ * How a filled cell is highlighted:
+ * - `wrong`     - the digit does not match the solution (the mistake to fix)
+ * - `duplicate` - a correct, player-filled digit that shares its row, column or
+ *                 box with an equal digit (almost always caused by a wrong
+ *                 entry elsewhere) - distinct from `wrong`, so it is clear
+ *                 which cell has to be corrected
+ * - `null`      - nothing to mark
+ */
+export type CellMark = 'wrong' | 'duplicate' | null;
+
 export interface CellSnapshot {
   value: number;
   notes: number;
@@ -147,6 +158,20 @@ export class Game {
   isWrong(index: number): boolean {
     const cell = this.cells[index];
     return cell.value !== 0 && cell.value !== this.solution[index];
+  }
+
+  /**
+   * The single highlight a filled cell deserves. A wrong digit always wins over
+   * the duplicate mark (it is the one to delete); a given clue is never marked
+   * as a duplicate, since clues are always right and cannot be changed. This is
+   * what keeps the wrongly entered digit from painting a *correct* cell red.
+   */
+  cellMark(index: number): CellMark {
+    const cell = this.cells[index];
+    if (cell.value === 0) return null;
+    if (cell.value !== this.solution[index]) return 'wrong';
+    if (!cell.given && this.isConflict(index)) return 'duplicate';
+    return null;
   }
 
   /** Candidate digits of an empty cell, based on the current board. */

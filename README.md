@@ -183,10 +183,16 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
   das Tastenfeld eintragen. Pfeiltasten/WASD bewegen die Auswahl. Falsche Zahlen
   werden sofort rot markiert; richtig gelöste Felder werden gesperrt und wie die
   Vorgaben fest geschrieben (kein Überschreiben/Löschen mehr möglich).
-* **Tastenfeld:** Auf dem Handy ist der Zahlenblock automatisch sichtbar; am
-  Computer ist er standardmäßig ausgeblendet und lässt sich über die Schaltfläche
-  „Zahlen einblenden" (bzw. „Zahlen ausblenden") ein- und ausklappen (dann
-  schrumpft das Brett leicht, damit beides sichtbar bleibt).
+* **Zwei Markierungen, klar getrennt:** Rot = die Zahl passt nicht zur Lösung
+  (die zu löschende Zahl). Bernstein = eine *richtige* Zahl, die sich mit einer
+  anderen Zahl in Zeile/Spalte/Block doppelt – fast immer die Folge eines falschen
+  Eintrags. So wird eine korrekte Zelle nie fälschlich rot, und man sieht sofort,
+  welche Zahl weg muss. Vorgaben werden nie als doppelt markiert.
+* **Tastenfeld:** Auf dem Handy ist der Zahlenblock automatisch sichtbar und
+  enthält in der zweiten Reihe eine Löschen-Taste (`⨯`) für den schnellen Weg zur
+  richtigen Zahl; am Computer ist er standardmäßig ausgeblendet (Löschen per
+  `Rücktaste` oder „Löschen"-Schaltfläche) und lässt sich über „Zahlen
+  einblenden" ein- und ausklappen.
 * **Tastenkürzel:** `N` Notizmodus, `Entf`/`0`/Rücktaste löschen,
   `Strg+Z`/`Strg+Y` rückgängig/wiederholen. „Feld lösen" deckt ein einzelnes
   Feld auf.

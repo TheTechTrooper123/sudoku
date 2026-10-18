@@ -253,6 +253,89 @@ describe('win detection', () => {
   });
 });
 
+describe('cell marks', () => {
+  /** First empty cell in the same row that needs a different digit. */
+  function emptyPeerInRow(game: Game, index: number): number {
+    const digit = game.solution[index];
+    const row = Math.floor(index / 9);
+    for (let col = 0; col < 9; col++) {
+      const candidate = row * 9 + col;
+      if (candidate === index) continue;
+      if (game.cells[candidate].value !== 0) continue;
+      if (game.solution[candidate] === digit) continue;
+      return candidate;
+    }
+    return -1;
+  }
+
+  /** A correct cell that shares its row with a spot where its digit is wrong. */
+  function pairInRow(game: Game): { target: number; intruder: number } {
+    for (let target = 0; target < CELL_COUNT; target++) {
+      if (game.cells[target].value !== 0) continue;
+      const intruder = emptyPeerInRow(game, target);
+      if (intruder >= 0) return { target, intruder };
+    }
+    throw new Error('no pair found');
+  }
+
+  it('marks a wrong digit as wrong', () => {
+    const game = newGame();
+    const index = firstEmpty(game);
+    const wrong = game.candidatesAt(index).find((digit) => digit !== game.solution[index]) as number;
+    game.select(index);
+    game.placeDigit(wrong);
+    expect(game.cellMark(index)).toBe('wrong');
+  });
+
+  it('leaves a lone correct digit unmarked', () => {
+    const game = newGame();
+    const index = firstEmpty(game);
+    game.select(index);
+    game.placeDigit(game.solution[index]);
+    expect(game.cellMark(index)).toBeNull();
+  });
+
+  it('marks a correct digit that collides with a wrong entry as duplicate, not wrong', () => {
+    const game = newGame();
+    const { target, intruder } = pairInRow(game);
+    const digit = game.solution[target];
+
+    // A wrong entry with the same digit elsewhere in the row ...
+    game.select(intruder);
+    game.placeDigit(digit);
+    expect(game.cellMark(intruder)).toBe('wrong');
+
+    // ... must not paint the *correct* cell red; it is at most a duplicate.
+    game.select(target);
+    game.placeDigit(digit);
+    expect(game.isLocked(target)).toBe(true);
+    expect(game.isConflict(target)).toBe(true);
+    expect(game.cellMark(target)).toBe('duplicate');
+  });
+
+  it('never marks a given clue as a duplicate', () => {
+    const game = newGame();
+    let given = -1;
+    let intruder = -1;
+    for (let index = 0; index < CELL_COUNT; index++) {
+      if (game.puzzle[index] === 0) continue;
+      const candidate = emptyPeerInRow(game, index);
+      if (candidate >= 0) {
+        given = index;
+        intruder = candidate;
+        break;
+      }
+    }
+    expect(given).toBeGreaterThanOrEqual(0);
+
+    game.select(intruder);
+    game.placeDigit(game.cells[given].value);
+    expect(game.isConflict(given)).toBe(true); // the rule flags the pair ...
+    expect(game.cellMark(given)).toBeNull(); // ... but a clue always stays clean
+    expect(game.cellMark(intruder)).toBe('wrong');
+  });
+});
+
 describe('progress', () => {
   it('reports empty cells in remaining[0] and filled cells as progress', () => {
     const game = newGame();

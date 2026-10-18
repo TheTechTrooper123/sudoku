@@ -75,7 +75,7 @@ export const de: Record<TranslationKey, string> = {
   'settings.language': 'Sprache',
   'settings.gameplay': 'Spielverhalten',
   'settings.highlightConflicts': 'Doppelte Zahlen markieren',
-  'settings.highlightConflictsHint': 'Zahlen hervorheben, die gegen die Sudoku-Regeln verstoßen.',
+  'settings.highlightConflictsHint': 'Korrekte Zahlen markieren, wenn sie sich mit einer anderen doppeln.',
   'settings.highlightSameNumber': 'Gleiche Zahlen hervorheben',
   'settings.highlightSameNumberHint': 'Alle Felder der gewählten Zahl leicht einfärben.',
   'settings.highlightPeers': 'Zeile, Spalte und Block hervorheben',
