@@ -17,7 +17,6 @@
         --muted: #57503f;
         --border: #ddd3bd;
         --accent: #2f4d8f;
-        --accent-contrast: #fdfbf6;
         --font-display: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua',
           Georgia, 'Times New Roman', serif;
       }
@@ -29,7 +28,6 @@
           --muted: #b4b1ab;
           --border: #31302d;
           --accent: #9fb4e4;
-          --accent-contrast: #171615;
         }
       }
       * {
@@ -51,30 +49,10 @@
       header.page-head {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-end;
         gap: 16px;
         margin-bottom: 28px;
         flex-wrap: wrap;
-      }
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        font-family: var(--font-display);
-        font-weight: 600;
-        font-size: 20px;
-        color: inherit;
-        text-decoration: none;
-      }
-      .brand span.mark {
-        display: grid;
-        place-items: center;
-        width: 38px;
-        height: 38px;
-        border-radius: 11px;
-        background: var(--accent);
-        color: var(--accent-contrast);
-        font-size: 20px;
       }
       .toolbar {
         display: flex;
@@ -105,6 +83,9 @@
       h2 {
         font-family: var(--font-display);
         font-weight: 600;
+        /* Long German compounds must not push the page sideways on phones. */
+        overflow-wrap: break-word;
+        hyphens: auto;
       }
       h1 {
         font-size: 30px;
@@ -157,7 +138,6 @@
   <body>
     <div class="wrap">
       <header class="page-head">
-        <a class="brand" href="/"><span class="mark">数</span> Sudoku</a>
         <div class="toolbar" role="group" aria-label="Sprache / Language">
           <button type="button" id="lang-en" aria-pressed="false" data-title="Privacy – Sudoku">
             English
