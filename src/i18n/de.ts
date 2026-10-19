@@ -5,7 +5,7 @@
 import type { TranslationKey } from './en.ts';
 
 export const de: Record<TranslationKey, string> = {
-  'meta.title': 'Sudoku – kostenlos online spielen',
+  'meta.title': 'Sudoku',
   'meta.description':
     'Sudoku kostenlos online spielen: vier Schwierigkeitsgrade, Notizen, Hinweise und Undo. Ohne Anmeldung, auf Handy und Desktop.',
 

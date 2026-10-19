@@ -4,7 +4,7 @@
  * compile error.
  */
 export const en = {
-  'meta.title': 'Sudoku - Play Online for Free',
+  'meta.title': 'Sudoku',
   'meta.description':
     'Play Sudoku online for free: four difficulty levels, pencil marks, hints and undo. No sign-up required, works on mobile and desktop.',
 

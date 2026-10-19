@@ -21,6 +21,7 @@ CJK_BOLD = "/usr/share/fonts/noto-cjk/NotoSerifCJK-Bold.ttc"
 
 # Light theme tokens (see main.css).
 PAPER = (244, 239, 228)  # --bg
+PAPER_ELEVATED = (255, 253, 248)  # --bg-elevated
 INK = (28, 26, 20)  # --text
 INK_MUTED = (87, 80, 63)  # --text-muted
 INK_SOFT = (138, 128, 101)  # --text-soft
@@ -148,18 +149,23 @@ def make_og_image():
 
 
 def make_touch_icon():
+    """The same printed board as `favicon.svg`, rasterised for the home screen."""
     size = 180
-    img = Image.new("RGB", (size, size), ACCENT)
+    img = Image.new("RGB", (size, size), PAPER)
     draw = ImageDraw.Draw(img)
-    margin = 40
-    step = (size - 2 * margin) / 3
-    for i in range(4):
-        width = 7 if i % 3 == 0 else 3
+    margin = 30
+    span = size - 2 * margin
+    step = span / 9
+    draw.rectangle([margin, margin, size - margin, size - margin], fill=PAPER_ELEVATED)
+
+    for i in range(1, 9):
         pos = round(margin + step * i)
-        draw.line([(pos, margin), (pos, size - margin)], fill=PAPER, width=width)
-        pos = round(margin + step * i)
-        draw.line([(margin, pos), (size - margin, pos)], fill=PAPER, width=width)
-    draw.ellipse([size / 2 - 9, size / 2 - 9, size / 2 + 9, size / 2 + 9], fill=PAPER)
+        width = 4 if i % 3 == 0 else 2
+        color = INK if i % 3 == 0 else LINE_STRONG
+        draw.line([(pos, margin), (pos, size - margin)], fill=color, width=width)
+        draw.line([(margin, pos), (size - margin, pos)], fill=color, width=width)
+
+    draw.rectangle([margin, margin, size - margin, size - margin], outline=INK, width=6)
     img.save(f"{OUT}/apple-touch-icon.png", optimize=True)
     print("wrote apple-touch-icon.png")
 

@@ -238,7 +238,8 @@ python3 tools/make-assets.py     # benötigt Pillow + Noto-CJK-Fonts
 ```
 
 Erzeugt `public/og-image.png` (1200×630) und `public/apple-touch-icon.png`
-(180×180). Text und Domain im Skript anpassen. Die Farben des Skripts spiegeln
+(180×180). Text und Domain im Skript anpassen. Das Touch-Icon zeigt dasselbe
+gedruckte Raster wie `public/favicon.svg`. Die Farben des Skripts spiegeln
 die Papier/Tinte-Tokens aus `src/styles/main.css` (flächiges Papier, Tinte,
 gedruckte Haarlinien – keine Verläufe); bei einer Palettenänderung müssen sie
 dort mitgezogen werden. Dasselbe gilt für `src/ui/theme.ts` (Browser-Farbe),
