@@ -1,4 +1,4 @@
-"""Generates the social preview image and the touch icon for the Sudoku site.
+"""Generates the social preview image for the Sudoku site.
 
 Run from the repository root:  python3 tools/make-assets.py
 Requires Pillow and the Noto / Liberation fonts.
@@ -148,28 +148,5 @@ def make_og_image():
     print("wrote og-image.png")
 
 
-def make_touch_icon():
-    """The same printed board as `favicon.svg`, rasterised for the home screen."""
-    size = 180
-    img = Image.new("RGB", (size, size), PAPER)
-    draw = ImageDraw.Draw(img)
-    margin = 30
-    span = size - 2 * margin
-    step = span / 9
-    draw.rectangle([margin, margin, size - margin, size - margin], fill=PAPER_ELEVATED)
-
-    for i in range(1, 9):
-        pos = round(margin + step * i)
-        width = 4 if i % 3 == 0 else 2
-        color = INK if i % 3 == 0 else LINE_STRONG
-        draw.line([(pos, margin), (pos, size - margin)], fill=color, width=width)
-        draw.line([(margin, pos), (size - margin, pos)], fill=color, width=width)
-
-    draw.rectangle([margin, margin, size - margin, size - margin], outline=INK, width=6)
-    img.save(f"{OUT}/apple-touch-icon.png", optimize=True)
-    print("wrote apple-touch-icon.png")
-
-
 if __name__ == "__main__":
     make_og_image()
-    make_touch_icon()

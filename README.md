@@ -124,9 +124,10 @@ server/
 api/
   puzzle.js           Gebündelte Function (Build-Artefakt aus server/, nicht
                       eingecheckt: `npm run build:api` bzw. `npm run build`)
-public/               favicon, Manifest, OG-Bild, robots.txt, sitemap.xml,
-                      privacy.html, imprint.html (+ static-page.js)
-tools/make-assets.py  Erzeugt OG-Bild und Touch-Icon (benötigt Pillow)
+public/               Favicon-Satz (Feder auf Papier), Manifest, OG-Bild,
+                      robots.txt, sitemap.xml, privacy.html, imprint.html
+                      (+ static-page.js)
+tools/make-assets.py  Erzeugt das OG-Bild (benötigt Pillow)
 tests/                Vitest-Suite mit Fixtures in helpers.ts
 ```
 
@@ -237,13 +238,19 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 python3 tools/make-assets.py     # benötigt Pillow + Noto-CJK-Fonts
 ```
 
-Erzeugt `public/og-image.png` (1200×630) und `public/apple-touch-icon.png`
-(180×180). Text und Domain im Skript anpassen. Das Touch-Icon zeigt dasselbe
-gedruckte Raster wie `public/favicon.svg`. Die Farben des Skripts spiegeln
-die Papier/Tinte-Tokens aus `src/styles/main.css` (flächiges Papier, Tinte,
-gedruckte Haarlinien – keine Verläufe); bei einer Palettenänderung müssen sie
-dort mitgezogen werden. Dasselbe gilt für `src/ui/theme.ts` (Browser-Farbe),
-`public/site.webmanifest` und `public/favicon.svg`.
+Erzeugt nur noch `public/og-image.png` (1200×630). Text und Domain im Skript
+anpassen. Die Farben des Skripts spiegeln die Papier/Tinte-Tokens aus
+`src/styles/main.css` (flächiges Papier, Tinte, gedruckte Haarlinien – keine
+Verläufe); bei einer Palettenänderung müssen sie dort mitgezogen werden.
+Dasselbe gilt für `src/ui/theme.ts` (Browser-Farbe) und
+`public/site.webmanifest`.
+
+Der Favicon-Satz (`favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`,
+`apple-touch-icon.png`, `android-chrome-*.png`) ist statisch und wird nicht
+vom Skript erzeugt. Vorlage ist die Feder-Illustration aus
+`Downloads/favicon_io.zip`; sie liegt auf dem Papierton `#f4efe4`, weil eine
+schwarze Linie auf transparentem Grund im dunklen Browser-Tab und auf dem
+schwarzen iOS-Homescreen unsichtbar wäre.
 
 ## 8. Entwicklungshinweise
 
