@@ -153,14 +153,14 @@ export class AppView {
       this.settingsDialog.render();
       this.settingsDialog.open();
     } else {
-      this.settingsDialog.close();
+      this.settingsDialog.close(true);
     }
 
     if (kind === 'win') {
       this.winDialog.render();
       this.winDialog.open();
     } else {
-      this.winDialog.close();
+      this.winDialog.close(true);
     }
 
     if (kind === 'confirm-new-game') {
@@ -174,7 +174,7 @@ export class AppView {
       );
       this.confirmDialog.open();
     } else {
-      this.confirmDialog.close();
+      this.confirmDialog.close(true);
     }
   }
 

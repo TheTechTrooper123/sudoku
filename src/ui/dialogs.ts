@@ -95,12 +95,16 @@ export class Modal {
     });
   }
 
-  close(): void {
+  /**
+   * `silent` is for the view, which closes a dialog only because another one
+   * replaced it: running `onClose` there would reset the fresh dialog state.
+   */
+  close(silent = false): void {
     if (this.root.hidden) return;
     this.root.hidden = true;
     const opener = this.opener;
     this.opener = null;
-    this.onClose?.();
+    if (!silent) this.onClose?.();
     if (opener && document.contains(opener)) opener.focus({ preventScroll: true });
   }
 
