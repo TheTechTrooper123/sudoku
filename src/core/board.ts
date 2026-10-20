@@ -134,15 +134,6 @@ export function candidatesMask(grid: Grid, index: number): number {
   return ALL_DIGITS_MASK & ~used;
 }
 
-/** Candidate masks for every empty cell of a board. */
-export function allCandidates(grid: Grid): number[] {
-  const masks = new Array<number>(CELL_COUNT).fill(0);
-  for (let index = 0; index < CELL_COUNT; index++) {
-    masks[index] = candidatesMask(grid, index);
-  }
-  return masks;
-}
-
 /**
  * Cells that violate the rules (duplicate digit inside a row, column or box).
  * The returned array is indexed by cell.
@@ -186,15 +177,3 @@ export function valueCounts(grid: Grid): number[] {
   return counts;
 }
 
-/** Compares two boards cell by cell and returns every differing index. */
-export function diffIndices(a: Grid, b: Grid): number[] {
-  const result: number[] = [];
-  for (let index = 0; index < CELL_COUNT; index++) {
-    if (a[index] !== b[index]) result.push(index);
-  }
-  return result;
-}
-
-export function cloneGrid(grid: Grid): Grid {
-  return grid.slice();
-}

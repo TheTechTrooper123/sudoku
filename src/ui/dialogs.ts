@@ -4,7 +4,7 @@
  */
 import type { App } from '../state/app.ts';
 import type { Settings } from '../state/settings.ts';
-import { append, clear, el, qsAll, setText, toggleClass } from './dom.ts';
+import { append, clear, el, qsAll, setAttr, setText, toggleClass } from './dom.ts';
 import type { Child } from './dom.ts';
 import { icon } from './icons.ts';
 import { resolveTheme } from './theme.ts';
@@ -18,6 +18,7 @@ type BooleanSettingKey = {
 
 export class Modal {
   readonly root: HTMLDivElement;
+  private readonly closeButton: HTMLButtonElement;
   protected readonly titleNode: HTMLHeadingElement;
   protected readonly body: HTMLDivElement;
   protected readonly footer: HTMLDivElement;
@@ -26,6 +27,11 @@ export class Modal {
 
   constructor(titleId: string) {
     this.titleNode = el('h2', { class: 'modal__title', attrs: { id: titleId } });
+    this.closeButton = el('button', {
+      class: 'modal__close',
+      attrs: { type: 'button' },
+      on: { click: () => this.close() },
+    }, [icon('close', 20)]);
     this.body = el('div', { class: 'modal__body' });
     this.footer = el('div', { class: 'modal__footer' });
     this.root = el(
@@ -49,11 +55,7 @@ export class Modal {
         el('div', { class: 'modal__card' }, [
           el('div', { class: 'modal__head' }, [
             this.titleNode,
-            el('button', {
-              class: 'modal__close',
-              attrs: { type: 'button', 'aria-label': 'Close' },
-              on: { click: () => this.close() },
-            }, [icon('close', 20)]),
+            this.closeButton,
           ]),
           this.body,
           this.footer,
@@ -65,6 +67,11 @@ export class Modal {
 
   setTitle(text: string): void {
     setText(this.titleNode, text);
+  }
+
+  /** The close button carries no visible text, so it needs its own label. */
+  setCloseLabel(text: string): void {
+    setAttr(this.closeButton, 'aria-label', text);
   }
 
   setContent(children: Child[]): void {
@@ -81,6 +88,8 @@ export class Modal {
     this.opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     this.root.hidden = false;
     requestAnimationFrame(() => {
+      // The dialog may have been closed again before the frame was painted.
+      if (this.root.hidden) return;
       const focusable = this.focusable()[0] ?? this.root;
       focusable.focus({ preventScroll: true });
     });
@@ -227,6 +236,7 @@ export class SettingsDialog extends Modal {
       active instanceof HTMLElement ? active.dataset.setting ?? active.dataset.value ?? null : null;
 
     this.setTitle(app.t('settings.title'));
+    this.setCloseLabel(app.t('action.close'));
 
     const closeButton = button('action.close', app, {
       variant: 'primary',
@@ -309,14 +319,13 @@ export class WinDialog extends Modal {
     const app = this.app;
     const summary = app.ui.lastWin;
     const game = app.game;
+    this.setTitle(app.t('win.title'));
+    this.setCloseLabel(app.t('action.close'));
     if (!summary || !game) {
-      this.setTitle(app.t('win.title'));
       this.setContent([]);
       this.setFooter([]);
       return;
     }
-
-    this.setTitle(app.t('win.title'));
 
     const metric = (labelKey: TranslationKey, value: string): HTMLElement =>
       el('div', { class: 'metric' }, [
@@ -377,6 +386,7 @@ export class ConfirmDialog extends Modal {
     this.confirmLabel = confirmKey;
     this.onConfirm = onConfirm;
     this.setTitle(app.t(titleKey));
+    this.setCloseLabel(app.t('action.close'));
     this.setContent([el('p', { class: 'modal__lead', text: app.t(messageKey) })]);
     this.setFooter([
       button('action.cancel', app, { onClick: () => this.close() }),

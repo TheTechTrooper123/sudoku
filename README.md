@@ -182,8 +182,9 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
 
 * **Spielen:** Zelle wählen (Maus/Touch), Ziffer per Tastatur `1`–`9` oder über
   das Tastenfeld eintragen. Pfeiltasten/WASD bewegen die Auswahl. Falsche Zahlen
-  werden sofort rot markiert; richtig gelöste Felder werden gesperrt und wie die
-  Vorgaben fest geschrieben (kein Überschreiben/Löschen mehr möglich).
+  werden sofort rot markiert; richtig gelöste Felder werden gesperrt (kein
+  Überschreiben/Löschen mehr möglich) und behalten die Handschrift des Spielers:
+  selbst gelöste Ziffern stehen im Tintenblau, Vorgaben in Tinte.
 * **Fehler und Grund:** Rot = die Zahl passt nicht zur Lösung (die zu löschende
   Zahl). Die *richtige* Zahl (gelöst oder Vorgabe), die sich damit in
   Zeile/Spalte/Block doppelt – also der Grund, warum der Eintrag falsch ist –
@@ -211,8 +212,9 @@ Soll der Key nicht ins Repository, einfach `FALLBACK_API_KEY` in
   Serifen-Überschrift, präzises Druckraster und Hairlines statt schwebender
   Karten. Kein Glas, keine Gradienten, keine generische Komponenten-Optik.
   Fehler bleibt rot, der Grund ist ein neutraler Papierton mit Tinten-Rahmen.
-* **Status:** Unter dem Brett steht eine dezente Zeile mit Fehlern und gelösten
-  Feldern; die Schwierigkeitsauswahl ist bewusst zurückhaltend gestaltet.
+* **Status:** Unter dem Brett steht eine dezente Zeile mit Fehlern und
+  genutzten Hilfen; die Schwierigkeitsauswahl ist bewusst zurückhaltend
+  gestaltet und markiert immer die Stufe des Bretts, das gerade zu sehen ist.
 * **Fehler/Hinweise sind endgültig:** Beide Zähler werden in dem Moment erhöht, in
   dem der Fehler passiert bzw. der Hinweis genutzt wird, und werden **nicht**
   erstattet. „Rückgängig" entfernt die falsche Ziffer (wie „Löschen"), der Fehler

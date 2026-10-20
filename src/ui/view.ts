@@ -145,6 +145,9 @@ export class AppView {
 
   private renderDialogs(): void {
     const kind: DialogKind = this.app.ui.dialog;
+    // Without this the page keeps scrolling behind the backdrop on touch
+    // devices, which makes the sheet feel detached from the page.
+    toggleClass(document.body, 'has-modal', kind !== 'none');
 
     if (kind === 'settings') {
       this.settingsDialog.render();
@@ -213,6 +216,7 @@ export class AppView {
     events.on('settings', () => {
       applyTheme(this.app.settings.theme);
       if (this.settingsDialog.isOpen) this.settingsDialog.render();
+      // One pass covers the board (highlight switches) and the whole panel.
       this.renderPanel();
     });
   }
@@ -301,6 +305,7 @@ export class AppView {
         app.eraseCell();
         return;
       case 'n':
+      case 'N':
         app.toggleNotesMode();
         return;
       default:

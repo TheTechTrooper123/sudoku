@@ -33,7 +33,10 @@ export class StatusBar {
         valueNode,
       ]);
 
-    this.root = el('div', { class: 'status-line' }, [
+    this.root = el('div', {
+      class: 'status-line',
+      attrs: { 'aria-live': 'polite' },
+    }, [
       item('status.mistakes', this.mistakesValue),
       item('status.hints', this.hintsValue),
     ]);
@@ -82,7 +85,9 @@ export class DifficultySelector {
   }
 
   render(): void {
-    const selected = this.app.ui.selectedDifficulty;
+    // The board on screen decides the highlight: the API may hand back a
+    // puzzle rated differently than the level that was requested.
+    const selected = this.app.game?.difficulty ?? this.app.ui.selectedDifficulty;
     for (const [difficulty, button] of this.buttons) {
       setAttr(button, 'aria-checked', difficulty === selected ? 'true' : 'false');
       toggleClass(button, 'is-active', difficulty === selected);
@@ -108,7 +113,10 @@ export class Keypad {
     private readonly app: App,
     container: HTMLElement,
   ) {
-    this.root = el('div', { class: 'keypad', attrs: { role: 'group' } });
+    this.root = el('div', {
+      class: 'keypad',
+      attrs: { role: 'group', 'aria-label': app.t('keypad.label') },
+    });
     for (let digit = 1; digit <= 9; digit++) {
       const count = el('span', { class: 'keypad__count' });
       const button = el(
@@ -144,6 +152,7 @@ export class Keypad {
 
   render(): void {
     const game = this.app.game;
+    setAttr(this.root, 'aria-label', this.app.t('keypad.label'));
     const remaining = game ? game.remaining() : new Array<number>(10).fill(9);
     // Nothing can be entered while a puzzle is loading or already solved, so the
     // whole pad is disabled - the delete key used to be the only one.
@@ -152,7 +161,15 @@ export class Keypad {
       const left = remaining[digit];
       setText(key.count, left > 0 ? String(left) : '✓');
       toggleClass(key.button, 'is-complete', left <= 0);
-      setAttr(key.button, 'aria-label', `${digit} – ${left}`);
+      // A bare "5 - 3" says nothing to a screen reader; name the action and
+      // how many of that digit are still missing.
+      setAttr(
+        key.button,
+        'aria-label',
+        left > 0
+          ? this.app.t('keypad.key', { digit, left })
+          : this.app.t('keypad.keyDone', { digit }),
+      );
       key.button.disabled = disabled;
     }
     setAttr(this.deleteButton, 'aria-label', this.app.t('action.erase'));

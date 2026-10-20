@@ -12,6 +12,8 @@ export const en = {
 
   'nav.skip': 'Skip to the board',
   'nav.settings': 'Settings',
+  'nav.primary': 'Primary',
+  'game.label': 'Sudoku game',
 
   'difficulty.label': 'Difficulty',
   'difficulty.easy': 'Easy',
@@ -28,7 +30,7 @@ export const en = {
   'board.cellSelected': 'selected',
 
   'status.mistakes': 'Mistakes',
-  'status.hints': 'Solved cells',
+  'status.hints': 'Hints',
 
   'loading.puzzle': 'Loading puzzle…',
   'loading.generating': 'Generating puzzle…',
@@ -41,7 +43,6 @@ export const en = {
   'action.erase': 'Erase',
   'action.notes': 'Notes',
   'action.notesOn': 'Notes on',
-  'action.notesOff': 'Notes off',
   'action.hint': 'Solve cell',
   'action.keypadShow': 'Show numbers',
   'action.keypadHide': 'Hide numbers',
@@ -49,10 +50,14 @@ export const en = {
   'action.cancel': 'Cancel',
   'action.playAgain': 'Play again',
 
+  'keypad.label': 'Number pad',
+  'keypad.key': 'Enter {digit}, {left} left',
+  'keypad.keyDone': 'Enter {digit}, all placed',
+
   'win.title': 'Solved!',
   'win.subtitle': 'Nicely done - every cell is correct.',
   'win.mistakes': 'Mistakes',
-  'win.hints': 'Solved cells',
+  'win.hints': 'Hints',
   'win.flawless': 'Perfect: solved without mistakes or help.',
   'win.share': 'Share result',
   'win.copied': 'Result copied to the clipboard.',
@@ -63,7 +68,8 @@ export const en = {
 
   'toast.hintUsed': 'A cell was solved for you.',
   'toast.puzzleFromLocal': 'API unavailable - this puzzle was generated in your browser.',
-  'toast.copied': 'Copied to the clipboard.',
+  'toast.puzzleError': 'The puzzle could not be loaded. Please try again.',
+  'toast.copyFailed': 'Copying failed - the browser blocked the clipboard.',
 
   'settings.title': 'Settings',
   'settings.appearance': 'Appearance',

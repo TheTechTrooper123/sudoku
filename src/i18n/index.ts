@@ -64,10 +64,3 @@ export function createTranslator(language: Language): Translator {
   return (key, params) => translate(language, key, params);
 }
 
-export function htmlLang(language: Language): string {
-  return language;
-}
-
-export function localeOf(language: Language): string {
-  return language === 'de' ? 'de-DE' : 'en-GB';
-}

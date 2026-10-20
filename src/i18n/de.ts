@@ -13,6 +13,8 @@ export const de: Record<TranslationKey, string> = {
 
   'nav.skip': 'Direkt zum Spielfeld',
   'nav.settings': 'Einstellungen',
+  'nav.primary': 'Hauptnavigation',
+  'game.label': 'Sudoku-Spiel',
 
   'difficulty.label': 'Schwierigkeit',
   'difficulty.easy': 'Leicht',
@@ -29,7 +31,7 @@ export const de: Record<TranslationKey, string> = {
   'board.cellSelected': 'ausgewählt',
 
   'status.mistakes': 'Fehler',
-  'status.hints': 'Gelöste Felder',
+  'status.hints': 'Hilfen',
 
   'loading.puzzle': 'Rätsel wird geladen …',
   'loading.generating': 'Rätsel wird erzeugt …',
@@ -42,7 +44,6 @@ export const de: Record<TranslationKey, string> = {
   'action.erase': 'Löschen',
   'action.notes': 'Notizen',
   'action.notesOn': 'Notizen an',
-  'action.notesOff': 'Notizen aus',
   'action.hint': 'Feld lösen',
   'action.keypadShow': 'Zahlen einblenden',
   'action.keypadHide': 'Zahlen ausblenden',
@@ -50,10 +51,14 @@ export const de: Record<TranslationKey, string> = {
   'action.cancel': 'Abbrechen',
   'action.playAgain': 'Nochmal spielen',
 
+  'keypad.label': 'Zahlenfeld',
+  'keypad.key': '{digit} eintragen, noch {left} übrig',
+  'keypad.keyDone': '{digit} eintragen, alle gesetzt',
+
   'win.title': 'Gelöst!',
   'win.subtitle': 'Sehr gut – alle Zellen sind korrekt.',
   'win.mistakes': 'Fehler',
-  'win.hints': 'Gelöste Felder',
+  'win.hints': 'Hilfen',
   'win.flawless': 'Perfekt: ohne Fehler und ohne Hilfe gelöst.',
   'win.share': 'Ergebnis teilen',
   'win.copied': 'Ergebnis in die Zwischenablage kopiert.',
@@ -64,7 +69,8 @@ export const de: Record<TranslationKey, string> = {
 
   'toast.hintUsed': 'Ein Feld wurde gelöst.',
   'toast.puzzleFromLocal': 'API nicht erreichbar – das Rätsel wurde im Browser erzeugt.',
-  'toast.copied': 'In die Zwischenablage kopiert.',
+  'toast.puzzleError': 'Das Rätsel konnte nicht geladen werden. Bitte noch einmal versuchen.',
+  'toast.copyFailed': 'Kopieren fehlgeschlagen – der Browser hat den Zugriff auf die Zwischenablage blockiert.',
 
   'settings.title': 'Einstellungen',
   'settings.appearance': 'Darstellung',

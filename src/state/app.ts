@@ -15,7 +15,7 @@ import { deliverPuzzle } from '../services/puzzleService.ts';
 import type { PuzzleOrigin } from '../services/puzzleService.ts';
 import { createSettings } from './settings.ts';
 import type { Settings } from './settings.ts';
-import { Emitter } from './store.ts';
+import { Emitter } from './emitter.ts';
 import { resolveTheme } from '../ui/theme.ts';
 
 export type AppEvent =
@@ -122,15 +122,19 @@ export class App {
       });
       if (controller.signal.aborted) return;
       this.adoptPuzzle(puzzle, origin);
-      if (origin === 'local' && puzzle.source !== 'local') {
-        this.showToast(this.t('toast.puzzleFromLocal'), 'info');
-      }
+      // The player should know when the API was unavailable and the browser
+      // had to build the puzzle instead - that path used to stay silent.
+      if (origin === 'local') this.showToast(this.t('toast.puzzleFromLocal'), 'info');
     } catch {
-      this.showToast(this.t('toast.puzzleFromLocal'), 'info');
+      this.showToast(this.t('toast.puzzleError'), 'info');
     } finally {
-      if (this.pendingRequest === controller) this.pendingRequest = null;
-      this.ui.loading = null;
-      this.events.emit('loading');
+      // A superseded request must not clear the loading state of the one that
+      // replaced it.
+      if (this.pendingRequest === controller) {
+        this.pendingRequest = null;
+        this.ui.loading = null;
+        this.events.emit('loading');
+      }
     }
   }
 
@@ -178,6 +182,9 @@ export class App {
     this.game = game;
     this.origin = origin;
     this.ui.loading = null;
+    // The API may rate a puzzle differently than requested; the highlighted
+    // difficulty must describe the board on screen, not the request.
+    this.ui.selectedDifficulty = puzzle.difficulty;
     // A fresh board starts a fresh cycle: without this, winning a restarted
     // puzzle would not raise the win dialog again.
     this.ui.lastWin = null;
@@ -269,8 +276,6 @@ export class App {
     }
     if (key === 'language') this.applyLanguage();
     this.events.emit('settings');
-    this.events.emit('panel');
-    this.events.emit('board');
   }
 
   /** The theme actually shown: `system` resolves to the current OS preference. */
@@ -317,6 +322,7 @@ export class App {
       await navigator.clipboard.writeText(text);
       return true;
     } catch {
+      this.showToast(this.t('toast.copyFailed'), 'info');
       return false;
     }
   }
@@ -325,6 +331,9 @@ export class App {
 
   private afterEdit(): void {
     if (!this.game) return;
+    // Undoing the winning digit reopens the puzzle; the summary belongs to the
+    // finished run and must not block the next win dialog.
+    if (this.game.status !== 'won') this.ui.lastWin = null;
     this.detectWin();
     this.events.emit('board');
     this.events.emit('panel');

@@ -38,3 +38,23 @@ describe('App', () => {
     expect(app.ui.lastWin?.flawless).toBe(true);
   });
 });
+
+describe('App after a finished run', () => {
+  it('forgets the win summary once the winning digit is undone', () => {
+    const app = new App();
+    app.game = new Game(nearlySolvedPuzzle([40, 41]));
+
+    solve(app);
+    expect(app.ui.lastWin).not.toBeNull();
+
+    app.undo();
+    expect(app.game?.status).toBe('playing');
+    // The summary belongs to the finished run; keeping it would swallow the
+    // dialog of the next win.
+    expect(app.ui.lastWin).toBeNull();
+
+    solve(app);
+    expect(app.ui.dialog).toBe('win');
+    expect(app.ui.lastWin?.flawless).toBe(true);
+  });
+});

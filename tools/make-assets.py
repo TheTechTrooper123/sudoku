@@ -17,7 +17,6 @@ OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
 SERIF_BOLD = "/usr/share/fonts/liberation/LiberationSerif-Bold.ttf"
 SANS_BOLD = "/usr/share/fonts/TTF/DejaVuSans-Bold.ttf"
 SANS_REGULAR = "/usr/share/fonts/noto/NotoSans-Regular.ttf"
-CJK_BOLD = "/usr/share/fonts/noto-cjk/NotoSerifCJK-Bold.ttc"
 
 # Light theme tokens (see main.css).
 PAPER = (244, 239, 228)  # --bg
@@ -98,14 +97,9 @@ def make_og_image():
     badge_font = font(SANS_BOLD, 30)
     credit_font = font(SANS_REGULAR, 26)
 
-    draw.text((80, 150), "Sudoku", font=title_font, fill=INK)
-    draw.rounded_rectangle([82, 76, 176, 132], radius=10, fill=ACCENT)
-    glyph_font = font(CJK_BOLD, 40)
-    glyph = "\u6570"
-    gbox = draw.textbbox((0, 0), glyph, font=glyph_font)
-    gx = 82 + (94 - (gbox[2] - gbox[0])) / 2 - gbox[0]
-    gy = 76 + (56 - (gbox[3] - gbox[1])) / 2 - gbox[1]
-    draw.text((gx, gy), glyph, font=glyph_font, fill=PAPER)
+    # Just the word: the old CJK brand glyph contradicted the feather favicon
+    # and the paper/ink wordmark.
+    draw.text((80, 118), "Sudoku", font=title_font, fill=INK)
 
     for index, line in enumerate(
         [

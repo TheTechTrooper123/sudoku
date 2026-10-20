@@ -200,6 +200,20 @@ describe('undo and redo', () => {
     expect(game.cells[index].value).toBe(0);
   });
 
+  it('selects the edited cell when undoing or redoing', () => {
+    const game = newGame();
+    const index = firstEmpty(game);
+    game.select(index);
+    game.placeDigit(game.solution[index]);
+
+    // Move the selection elsewhere; undoing must jump back to the change.
+    game.select(firstEmpty(game));
+    expect(game.undo()).toBe(true);
+    expect(game.selected).toBe(index);
+    expect(game.redo()).toBe(true);
+    expect(game.selected).toBe(index);
+  });
+
   it('drops the redo stack after a new move', () => {
     const game = newGame();
     const index = firstEmpty(game);

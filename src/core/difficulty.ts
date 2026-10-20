@@ -31,11 +31,6 @@ export function difficultyRank(difficulty: Difficulty): number {
   return DIFFICULTIES.indexOf(difficulty);
 }
 
-export function difficultyAt(rank: number): Difficulty {
-  const clamped = Math.max(0, Math.min(DIFFICULTIES.length - 1, rank));
-  return DIFFICULTIES[clamped];
-}
-
 /**
  * Rates a puzzle. Thresholds are tuned so that puzzles generated for a
  * difficulty are rated back into the same bucket (see `tests/difficulty`).

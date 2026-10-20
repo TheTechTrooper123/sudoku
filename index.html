@@ -78,7 +78,7 @@
 
     <header class="site-header">
       <div class="site-header__inner">
-        <nav class="site-nav" aria-label="Primary">
+        <nav class="site-nav" aria-label="Primary" data-i18n-attr="aria-label:nav.primary">
           <button type="button" id="nav-settings" data-i18n-attr="aria-label:nav.settings">
             <span class="nav-button__icon" aria-hidden="true"></span>
           </button>
@@ -87,14 +87,14 @@
     </header>
 
     <main class="site-main">
-      <section class="game" id="game" aria-label="Sudoku game">
+      <section class="game" id="game" aria-label="Sudoku game" data-i18n-attr="aria-label:game.label">
         <div class="game__board">
           <h1 class="page-title" data-i18n="content.intro.title">Sudoku</h1>
 
           <div id="difficulty-container"></div>
 
           <div class="board-frame" id="board-frame">
-            <div id="board-container"></div>
+            <div id="board-container" tabindex="-1"></div>
             <div class="loading" id="loading-overlay">
               <span class="spinner" aria-hidden="true"></span>
               <p id="loading-label" data-i18n="loading.puzzle">Loading puzzle…</p>

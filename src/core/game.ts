@@ -17,7 +17,6 @@ import {
 import type { Cell, Difficulty, Grid, Puzzle, PuzzleSource } from './types.ts';
 
 export type GameStatus = 'playing' | 'won';
-export type MoveKind = 'value' | 'notes' | 'erase' | 'hint' | 'auto-notes';
 
 export interface CellSnapshot {
   value: number;
@@ -31,9 +30,6 @@ export interface CellChange {
 }
 
 export interface Move {
-  kind: MoveKind;
-  /** Digit that was placed or noted (`0` for erase). */
-  digit: number;
   /** `true` when the placed digit does not match the solution. */
   mistake: boolean;
   changes: CellChange[];
@@ -227,7 +223,7 @@ export class Game {
       }
     }
 
-    this.commit({ kind: 'value', digit, mistake, changes: changes.toChanges() });
+    this.commit({ mistake, changes: changes.toChanges() });
     this.checkWin();
     return true;
   }
@@ -240,7 +236,7 @@ export class Game {
 
     const changes = new ChangeSet(this.cells);
     changes.setNotes(index, this.cells[index].notes ^ digitBit(digit));
-    this.commit({ kind: 'notes', digit, mistake: false, changes: changes.toChanges() });
+    this.commit({ mistake: false, changes: changes.toChanges() });
     this.checkWin();
     return true;
   }
@@ -256,7 +252,7 @@ export class Game {
     const changes = new ChangeSet(this.cells);
     changes.setValue(index, 0);
     changes.setNotes(index, 0);
-    this.commit({ kind: 'erase', digit: 0, mistake: false, changes: changes.toChanges() });
+    this.commit({ mistake: false, changes: changes.toChanges() });
     this.checkWin();
     return true;
   }
@@ -280,7 +276,7 @@ export class Game {
       filled++;
     }
     if (filled === 0) return 0;
-    this.commit({ kind: 'auto-notes', digit: 0, mistake: false, changes: changes.toChanges() });
+    this.commit({ mistake: false, changes: changes.toChanges() });
     this.checkWin();
     return filled;
   }
@@ -305,7 +301,7 @@ export class Game {
       }
     }
 
-    this.commit({ kind: 'hint', digit, mistake: false, changes: changes.toChanges() });
+    this.commit({ mistake: false, changes: changes.toChanges() });
     this.hints++;
     this.selected = target;
     this.lastRevealed = target;
@@ -326,6 +322,9 @@ export class Game {
     // The mistake and hint counters are deliberately NOT refunded here. A wrong
     // digit is charged the moment it is entered, and a revealed cell cannot be
     // un-seen; otherwise undo would be a free pass around both counters.
+    // Jumping back to the edited cell (like `redo` does) keeps the change visible.
+    const changed = move.changes[0];
+    if (changed) this.selected = changed.index;
     this.future.push(move);
     if (this.status === 'won') this.status = 'playing';
     this.conflictsCache = null;
@@ -342,7 +341,9 @@ export class Game {
     }
     // Re-applying a move must not charge a second time - see `undo`.
     this.history.push(move);
-    this.selected = move.changes[move.changes.length - 1]?.index ?? this.selected;
+    // Same rule as `undo`: the first change is the cell the player edited.
+    const changed = move.changes[0];
+    if (changed) this.selected = changed.index;
     this.conflictsCache = null;
     this.checkWin();
     return true;

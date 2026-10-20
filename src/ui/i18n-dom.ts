@@ -26,10 +26,6 @@ export function applyTranslations(root: ParentNode, t: Translator): void {
   }
 }
 
-export function translateNode(node: HTMLElement | null, key: TranslationKey, t: Translator): void {
-  if (node) setText(node, t(key));
-}
-
 /** Keeps `<html lang>`, the page title and the meta description in sync. */
 export function applyDocumentMeta(t: Translator, language: Language): void {
   document.documentElement.lang = language;

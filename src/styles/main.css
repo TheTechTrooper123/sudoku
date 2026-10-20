@@ -110,7 +110,7 @@
   /* Cell inks: the meaning is the same as in daylight, tuned for the night
      sheet. Wrong stays red, the duplicate reason stays neutral + ink blue. */
   --given: #ece9e2;
-  --user: #a9bde2;
+  --user: #96b3ec;
   --note: #948f85;
 
   --cell-bg: #23201c;
@@ -515,9 +515,10 @@ button {
   font-weight: 600;
 }
 
-/* Correctly solved cells are locked and rendered like the given clues. */
+/* Correctly solved cells are locked, but they keep the player's ink: the
+   board shows at a glance what was printed and what was worked out. */
 .cell.is-locked .cell__value {
-  color: var(--given);
+  color: var(--user);
   font-weight: 600;
 }
 
@@ -839,6 +840,11 @@ kbd {
 
 /* ------------------------------------------------------------ 7. dialogs */
 
+/* A modal owns the scroll while it is open - nothing moves behind it. */
+body.has-modal {
+  overflow: hidden;
+}
+
 .modal {
   position: fixed;
   inset: 0;
@@ -857,6 +863,7 @@ kbd {
   width: min(100%, 560px);
   max-height: min(86vh, 720px);
   overflow: auto;
+  overscroll-behavior: contain;
   padding: var(--space-5);
   background: var(--bg-elevated);
   border: 1px solid var(--border-strong);

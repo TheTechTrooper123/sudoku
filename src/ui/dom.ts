@@ -87,7 +87,3 @@ export function setAttr(node: Element, name: string, value: string | null): void
   }
   if (node.getAttribute(name) !== value) node.setAttribute(name, value);
 }
-
-export function multiply(text: string, times: number): string {
-  return times > 0 ? text.repeat(times) : '';
-}
