@@ -9,7 +9,7 @@ export type ResolvedTheme = 'light' | 'dark';
 /** Browser UI colour per theme - must stay in sync with `--bg` in main.css. */
 export const THEME_COLORS: Record<ResolvedTheme, string> = {
   light: '#f4efe4',
-  dark: '#171615',
+  dark: '#131210',
 };
 
 export function systemTheme(): ResolvedTheme {

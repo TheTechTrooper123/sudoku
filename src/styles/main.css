@@ -78,49 +78,52 @@
   color-scheme: light;
 }
 
-/* After dark the page is ink, not paper: a near-neutral charcoal with only a
-   whisper of warmth. Strongly yellow/olive tones are avoided on purpose - on a
-   dark screen they read as sickly, not cosy. */
+/* After dark the page is ink, not paper: a deep warm-ink desk with a clearly
+   lighter sheet for the board. Depth comes from surfaces and printed rules,
+   never from glow - and no yellow/olive, which reads sickly on a dark screen. */
 [data-theme='dark'] {
   color-scheme: dark;
-  --bg: #171615;
-  --bg-elevated: #201f1d;
-  --bg-subtle: #282725;
-  --bg-sunken: #111110;
-  --text: #f2f0ed;
-  --text-muted: #b4b1ab;
-  --text-soft: #8b8983;
-  --border: #31302d;
-  --border-strong: #484640;
-  --scrim: rgba(0, 0, 0, 0.62);
+  --bg: #131210;
+  --bg-elevated: #1c1b18;
+  --bg-subtle: #242320;
+  --bg-sunken: #0d0c0b;
+  --text: #ece9e2;
+  --text-muted: #b9b5ac;
+  --text-soft: #9a958b;
+  --border: #34322e;
+  --border-strong: #4b4842;
+  --scrim: rgba(0, 0, 0, 0.66);
 
-  --line: #2b2a28;
-  --line-strong: #57554f;
+  /* The printed grid: hairlines and block rules read as ink on the night sheet. */
+  --line: #403c35;
+  --line-strong: #746e63;
 
-  --accent: #9fb4e4;
-  --accent-strong: #c3d1f4;
-  --accent-soft: rgba(159, 180, 228, 0.16);
-  --accent-contrast: #171615;
-  --success: #3ad19b;
-  --success-soft: rgba(58, 209, 155, 0.16);
-  --danger: #ff7a68;
-  --danger-soft: rgba(255, 122, 104, 0.16);
+  --accent: #93a7cf;
+  --accent-strong: #bccae8;
+  --accent-soft: rgba(147, 167, 207, 0.15);
+  --accent-contrast: #14130f;
+  --success: #45c08d;
+  --success-soft: rgba(69, 192, 141, 0.16);
+  --danger: #ef8071;
+  --danger-soft: rgba(239, 128, 113, 0.18);
 
-  --given: #f2f0ed;
-  --user: #a6b8ee;
-  --note: #8b8983;
+  /* Cell inks: the meaning is the same as in daylight, tuned for the night
+     sheet. Wrong stays red, the duplicate reason stays neutral + ink blue. */
+  --given: #ece9e2;
+  --user: #a9bde2;
+  --note: #948f85;
 
-  --cell-bg: #1c1b1a;
-  --cell-peer: #232221;
-  --cell-same: #2d2c2a;
-  --cell-selected: #3a3936;
-  --cell-duplicate: #343331;
-  --duplicate-outline: #9fb4e4;
-  --duplicate-glow: rgba(159, 180, 228, 0.22);
+  --cell-bg: #23201c;
+  --cell-peer: #2a2722;
+  --cell-same: #332f28;
+  --cell-selected: #403b33;
+  --cell-duplicate: #3b372f;
+  --duplicate-outline: #93a7cf;
+  --duplicate-glow: rgba(147, 167, 207, 0.22);
 
-  --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.3);
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 30px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.35);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.45), 0 12px 30px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.65);
 }
 
 /* Phones and tablets: the light page is brighter than comfortable on a small,
